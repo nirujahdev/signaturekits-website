@@ -4,7 +4,7 @@ import Image from 'next/image';
 /**
  * BestSellers Component
  * 
- * A pixel-perfect clone of the "Proven Favorites" section for Calder Co.
+ * A pixel-perfect clone of the "Proven Favorites" section for Signature Kits
  * features:
  * - Three-column product grid
  * - Image swap on hover

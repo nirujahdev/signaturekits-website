@@ -15,7 +15,7 @@ const newsItems = [
   },
   {
     image: "https://framerusercontent.com/images/NkZ9k6uRpPcNT5ljAL7N4HwgeBI.png",
-    title: "Calder Co. Pop-up Experience",
+    title: "Signature Kits Pop-up Experience",
     description: "A temporary space dedicated to craftsmanship.",
   },
   {
@@ -55,7 +55,7 @@ const NewsGrid = () => {
           <div className="max-w-[600px]">
             <h2 className="font-h2 text-black mb-4">
               What&apos;s New at<br />
-              Calder Co.
+              Signature Kits
             </h2>
           </div>
           <div className="md:pt-4 max-w-[320px] ml-auto overflow-hidden">

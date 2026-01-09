@@ -6,138 +6,110 @@ export default function SizeGuidePage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="container mx-auto px-6 py-12 max-w-4xl">
-        <h1 className="text-4xl font-semibold mb-8">Size Guide</h1>
+      <main className="container mx-auto px-6 py-12 max-w-6xl">
+        <h1 className="text-4xl md:text-5xl font-semibold mb-8">Jersey Size Chart</h1>
 
-        <div className="prose max-w-none mb-12">
-          <p className="text-lg text-gray-600 mb-8">
-            Find the perfect fit for your jersey. All measurements are in centimeters.
-            If you're between sizes, we recommend sizing up for a more comfortable fit.
-          </p>
-        </div>
-
-        {/* Adult Sizes */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-semibold mb-6">Adult Sizes</h2>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Size</TableHead>
-                  <TableHead>Chest (cm)</TableHead>
-                  <TableHead>Length (cm)</TableHead>
-                  <TableHead>Sleeve (cm)</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-semibold">Small (S)</TableCell>
-                  <TableCell>96-100</TableCell>
-                  <TableCell>70</TableCell>
-                  <TableCell>22</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-semibold">Medium (M)</TableCell>
-                  <TableCell>100-104</TableCell>
-                  <TableCell>72</TableCell>
-                  <TableCell>23</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-semibold">Large (L)</TableCell>
-                  <TableCell>104-108</TableCell>
-                  <TableCell>74</TableCell>
-                  <TableCell>24</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-semibold">Extra Large (XL)</TableCell>
-                  <TableCell>108-112</TableCell>
-                  <TableCell>76</TableCell>
-                  <TableCell>25</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-semibold">2XL</TableCell>
-                  <TableCell>112-116</TableCell>
-                  <TableCell>78</TableCell>
-                  <TableCell>26</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+          {/* Visual Measurement Guide */}
+          <div className="bg-gradient-to-br from-teal-900 to-teal-700 rounded-lg p-8 text-white">
+            <h2 className="text-2xl font-semibold mb-6">How to Measure</h2>
+            
+            {/* T-shirt illustration placeholder */}
+            <div className="bg-white/10 rounded-lg p-8 mb-6 flex items-center justify-center">
+              <div className="relative w-48 h-64 bg-white/20 rounded-lg flex flex-col items-center justify-center">
+                {/* T-shirt shape */}
+                <div className="absolute inset-4 border-2 border-white/50 rounded-t-lg" style={{ clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%, 0% 20%)' }} />
+                
+                {/* Chest measurement arrow */}
+                <div className="absolute top-1/3 left-0 right-0 flex items-center">
+                  <div className="flex-1 border-t-2 border-white/70" />
+                  <div className="px-2 text-xs font-semibold">CHEST</div>
+                  <div className="flex-1 border-t-2 border-white/70" />
+                </div>
+                
+                {/* Length measurement arrow */}
+                <div className="absolute left-0 top-0 bottom-0 flex flex-col items-center justify-center">
+                  <div className="flex-1 border-l-2 border-white/70" />
+                  <div className="px-2 text-xs font-semibold writing-vertical">LENGTH</div>
+                  <div className="flex-1 border-l-2 border-white/70" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-4 text-sm">
+              <div>
+                <strong className="block mb-1">CHEST:</strong>
+                <p className="text-white/90">Measure around the fullest part of your chest, keeping the tape measure horizontal.</p>
+              </div>
+              <div>
+                <strong className="block mb-1">LENGTH:</strong>
+                <p className="text-white/90">Measure from the top of the shoulder down to the bottom hem.</p>
+              </div>
+            </div>
+            
+            <div className="mt-6 pt-6 border-t border-white/20">
+              <p className="text-sm font-medium">Sublimation & Embroidery</p>
+            </div>
           </div>
-        </div>
 
-        {/* Kids Sizes */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-semibold mb-6">Kids Sizes</h2>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Size</TableHead>
-                  <TableHead>Age</TableHead>
-                  <TableHead>Chest (cm)</TableHead>
-                  <TableHead>Length (cm)</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-semibold">XS (4-5 years)</TableCell>
-                  <TableCell>4-5</TableCell>
-                  <TableCell>60-64</TableCell>
-                  <TableCell>50</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-semibold">S (6-7 years)</TableCell>
-                  <TableCell>6-7</TableCell>
-                  <TableCell>64-68</TableCell>
-                  <TableCell>54</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-semibold">M (8-9 years)</TableCell>
-                  <TableCell>8-9</TableCell>
-                  <TableCell>68-72</TableCell>
-                  <TableCell>58</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-semibold">L (10-11 years)</TableCell>
-                  <TableCell>10-11</TableCell>
-                  <TableCell>72-76</TableCell>
-                  <TableCell>62</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-semibold">XL (12-13 years)</TableCell>
-                  <TableCell>12-13</TableCell>
-                  <TableCell>76-80</TableCell>
-                  <TableCell>66</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+          {/* Size Chart Table */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-6 text-black">Size Chart</h2>
+            <div className="overflow-x-auto bg-white rounded-lg border border-gray-200">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead className="font-semibold">SIZE</TableHead>
+                    <TableHead className="font-semibold">LENGTH (inches)</TableHead>
+                    <TableHead className="font-semibold">CHEST (inches)</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="font-semibold">S</TableCell>
+                    <TableCell>26</TableCell>
+                    <TableCell>36</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">M</TableCell>
+                    <TableCell>27</TableCell>
+                    <TableCell>38</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">L</TableCell>
+                    <TableCell>28</TableCell>
+                    <TableCell>40</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">XL</TableCell>
+                    <TableCell>29</TableCell>
+                    <TableCell>42</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">2XL</TableCell>
+                    <TableCell>30</TableCell>
+                    <TableCell>44</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">3XL</TableCell>
+                    <TableCell>30</TableCell>
+                    <TableCell>46</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
           </div>
-        </div>
-
-        {/* How to Measure */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4">How to Measure</h2>
-          <ul className="space-y-2 text-gray-700">
-            <li>
-              <strong>Chest:</strong> Measure around the fullest part of your chest, keeping the tape measure horizontal.
-            </li>
-            <li>
-              <strong>Length:</strong> Measure from the top of the shoulder down to the desired length.
-            </li>
-            <li>
-              <strong>Sleeve:</strong> Measure from the center back of the neck, over the shoulder, and down to the wrist.
-            </li>
-          </ul>
         </div>
 
         {/* Fit Notes */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="font-semibold mb-2">Fit Notes</h3>
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+          <h3 className="font-semibold mb-3 text-lg">Fit Notes</h3>
           <ul className="space-y-2 text-sm text-gray-700">
             <li>• Jerseys have a regular fit - not too tight, not too loose</li>
             <li>• If you prefer a looser fit, consider sizing up</li>
             <li>• For a more fitted look, choose your exact size</li>
-            <li>• All measurements are approximate and may vary by manufacturer</li>
+            <li>• All measurements are in inches and are approximate</li>
+            <li>• Available in Sublimation & Embroidery options</li>
           </ul>
         </div>
       </main>

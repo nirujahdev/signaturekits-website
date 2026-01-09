@@ -20,24 +20,24 @@ gsap.registerPlugin(ScrollTrigger);
 
 const categories = [
   {
-    title: 'Polo',
-    image: 'https://framerusercontent.com/images/BjQfJy7nQoVxvCYTFzwZxprDWiQ.jpg',
-    href: '/collection/polo',
+    title: 'Master Version',
+    image: '/assests/master version.png',
+    href: '/collections/master',
   },
   {
-    title: 'Shirts',
-    image: 'https://framerusercontent.com/images/e9tQ6gSvJVVX5csWplfqNxX3T8.jpg',
-    href: '/collection/shirts',
+    title: 'Player Version',
+    image: '/assests/player version.png',
+    href: '/collections/player',
   },
   {
-    title: 'Tee',
-    image: 'https://framerusercontent.com/images/aEaVp0Cinm159R48O7MzEPPuUA.jpg',
-    href: '/collection/tee',
+    title: 'Signature Embroidery',
+    image: '/assests/Signature Emboriery.png',
+    href: '/collections/embroidery',
   },
   {
-    title: 'Jacket',
-    image: 'https://framerusercontent.com/images/TzYNYizGo5wMkoLWobXEn6ye0.jpg',
-    href: '/collection/jacket',
+    title: 'Retro',
+    image: '/assests/retro.png',
+    href: '/collections/retro',
   },
 ];
 
@@ -97,7 +97,7 @@ const EverydayEssentials = () => {
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  priority={category.title === 'Polo'}
+                  priority={category.title === 'Master Version'}
                 />
               </div>
               

@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * Hero Section Component
  * Featuring a full-width background image with parallax and GSAP reveal animations.
- * Headline: Calder Co.
+ * Headline: Signature Kits
  * Subtext: Timeless Wardrobe. Everyday Power.
  */
 export default function Hero() {
@@ -91,8 +91,8 @@ export default function Hero() {
         <div className="relative w-full h-full overflow-hidden origin-center">
           <Image
             ref={bgImageRef}
-            src="https://framerusercontent.com/images/T0Z10o3Yaf4JPrk9f5lhcmJJwno.jpg"
-            alt="Man in high-end coat"
+            src="/assests/herosection_img.png"
+            alt="Signature Kits Hero"
             fill
             priority
             className="object-cover scale-100"
@@ -117,7 +117,7 @@ export default function Hero() {
               color: "#FFFFFF",
             }}
           >
-            Calder Co.
+            Signature Kits
           </h1>
         </div>
 

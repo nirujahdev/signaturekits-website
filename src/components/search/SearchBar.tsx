@@ -17,14 +17,14 @@ export function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative flex-1 max-w-md">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+    <form onSubmit={handleSubmit} className="relative w-full max-w-md">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 z-10" />
       <Input
         type="text"
         placeholder="Search jerseys..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="pl-10 pr-4"
+        className="pl-10 pr-4 border-0 border-b-2 border-transparent bg-transparent focus:border-current focus:outline-none focus:ring-0 rounded-none"
       />
     </form>
   );
