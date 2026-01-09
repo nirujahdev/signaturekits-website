@@ -95,9 +95,11 @@ export default function Hero() {
             alt="Signature Kits Hero"
             fill
             priority
+            loading="eager"
             className="object-cover scale-100"
             sizes="100vw"
             quality={90}
+            unoptimized={false}
           />
           {/* Subtle Overlay */}
           <div className="absolute inset-0 bg-black/10 pointer-events-none" />

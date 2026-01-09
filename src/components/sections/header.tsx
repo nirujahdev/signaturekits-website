@@ -47,32 +47,8 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Right: Cart + Menu */}
+        {/* Right: Menu + Cart */}
         <div className="flex items-center gap-6">
-          <Link href="/cart" className={`flex items-center gap-1.5 cursor-pointer group transition-all duration-300 ${headerTextColor}`}>
-            <div className="relative">
-              <svg 
-                width="22" 
-                height="22" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="1.8" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                className="w-[22px] h-[22px]"
-              >
-                <path d="M6 8V6a6 6 0 1 1 12 0v2" />
-                <rect x="3" y="8" width="18" height="13" rx="2" />
-              </svg>
-            </div>
-            {itemCount > 0 && (
-              <span className="text-[14px] font-bold tracking-tight mb-1">
-                {itemCount}
-              </span>
-            )}
-          </Link>
-          
           <nav className="hidden md:flex items-center gap-x-8">
             {navItems.map((item) => (
               <Link
@@ -84,6 +60,29 @@ export default function Header() {
               </Link>
             ))}
           </nav>
+          
+          <Link href="/cart" className={`flex items-center gap-1.5 cursor-pointer group transition-all duration-300 ${headerTextColor} relative`}>
+            <svg 
+              width="22" 
+              height="22" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              className="w-[22px] h-[22px]"
+            >
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            {itemCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {itemCount}
+              </span>
+            )}
+          </Link>
         </div>
     </header>
   );

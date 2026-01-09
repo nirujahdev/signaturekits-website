@@ -71,15 +71,17 @@ export default function CTASection() {
 
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full z-0">
-        <Image
-          ref={imageRef}
-          src="/assests/cta.png"
-          alt="Signature Kits CTA"
-          fill
-          className="object-cover"
-          sizes="100vw"
-          quality={90}
-        />
+          <Image
+            ref={imageRef}
+            src="/assests/cta.png"
+            alt="Signature Kits CTA"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            quality={85}
+            loading="lazy"
+            unoptimized={false}
+          />
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/20" />
       </div>
