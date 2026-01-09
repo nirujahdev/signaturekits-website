@@ -51,9 +51,3 @@ vendure/static/email/test-emails/*
 # database
 *.db
 *.sqlite
-
-# documentation (keep only README.md)
-*.md
-!README.md
-!vendure/README.md
-!supabase/README.md
