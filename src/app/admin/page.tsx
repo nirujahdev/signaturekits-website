@@ -1,60 +1,52 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { EcommerceMetrics } from '@/components/admin/ecommerce/EcommerceMetrics';
+import RecentOrders from '@/components/admin/ecommerce/RecentOrders';
 
-export default function AdminRedirect() {
-  const [vendureUrl, setVendureUrl] = useState<string | null>(null);
+export default function AdminDashboard() {
+  const [stats, setStats] = useState({
+    totalCustomers: 0,
+    totalOrders: 0,
+    totalRevenue: 0,
+    pendingOrders: 0,
+  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get Vendure admin URL from environment variable
-    // In production, this should be set in Vercel environment variables
-    const adminUrl = process.env.NEXT_PUBLIC_VENDURE_ADMIN_URL;
-    
-    if (adminUrl) {
-      setVendureUrl(adminUrl);
-      // Redirect to Vendure admin dashboard
-      window.location.href = adminUrl;
-    } else {
-      // Fallback: try to construct from API URL or show error
-      const apiUrl = process.env.NEXT_PUBLIC_VENDURE_API_URL;
-      if (apiUrl) {
-        const constructedUrl = apiUrl.replace('/shop-api', '/admin');
-        setVendureUrl(constructedUrl);
-        window.location.href = constructedUrl;
-      } else {
-        setVendureUrl('http://localhost:3000/admin');
-      }
-    }
+    fetchDashboardStats();
   }, []);
 
+  const fetchDashboardStats = async () => {
+    try {
+      const res = await fetch('/api/admin/dashboard/stats');
+      if (res.ok) {
+        const data = await res.json();
+        setStats(data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="text-center max-w-md px-6">
-        {vendureUrl ? (
-          <>
-            <h1 className="text-2xl font-semibold mb-4">Redirecting to Admin Dashboard...</h1>
-            <p className="text-gray-600 mb-4">Please wait while we redirect you to the Vendure admin panel.</p>
-            <p className="text-sm text-gray-500">
-              If you are not redirected automatically,{' '}
-              <a href={vendureUrl} className="text-blue-600 hover:underline">
-                click here
-              </a>
-            </p>
-          </>
-        ) : (
-          <>
-            <h1 className="text-2xl font-semibold mb-4">Admin Dashboard Not Configured</h1>
-            <p className="text-gray-600 mb-4">
-              Please set the <code className="bg-gray-100 px-2 py-1 rounded">NEXT_PUBLIC_VENDURE_ADMIN_URL</code> environment variable
-              in your Vercel project settings.
-            </p>
-            <p className="text-sm text-gray-500">
-              Example: <code className="bg-gray-100 px-2 py-1 rounded">https://your-vendure-server.com/admin</code>
-            </p>
-          </>
-        )}
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white/90 mb-2">
+          Dashboard
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400">
+          Overview of your e-commerce platform
+        </p>
+      </div>
+
+      <EcommerceMetrics stats={stats} loading={loading} />
+      
+      <div>
+        <RecentOrders />
       </div>
     </div>
   );
 }
-

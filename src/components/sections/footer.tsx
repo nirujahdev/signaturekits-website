@@ -71,7 +71,7 @@ const Footer = () => {
           {/* Admin Link - Center */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <Link 
-              href="/admin" 
+              href="/admin/signin" 
               className="text-[14px] font-medium text-[#999999] hover:text-black transition-colors"
             >
               admin
