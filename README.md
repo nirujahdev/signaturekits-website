@@ -97,3 +97,26 @@ npm run vendure:worker
 - ✅ Order tracking
 - ✅ Admin dashboard (Vendure)
 - ✅ Search (Typesense)
+
+## Database Seeding
+
+The database has been pre-seeded with sample data:
+
+### Supabase (via MCP)
+- ✅ 2 Import batches (collecting, orderedFromSupplier)
+- ✅ 3 Order tracking records (confirmed, processing, pending)
+- ✅ Supplier purchase lists with customization data
+
+### Vendure
+To seed Vendure with products and customers:
+
+1. **Get Admin Token**: Login to Vendure Admin UI → Settings → API Tokens
+2. **Run Seeding**:
+   ```bash
+   curl -X POST http://localhost:3000/api/admin/seed-all \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer dev-seed-token" \
+     -d '{"adminToken": "YOUR_ADMIN_TOKEN"}'
+   ```
+
+See `scripts/seed-complete.md` for detailed seeding instructions.
