@@ -101,15 +101,15 @@ export default function Hero() {
             quality={90}
             unoptimized={false}
           />
-          {/* Subtle Overlay */}
-          <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+          {/* Light Overlay */}
+          <div className="absolute inset-0 bg-black/5 pointer-events-none" />
         </div>
       </div>
 
       {/* Hero Content Container */}
       <div className="container relative z-10 w-full flex flex-col md:flex-row items-end justify-between pb-12 md:pb-20 text-white">
-        {/* Large Centered/Left Branding */}
-        <div className="w-full md:w-auto mb-10 md:mb-0">
+        {/* Large Left Branding */}
+        <div className="w-full md:w-auto mb-10 md:mb-0 md:mr-auto">
           <h1
             ref={headlineRef}
             className="font-display font-semibold select-none leading-[0.8] mix-blend-difference"
@@ -123,8 +123,8 @@ export default function Hero() {
           </h1>
         </div>
 
-        {/* Subtext Paragraph */}
-        <div className="w-full md:w-auto md:max-w-xs text-left md:text-right">
+        {/* Subtext Paragraph - Right Aligned */}
+        <div className="w-full md:w-auto md:max-w-xs text-left md:text-right md:ml-auto">
           <p
             ref={subheadlineRef}
             className="font-sans font-normal leading-[1.2]"

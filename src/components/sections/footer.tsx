@@ -37,7 +37,7 @@ const Footer = () => {
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-[120px]">
           {/* Large Typographic Brand Signature */}
           <div className="mb-[64px] lg:mb-0">
-            <h2 className="text-[80px] lg:text-[180px] font-semibold tracking-[-0.05em] leading-[0.8] text-black">
+            <h2 className="text-[80px] lg:text-[180px] font-semibold tracking-[-0.05em] leading-[0.8] text-black whitespace-nowrap">
               Signature Kits
             </h2>
           </div>

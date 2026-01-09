@@ -56,60 +56,44 @@ export default function CTASection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full bg-white overflow-hidden"
-      style={{ minHeight: "80vh" }}
+      className="relative w-full bg-white overflow-hidden py-[120px] md:py-[160px]"
     >
-      {/* Curved SVG Path */}
-      <svg
-        className="absolute top-0 left-0 w-full h-24 z-10"
-        viewBox="0 0 1440 100"
-        preserveAspectRatio="none"
-        fill="white"
-      >
-        <path d="M0,100 C360,0 720,0 1080,0 C1260,0 1350,0 1440,0 L1440,100 L0,100 Z" />
-      </svg>
+      {/* Content Container with Rectangle Image */}
+      <div className="container mx-auto px-6 md:px-[60px]">
+        <div className="relative w-full max-w-6xl mx-auto">
+          {/* Rectangle Image with Curved Edges */}
+          <div className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[40px] md:rounded-[60px]">
+            <Image
+              ref={imageRef}
+              src="/assests/cta.png"
+              alt="Signature Kits CTA"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 1200px"
+              quality={85}
+              loading="lazy"
+              unoptimized={false}
+            />
+            {/* Darker Overlay */}
+            <div className="absolute inset-0 bg-black/40" />
+          </div>
 
-      {/* Background Image */}
-      <div className="absolute inset-0 w-full h-full z-0">
-          <Image
-            ref={imageRef}
-            src="/assests/cta.png"
-            alt="Signature Kits CTA"
-            fill
-            className="object-cover"
-            sizes="100vw"
-            quality={85}
-            loading="lazy"
-            unoptimized={false}
-          />
-        {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
-
-      {/* Content Container */}
-      <div className="relative z-20 container mx-auto px-6 md:px-[60px] flex items-center justify-center min-h-[80vh]">
-        <div className="text-center max-w-4xl">
-          <h2
-            ref={quoteRef}
-            className="font-display font-semibold text-white leading-[1.1] tracking-[-0.02em]"
-            style={{
-              fontSize: "clamp(48px, 8vw, 120px)",
-            }}
-          >
-            Wear the timeless legacy
-          </h2>
+          {/* Text Content - Right Aligned */}
+          <div className="absolute inset-0 flex items-center justify-end pr-8 md:pr-16 z-20">
+            <div className="text-right max-w-2xl">
+              <h2
+                ref={quoteRef}
+                className="font-display font-semibold text-white leading-[1.1] tracking-[-0.02em]"
+                style={{
+                  fontSize: "clamp(36px, 6vw, 96px)",
+                }}
+              >
+                Wear the timeless legacy
+              </h2>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Curved SVG Path Bottom */}
-      <svg
-        className="absolute bottom-0 left-0 w-full h-24 z-10 rotate-180"
-        viewBox="0 0 1440 100"
-        preserveAspectRatio="none"
-        fill="white"
-      >
-        <path d="M0,100 C360,0 720,0 1080,0 C1260,0 1350,0 1440,0 L1440,100 L0,100 Z" />
-      </svg>
     </section>
   );
 }
