@@ -10,6 +10,7 @@ import { transExpressShippingCalculator } from './plugins/trans-express-shipping
 import { BatchImportPlugin } from './plugins/batch-import-plugin';
 import { DeliveryStatusPlugin } from './plugins/delivery-status-plugin';
 import { CustomerSyncPlugin } from './plugins/customer-sync-plugin';
+import { SupabaseDataPlugin } from './plugins/supabase-data-plugin';
 
 /**
  * Custom fields for OrderLine to store jersey customization
@@ -174,6 +175,7 @@ export const config: VendureConfig = {
     TypesensePlugin,
     DeliveryStatusPlugin,
     CustomerSyncPlugin,
+    SupabaseDataPlugin,
   ],
 };
 

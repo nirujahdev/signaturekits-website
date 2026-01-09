@@ -96,6 +96,17 @@ export const batchImportOperations = {
     if (error) throw error;
     return data;
   },
+
+  async getBatchAssignments(batchId: string) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+      .from('order_batch_assignments')
+      .select('*, import_batches(*)')
+      .eq('batch_id', batchId);
+
+    if (error) throw error;
+    return data || [];
+  },
 };
 
 /**
@@ -124,6 +135,32 @@ export const otpOperations = {
     // This would update the Vendure order via Admin API
     // For now, just return success
     return { success: true };
+  },
+
+  async getOTPSessions(options?: { phone?: string; verified?: boolean; skip?: number; take?: number }) {
+    const supabase = createSupabaseClient();
+    let query = supabase
+      .from('otp_sessions')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (options?.phone) {
+      query = query.eq('phone', options.phone);
+    }
+
+    if (options?.verified !== undefined) {
+      query = query.eq('verified', options.verified);
+    }
+
+    if (options?.skip) {
+      query = query.range(options.skip, options.skip + (options.take || 20) - 1);
+    } else if (options?.take) {
+      query = query.limit(options.take);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data || [];
   },
 };
 
@@ -371,6 +408,115 @@ export const customerOperations = {
     if (error) throw error;
     return data;
   },
+
+  async getAllCustomers(options?: { skip?: number; take?: number; search?: string }) {
+    const supabase = createSupabaseClient();
+    let query = supabase
+      .from('customers')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (options?.search) {
+      query = query.or(`email.ilike.%${options.search}%,first_name.ilike.%${options.search}%,last_name.ilike.%${options.search}%,phone_number.ilike.%${options.search}%`);
+    }
+
+    if (options?.skip) {
+      query = query.range(options.skip, options.skip + (options.take || 20) - 1);
+    } else if (options?.take) {
+      query = query.limit(options.take);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getCustomerById(id: string) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+      .from('customers')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async getCustomerAddresses(customerId: string) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+      .from('customer_addresses')
+      .select('*')
+      .eq('customer_id', customerId)
+      .order('is_default', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getAllOrders(options?: { skip?: number; take?: number; deliveryStage?: string; paymentMethod?: string }) {
+    const supabase = createSupabaseClient();
+    let query = supabase
+      .from('customer_orders_summary')
+      .select('*')
+      .order('order_date', { ascending: false });
+
+    if (options?.deliveryStage) {
+      query = query.eq('delivery_stage', options.deliveryStage);
+    }
+
+    if (options?.paymentMethod) {
+      query = query.eq('payment_method', options.paymentMethod);
+    }
+
+    if (options?.skip) {
+      query = query.range(options.skip, options.skip + (options.take || 20) - 1);
+    } else if (options?.take) {
+      query = query.limit(options.take);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getOrderSummaryByCode(orderCode: string) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+      .from('customer_orders_summary')
+      .select('*')
+      .eq('order_code', orderCode)
+      .single();
+
+    if (error && error.code !== 'PGRST116') throw error;
+    return data;
+  },
+
+  async getOrderItems(orderSummaryId: string) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+      .from('customer_order_items')
+      .select('*')
+      .eq('order_summary_id', orderSummaryId)
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  async updateCustomerData(customerId: string, updates: any) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+      .from('customers')
+      .update({ ...updates, updated_at: new Date().toISOString() })
+      .eq('id', customerId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
 };
 
 /**
@@ -417,6 +563,28 @@ export const deliveryStatusOperations = {
       .eq('order_code', orderCode)
       .order('updated_at', { ascending: false });
 
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getAllDeliveryStatuses(options?: { skip?: number; take?: number; stage?: string }) {
+    const supabase = createSupabaseClient();
+    let query = supabase
+      .from('order_delivery_status')
+      .select('*')
+      .order('updated_at', { ascending: false });
+
+    if (options?.stage) {
+      query = query.eq('stage', options.stage);
+    }
+
+    if (options?.skip) {
+      query = query.range(options.skip, options.skip + (options.take || 20) - 1);
+    } else if (options?.take) {
+      query = query.limit(options.take);
+    }
+
+    const { data, error } = await query;
     if (error) throw error;
     return data || [];
   },
