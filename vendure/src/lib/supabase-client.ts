@@ -178,3 +178,52 @@ export const orderTrackingOperations = {
   },
 };
 
+/**
+ * Delivery Status Operations (5-stage tracking)
+ */
+export const deliveryStatusOperations = {
+  async updateDeliveryStatus(
+    orderCode: string,
+    stage: 'ORDER_CONFIRMED' | 'SOURCING' | 'ARRIVED' | 'DISPATCHED' | 'DELIVERED',
+    trackingNumber?: string,
+    note?: string,
+    updatedBy?: string
+  ) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase.rpc('update_order_delivery_status', {
+      p_order_code: orderCode,
+      p_stage: stage,
+      p_tracking_number: trackingNumber || null,
+      p_note: note || null,
+      p_updated_by: updatedBy || null,
+    });
+
+    if (error) throw error;
+    return data;
+  },
+
+  async getDeliveryStatus(orderCode: string) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+      .from('order_delivery_status')
+      .select('*')
+      .eq('order_code', orderCode)
+      .single();
+
+    if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows
+    return data;
+  },
+
+  async getDeliveryStatusHistory(orderCode: string) {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+      .from('order_delivery_status_events')
+      .select('*')
+      .eq('order_code', orderCode)
+      .order('updated_at', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  },
+};
+

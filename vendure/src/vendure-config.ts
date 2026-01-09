@@ -8,6 +8,7 @@ import { payherePaymentHandler } from './plugins/payhere-payment-plugin';
 import { codPaymentHandler } from './plugins/cod-payment-plugin';
 import { transExpressShippingCalculator } from './plugins/trans-express-shipping-plugin';
 import { BatchImportPlugin } from './plugins/batch-import-plugin';
+import { DeliveryStatusPlugin } from './plugins/delivery-status-plugin';
 
 /**
  * Custom fields for OrderLine to store jersey customization
@@ -57,6 +58,27 @@ export const customFields = {
       defaultValue: false,
       label: [{ languageCode: 'en', value: 'Phone Verified' }],
       description: [{ languageCode: 'en', value: 'Phone number has been verified via SMS OTP' }],
+    },
+    {
+      name: 'deliveryStage',
+      type: 'string',
+      nullable: true,
+      label: [{ languageCode: 'en', value: 'Delivery Stage' }],
+      description: [{ languageCode: 'en', value: 'Current delivery stage: ORDER_CONFIRMED, SOURCING, ARRIVED, DISPATCHED, DELIVERED' }],
+      options: [
+        { value: 'ORDER_CONFIRMED', label: 'Order Confirmed' },
+        { value: 'SOURCING', label: 'Sourcing' },
+        { value: 'ARRIVED', label: 'Arrived' },
+        { value: 'DISPATCHED', label: 'Dispatched' },
+        { value: 'DELIVERED', label: 'Delivered' },
+      ],
+    },
+    {
+      name: 'trackingNumber',
+      type: 'string',
+      nullable: true,
+      label: [{ languageCode: 'en', value: 'Tracking Number' }],
+      description: [{ languageCode: 'en', value: 'Courier tracking number (shown when stage is DISPATCHED or DELIVERED)' }],
     },
   ],
   Customer: [
@@ -149,6 +171,7 @@ export const config: VendureConfig = {
     }),
     BatchImportPlugin,
     TypesensePlugin,
+    DeliveryStatusPlugin,
   ],
 };
 

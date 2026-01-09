@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, Package, Truck, CheckCircle2, Clock } from 'lucide-react';
 import Image from 'next/image';
+import DeliveryTracker from '@/components/orders/DeliveryTracker';
 
 interface OrderLine {
   id: string;
@@ -57,7 +58,17 @@ interface Order {
   customFields?: {
     phoneNumber?: string;
     phoneVerified?: boolean;
+    deliveryStage?: string;
+    trackingNumber?: string;
   };
+}
+
+interface DeliveryStatus {
+  orderCode: string;
+  stage: 'ORDER_CONFIRMED' | 'SOURCING' | 'ARRIVED' | 'DISPATCHED' | 'DELIVERED';
+  trackingNumber?: string | null;
+  note?: string | null;
+  updatedAt?: string;
 }
 
 const ORDER_STATE_MAP: Record<string, { label: string; icon: any; color: string }> = {
@@ -74,9 +85,13 @@ export default function OrderTrackingPage() {
   const { code } = useParams();
   const router = useRouter();
   const [order, setOrder] = useState<Order | null>(null);
+  const [deliveryStatus, setDeliveryStatus] = useState<DeliveryStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [orderCodeInput, setOrderCodeInput] = useState(code as string || '');
+  const [phoneInput, setPhoneInput] = useState('');
+  const [phoneValidated, setPhoneValidated] = useState(false);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   useEffect(() => {
     if (code) {
@@ -91,6 +106,8 @@ export default function OrderTrackingPage() {
       const result = await orderOperations.getOrderByCode(orderCode);
       if (result?.orderByCode) {
         setOrder(result.orderByCode);
+        // Try to load delivery status (will work without phone for basic info)
+        loadDeliveryStatus(orderCode);
       } else {
         setError('Order not found');
       }
@@ -98,6 +115,37 @@ export default function OrderTrackingPage() {
       setError(err.message || 'Failed to load order');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadDeliveryStatus = async (orderCode: string, phone?: string) => {
+    try {
+      const url = phone
+        ? `/api/orders/${orderCode}/delivery-status?phone=${encodeURIComponent(phone)}`
+        : `/api/orders/${orderCode}/delivery-status`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (response.ok) {
+        setDeliveryStatus(data);
+        setPhoneValidated(true);
+        setPhoneError(null);
+      } else {
+        if (response.status === 403) {
+          setPhoneError('Phone number does not match this order');
+        } else {
+          setPhoneError(data.error || 'Failed to load delivery status');
+        }
+      }
+    } catch (err: any) {
+      setPhoneError(err.message || 'Failed to load delivery status');
+    }
+  };
+
+  const handlePhoneSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (code && phoneInput) {
+      loadDeliveryStatus(code as string, phoneInput);
     }
   };
 
@@ -299,14 +347,52 @@ export default function OrderTrackingPage() {
           </div>
         </div>
 
-        {/* Delivery Timeline */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="font-semibold mb-2">Expected Delivery</h3>
-          <p className="text-sm text-gray-700">
-            Pre-order items typically ship within 15-20 days. You will receive tracking information
-            once your order has been dispatched.
-          </p>
-        </div>
+        {/* Phone Validation for Full Tracking */}
+        {!phoneValidated && (
+          <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+            <h3 className="font-semibold mb-2">Verify Phone Number</h3>
+            <p className="text-sm text-gray-700 mb-4">
+              Enter your phone number to view detailed delivery tracking information.
+            </p>
+            <form onSubmit={handlePhoneSubmit} className="space-y-3">
+              <Input
+                type="tel"
+                placeholder="Enter phone number (e.g., 0771234567)"
+                value={phoneInput}
+                onChange={(e) => setPhoneInput(e.target.value)}
+                className="max-w-md"
+              />
+              {phoneError && (
+                <p className="text-sm text-red-600">{phoneError}</p>
+              )}
+              <Button type="submit" size="sm">
+                Verify & View Tracking
+              </Button>
+            </form>
+          </div>
+        )}
+
+        {/* Delivery Tracker */}
+        {deliveryStatus && (
+          <div className="mt-8">
+            <DeliveryTracker
+              stage={deliveryStatus.stage}
+              trackingNumber={deliveryStatus.trackingNumber}
+              updatedAt={deliveryStatus.updatedAt}
+            />
+          </div>
+        )}
+
+        {/* Expected Delivery Info */}
+        {!deliveryStatus && (
+          <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h3 className="font-semibold mb-2">Expected Delivery</h3>
+            <p className="text-sm text-gray-700">
+              Pre-order items typically ship within 15-20 days. You will receive tracking information
+              once your order has been dispatched.
+            </p>
+          </div>
+        )}
 
         <div className="mt-8">
           <Button onClick={() => router.push('/')} variant="outline">
