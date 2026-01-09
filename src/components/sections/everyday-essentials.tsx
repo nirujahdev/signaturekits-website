@@ -81,21 +81,21 @@ const EverydayEssentials = () => {
           </div>
         </div>
 
-        {/* Grid Section */}
-        <div className="grid-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-4 lg:gap-5">
+        {/* Grid Section - 2 per row with curved edges */}
+        <div className="grid-container grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
           {categories.map((category) => (
             <a 
               key={category.title} 
               href={category.href} 
               className="category-card group block relative overflow-hidden"
             >
-              {/* Image Container with Hover Effect */}
-              <div className="relative aspect-[4/5] overflow-hidden bg-[#F5F5F5]">
+              {/* Image Container with Hover Effect and Curved Edges */}
+              <div className="relative aspect-[4/5] overflow-hidden bg-[#F5F5F5] rounded-[30px] md:rounded-[40px]">
                 <Image
                   src={category.image}
                   alt={category.title}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   priority={category.title === 'Master Version'}
                   loading={category.title === 'Master Version' ? 'eager' : 'lazy'}
@@ -105,8 +105,8 @@ const EverydayEssentials = () => {
               </div>
               
               {/* Label */}
-              <div className="mt-4">
-                <p className="text-[14px] font-semibold uppercase tracking-[0.05em] text-black transition-opacity duration-300">
+              <div className="mt-6">
+                <p className="text-[16px] md:text-[18px] font-semibold uppercase tracking-[0.05em] text-black transition-opacity duration-300">
                   {category.title}
                 </p>
               </div>

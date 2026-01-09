@@ -17,7 +17,7 @@ export default function PoliciesPage() {
             <TabsTrigger value="terms">Terms</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="shipping" className="mt-6">
+          <TabsContent value="shipping" className="mt-6" id="shipping">
             <div className="prose max-w-none">
               <h2 className="text-2xl font-semibold mb-4">Shipping Policy</h2>
               
@@ -119,7 +119,7 @@ export default function PoliciesPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="terms" className="mt-6">
+          <TabsContent value="terms" className="mt-6" id="terms">
             <div className="prose max-w-none">
               <h2 className="text-2xl font-semibold mb-4">Terms & Conditions</h2>
               
