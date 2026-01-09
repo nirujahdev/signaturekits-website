@@ -9,6 +9,7 @@ import { codPaymentHandler } from './plugins/cod-payment-plugin';
 import { transExpressShippingCalculator } from './plugins/trans-express-shipping-plugin';
 import { BatchImportPlugin } from './plugins/batch-import-plugin';
 import { DeliveryStatusPlugin } from './plugins/delivery-status-plugin';
+import { CustomerSyncPlugin } from './plugins/customer-sync-plugin';
 
 /**
  * Custom fields for OrderLine to store jersey customization
@@ -172,6 +173,7 @@ export const config: VendureConfig = {
     BatchImportPlugin,
     TypesensePlugin,
     DeliveryStatusPlugin,
+    CustomerSyncPlugin,
   ],
 };
 
