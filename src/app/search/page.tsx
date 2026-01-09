@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { searchProducts } from '@/lib/typesense-client';
 import { Loader2, Search } from 'lucide-react';
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
 
@@ -133,6 +133,24 @@ export default function SearchPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white">
+        <Header />
+        <main className="container mx-auto px-6 py-12">
+          <div className="text-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto text-gray-400" />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <SearchContent />
+    </Suspense>
   );
 }
 
