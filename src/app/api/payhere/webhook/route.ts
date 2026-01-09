@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyPayHereSignature } from '../../../../vendure/src/plugins/payhere-payment-plugin';
+import { verifyPayHereSignature } from '@/lib/payhere';
 
 /**
  * PayHere Webhook Handler (Next.js API Route)
