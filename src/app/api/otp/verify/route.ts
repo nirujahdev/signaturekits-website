@@ -3,11 +3,6 @@ import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcrypt';
 import { normalizePhoneForTextLK } from '@/lib/textlk-sms';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 /**
  * POST /api/otp/verify
  * Verify SMS OTP
