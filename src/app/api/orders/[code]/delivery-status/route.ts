@@ -40,6 +40,19 @@ export async function GET(
       return NextResponse.json({ error: 'Order code required' }, { status: 400 });
     }
 
+    // Initialize Supabase client at runtime (not build time)
+    const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+      return NextResponse.json(
+        { error: 'Supabase configuration missing' },
+        { status: 500 }
+      );
+    }
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+
     // Get order from Vendure to validate phone
     const orderResult = await vendureQuery(GET_ORDER_BY_CODE, { code });
     const order = orderResult?.orderByCode;

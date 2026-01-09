@@ -4,17 +4,25 @@ import bcrypt from 'bcrypt';
 import { sendSMSViaTextLK, normalizePhoneForTextLK } from '@/lib/textlk-sms';
 import crypto from 'crypto';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 /**
  * POST /api/otp/send
  * Send SMS OTP via Text.lk
  */
 export async function POST(req: NextRequest) {
   try {
+    // Initialize Supabase client at runtime (not build time)
+    const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+      return NextResponse.json(
+        { success: false, error: 'Supabase configuration missing' },
+        { status: 500 }
+      );
+    }
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+
     const body = await req.json();
     const { phone, sessionId } = body;
 
