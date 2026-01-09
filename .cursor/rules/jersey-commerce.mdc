@@ -1,0 +1,114 @@
+---
+description: Full system context for Sri Lanka jersey pre-order e-commerce (Next.js + Vendure + Supabase + PayHere + WhatsApp OTP + Typesense)
+alwaysApply: true
+---
+
+# Project: Jersey Pre-Order E-commerce (Sri Lanka)
+
+## Business model
+- We sell ALL jerseys (club/country/retro/current), adult + kids.
+- Pre-order: shipping timeline always 15–20 days.
+- Bulk import: place supplier order only after a batch threshold (e.g., 20 confirmed orders).
+- Customization options:
+  - Name + Number
+  - Patch add-on
+- Payments:
+  - Full online payment via PayHere
+  - COD supported (but must reduce fake orders)
+- Confirmation:
+  - WhatsApp OTP verification using official WhatsApp Cloud API templates (Authentication)
+- Local delivery partner: Trans Express (no dynamic fee rules needed; shipping can be flat or free)
+
+## Tech stack (must follow)
+- Frontend: Next.js (App Router) on Vercel
+- Commerce backend: Vendure (Server + Worker)
+- Admin dashboard: Vendure Dashboard/Admin UI (use Vendure's dashboard; do NOT add Sanity unless explicitly requested)
+- DB: Supabase Postgres (as Vendure database)
+- Search: Typesense (instant search + faceted filters)
+- WhatsApp OTP: WhatsApp Cloud API (official)
+- Email: SMTP (Spacemail or another SMTP)
+
+## System architecture rules
+### Vendure
+- Vendure is headless:
+  - Use Vendure Shop API (GraphQL) for storefront.
+  - Use Vendure Admin API (GraphQL) + Dashboard for admin operations.
+- Run TWO processes in production:
+  - vendure-server: handles GraphQL + webhooks
+  - vendure-worker: background jobs (email, search indexing, retries)
+- Product modeling:
+  - Product = jersey design (e.g., "AC Milan 06/07 Home")
+  - Variants = sizes (S/M/L/XL and kids sizes)
+- Customization modeling:
+  - DO NOT create separate SKUs for every name/number/patch.
+  - Store customization on the OrderLine using custom fields:
+    - patchEnabled (bool)
+    - patchType (string, optional)
+    - printName (string, optional)
+    - printNumber (string, optional)
+  - Ensure these fields are validated (length, allowed characters).
+
+### Checkout flows
+- Full PayHere payment:
+  - Create order -> redirect to PayHere -> handle notify/webhook -> verify signature/checksum -> mark order paid/confirmed.
+- COD:
+  - Require WhatsApp OTP confirmation before placing into batch import.
+  - Orders not verified in X hours should be auto-cancelled to prevent fake orders.
+
+### Batch import (core to business)
+- Introduce "ImportBatch" concept:
+  - batchStatus: collecting | orderedFromSupplier | inTransit | arrived | dispatched | completed
+  - Orders attach to a batch when confirmed (paid or OTP-verified COD).
+- Admin should be able to:
+  - create/close a batch
+  - assign confirmed orders
+  - export supplier purchase list (SKU/variant/size/customization)
+  - update batch status and trigger customer notifications
+
+### WhatsApp OTP (official)
+- Use WhatsApp Cloud API Authentication template for OTP sending.
+- OTP security rules:
+  - Generate 6-digit OTP
+  - Store only hashed OTP in database
+  - expiry 5–10 minutes
+  - max attempts 5
+- Store on order/customer:
+  - whatsappNumber (E.164)
+  - whatsappOptIn boolean (must be true)
+  - whatsappVerified boolean
+- Important: WhatsApp per-message pricing applies (OTP messages cost money). Keep OTP sends minimal.
+
+### Typesense search
+- Use Typesense for:
+  - instant search
+  - filters/facets: team, season, retro/current, home/away, adult/kids, size, price
+- Sync strategy:
+  - Vendure Worker job updates Typesense when products/variants change.
+  - Keep Typesense as a read/search layer; source of truth remains Vendure DB.
+
+## Frontend requirements (Next.js)
+- Must be fast on mobile (Sri Lanka networks).
+- Pages:
+  - Home / New Drops
+  - Collections (Retro, Clubs, Countries, Kids)
+  - Product page (size + patch + name/number)
+  - Cart
+  - Checkout (WhatsApp verify step + PayHere/COD)
+  - Order tracking page
+  - Policies + Size guide
+- Checkout UX:
+  - WhatsApp number field + "Send OTP" + OTP entry
+  - Only allow "Place order" after OTP verification (for COD) OR after PayHere payment success.
+
+## Engineering standards
+- TypeScript everywhere.
+- No secrets in client; all keys via server env vars.
+- Webhook verification mandatory (PayHere + WhatsApp).
+- Add logging + error handling for all external calls.
+- Prefer small PR-sized changes: implement, test, document.
+
+## What the AI (Cursor) should do when asked to "build the site"
+1) Summarize current repo structure and missing pieces.
+2) Propose a staged implementation plan (MVP -> scale).
+3) Implement one stage at a time with working code.
+4) Keep Vendure as commerce + admin dashboard; don't add Sanity unless requested.
