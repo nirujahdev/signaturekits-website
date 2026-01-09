@@ -16,7 +16,7 @@ alwaysApply: true
   - Full online payment via PayHere
   - COD supported (but must reduce fake orders)
 - Confirmation:
-  - WhatsApp OTP verification using official WhatsApp Cloud API templates (Authentication)
+  - SMS OTP verification using Text.lk SMS Gateway
 - Local delivery partner: Trans Express (no dynamic fee rules needed; shipping can be flat or free)
 
 ## Tech stack (must follow)
@@ -25,7 +25,7 @@ alwaysApply: true
 - Admin dashboard: Vendure Dashboard/Admin UI (use Vendure's dashboard; do NOT add Sanity unless explicitly requested)
 - DB: Supabase Postgres (as Vendure database)
 - Search: Typesense (instant search + faceted filters)
-- WhatsApp OTP: WhatsApp Cloud API (official)
+- SMS OTP: Text.lk SMS Gateway (official API)
 - Email: SMTP (Spacemail or another SMTP)
 
 ## System architecture rules
@@ -65,18 +65,20 @@ alwaysApply: true
   - export supplier purchase list (SKU/variant/size/customization)
   - update batch status and trigger customer notifications
 
-### WhatsApp OTP (official)
-- Use WhatsApp Cloud API Authentication template for OTP sending.
+### SMS OTP (Text.lk)
+- Use Text.lk SMS Gateway API v3 for OTP sending.
 - OTP security rules:
   - Generate 6-digit OTP
-  - Store only hashed OTP in database
-  - expiry 5–10 minutes
-  - max attempts 5
+  - Store only hashed OTP in database (bcrypt)
+  - expiry 5–10 minutes (configurable via OTP_TTL_SECONDS)
+  - max attempts 5 (configurable via OTP_MAX_ATTEMPTS)
+  - Rate limiting: 1 send per 60 seconds, max 3 per hour per phone
 - Store on order/customer:
-  - whatsappNumber (E.164)
-  - whatsappOptIn boolean (must be true)
-  - whatsappVerified boolean
-- Important: WhatsApp per-message pricing applies (OTP messages cost money). Keep OTP sends minimal.
+  - phoneNumber (Text.lk format: 947xxxxxxxx)
+  - phoneVerified boolean (must be true for COD)
+- API endpoint: POST https://app.text.lk/api/v3/sms/send
+- Authentication: Bearer token (TEXTLK_API_TOKEN)
+- Important: SMS per-message pricing applies. Keep OTP sends minimal with rate limiting.
 
 ### Typesense search
 - Use Typesense for:
@@ -97,7 +99,8 @@ alwaysApply: true
   - Order tracking page
   - Policies + Size guide
 - Checkout UX:
-  - WhatsApp number field + "Send OTP" + OTP entry
+  - Phone number field + "Send OTP" + OTP entry
+  - Show resend countdown and OTP expiry timer
   - Only allow "Place order" after OTP verification (for COD) OR after PayHere payment success.
 
 ## Engineering standards

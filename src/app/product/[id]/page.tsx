@@ -5,44 +5,184 @@ import Image from 'next/image';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductCard from '@/components/ProductCard';
-import { products } from '@/lib/data';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Plus, Minus } from 'lucide-react';
+import { Plus, Minus, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { productOperations } from '@/lib/vendure-operations';
+import { useCart } from '@/contexts/CartContext';
+import { CustomizationForm } from '@/components/product/CustomizationForm';
+import { toast } from 'sonner';
 import gsap from 'gsap';
+
+interface ProductVariant {
+  id: string;
+  name: string;
+  sku: string;
+  priceWithTax: number;
+  price: number;
+  currencyCode: string;
+  stockLevel: string;
+  options: Array<{
+    id: string;
+    code: string;
+    name: string;
+  }>;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  assets: Array<{
+    id: string;
+    preview: string;
+    source: string;
+  }>;
+  variants: ProductVariant[];
+}
 
 export default function ProductDetailPage() {
   const { id } = useParams();
-  const product = products.find(p => p.id === id) || products[0];
+  const router = useRouter();
+  const { addItem } = useCart();
+  
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState('Medium');
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+  const [customization, setCustomization] = useState({
+    patchEnabled: false,
+    patchType: undefined as string | undefined,
+    printName: undefined as string | undefined,
+    printNumber: undefined as string | undefined,
+  });
+  const [addingToCart, setAddingToCart] = useState(false);
 
   const infoRef = useRef<HTMLDivElement>(null);
   const imageStackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
-    
-    tl.fromTo(imageStackRef.current, { opacity: 0, x: -50 }, { opacity: 1, x: 0, delay: 0.2 })
-      .fromTo(infoRef.current, { opacity: 0, x: 50 }, { opacity: 1, x: 0 }, "-=0.8");
-  }, []);
+    loadProduct();
+  }, [id]);
 
-  const sizes = ['Small', 'Medium', 'Large', 'Extra Large'];
-  
-  // Mock images for the stack - using different crops or similar images if available
-  const images = [
-    product.image,
-    product.image, // In a real app these would be different
-  ];
+  useEffect(() => {
+    if (product && product.variants.length > 0) {
+      setSelectedVariant(product.variants[0]);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (product) {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
+      tl.fromTo(imageStackRef.current, { opacity: 0, x: -50 }, { opacity: 1, x: 0, delay: 0.2 })
+        .fromTo(infoRef.current, { opacity: 0, x: 50 }, { opacity: 1, x: 0 }, "-=0.8");
+    }
+  }, [product]);
+
+  const loadProduct = async () => {
+    setLoading(true);
+    try {
+      // Try by slug first, then by ID
+      const result = await productOperations.getProductBySlug(id as string);
+      if (!result?.product) {
+        const resultById = await productOperations.getProductById(id as string);
+        if (resultById?.product) {
+          setProduct(resultById.product);
+        }
+      } else {
+        setProduct(result.product);
+      }
+    } catch (error) {
+      console.error('Error loading product:', error);
+      toast.error('Failed to load product');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!selectedVariant) {
+      toast.error('Please select a size');
+      return;
+    }
+
+    setAddingToCart(true);
+    try {
+      await addItem(selectedVariant.id, quantity, customization);
+      toast.success('Added to cart!');
+      router.push('/cart');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to add to cart');
+    } finally {
+      setAddingToCart(false);
+    }
+  };
+
+  const formatPrice = (price: number, currency: string = 'LKR') => {
+    return new Intl.NumberFormat('en-LK', {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: 0,
+    }).format(price / 100);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="container mx-auto px-6 py-20">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-48 mb-8" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div className="h-[600px] bg-gray-200 rounded" />
+              <div className="space-y-4">
+                <div className="h-6 bg-gray-200 rounded w-3/4" />
+                <div className="h-4 bg-gray-200 rounded w-1/2" />
+                <div className="h-12 bg-gray-200 rounded" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="container mx-auto px-6 py-20 text-center">
+          <h1 className="text-2xl font-semibold mb-4">Product not found</h1>
+          <Button onClick={() => router.push('/')}>Back to Home</Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  const mainImage = product.assets?.[0]?.preview || '/placeholder-jersey.jpg';
+  const images = product.assets?.length > 0 
+    ? product.assets.map(a => a.preview)
+    : [mainImage, mainImage];
+
+  // Extract size options from variants
+  const sizeOptions = product.variants.map(v => ({
+    id: v.id,
+    name: v.name,
+    price: v.priceWithTax,
+    stockLevel: v.stockLevel,
+  }));
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Force header to be black on this page */}
       <Header />
       
       <main className="pt-[140px] pb-[80px]">
@@ -51,7 +191,7 @@ export default function ProductDetailPage() {
             {/* Left side: Image Stack */}
             <div ref={imageStackRef} className="flex-1 space-y-4 mb-10 lg:mb-0">
               {images.map((img, index) => (
-                <div key={index} className="aspect-[4/5] relative bg-[#F5F5F5] overflow-hidden">
+                <div key={index} className="aspect-[4/5] relative bg-[#F5F5F5] overflow-hidden rounded">
                   <Image
                     src={img}
                     alt={`${product.name} ${index + 1}`}
@@ -66,54 +206,55 @@ export default function ProductDetailPage() {
             {/* Right side: Product Info */}
             <div ref={infoRef} className="lg:w-[480px]">
               <div className="sticky top-[140px]">
-                <span className="text-[14px] font-medium text-[#999999] tracking-wider uppercase mb-3 block">
-                  {product.category || 'SHIRTS'}
-                </span>
                 <h1 className="text-[44px] font-semibold tracking-[-0.03em] leading-[1.05] text-black mb-6">
                   {product.name}
                 </h1>
                 
-                <div className="flex items-center gap-4 mb-12">
-                  <span className="text-[24px] font-medium text-black">
-                    ${product.price.toFixed(2)}
-                  </span>
-                  {product.originalPrice && (
-                    <span className="text-[18px] text-[#BBBBBB] line-through font-normal">
-                      ${product.originalPrice.toFixed(2)}
+                {selectedVariant && (
+                  <div className="flex items-center gap-4 mb-12">
+                    <span className="text-[24px] font-medium text-black">
+                      {formatPrice(selectedVariant.priceWithTax, selectedVariant.currencyCode)}
                     </span>
-                  )}
-                </div>
+                  </div>
+                )}
 
                 {/* Size Selector */}
                 <div className="mb-12">
                   <div className="flex items-center gap-1 mb-4">
                     <span className="text-[14px] text-[#999999] font-medium uppercase tracking-tight">Size</span>
-                    <span className="text-[14px] text-black font-semibold ml-1">{selectedSize}</span>
+                    {selectedVariant && (
+                      <span className="text-[14px] text-black font-semibold ml-1">{selectedVariant.name}</span>
+                    )}
                   </div>
-                  <div className="flex items-center gap-6">
-                    {sizes.map((size) => (
+                  <div className="flex items-center gap-6 flex-wrap">
+                    {sizeOptions.map((size) => (
                       <button
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
+                        key={size.id}
+                        onClick={() => {
+                          const variant = product.variants.find(v => v.id === size.id);
+                          if (variant) setSelectedVariant(variant);
+                        }}
+                        disabled={size.stockLevel === 'OUT_OF_STOCK'}
                         className={`text-[15px] font-medium transition-all ${
-                          selectedSize === size
-                            ? 'text-black font-bold'
+                          selectedVariant?.id === size.id
+                            ? 'text-black font-bold border-b-2 border-black'
+                            : size.stockLevel === 'OUT_OF_STOCK'
+                            ? 'text-gray-300 cursor-not-allowed'
                             : 'text-[#999999] hover:text-black'
                         }`}
                       >
-                        {size}
+                        {size.name}
+                        {size.stockLevel === 'OUT_OF_STOCK' && ' (Out of Stock)'}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-[14px] text-[#666666] font-medium">
-                    10 left in stock
-                  </span>
-                  <button className="text-[14px] font-medium text-[#999999] hover:text-black transition-colors">
-                    Size Chart
-                  </button>
+                {/* Customization Form */}
+                <div className="mb-12">
+                  <CustomizationForm
+                    onCustomizationChange={setCustomization}
+                  />
                 </div>
 
                 {/* Add to Cart Controls */}
@@ -138,9 +279,21 @@ export default function ProductDetailPage() {
                   </div>
                   
                   {/* Add to Cart Button */}
-                  <button className="flex-1 bg-black text-white text-[16px] font-bold py-4 hover:bg-[#1A1A1A] transition-all transform active:scale-[0.98]">
-                    Add to Cart
-                  </button>
+                  <Button
+                    onClick={handleAddToCart}
+                    disabled={!selectedVariant || addingToCart || selectedVariant.stockLevel === 'OUT_OF_STOCK'}
+                    className="flex-1 bg-black text-white text-[16px] font-bold py-4 hover:bg-[#1A1A1A] transition-all"
+                    size="lg"
+                  >
+                    {addingToCart ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Adding...
+                      </>
+                    ) : (
+                      'Add to Cart'
+                    )}
+                  </Button>
                 </div>
 
                 {/* Info Accordion */}
@@ -150,15 +303,15 @@ export default function ProductDetailPage() {
                       INFORMATION
                     </AccordionTrigger>
                     <AccordionContent className="text-[15px] leading-[1.7] text-[#666666] pb-6">
-                      This classic regular-fit shirt is made from premium organic cotton, featuring a refined silhouette that works for both formal and casual settings. The fabric is treated for minimal wrinkling and maximum breathability.
+                      {product.description || 'Premium quality jersey with authentic design and materials.'}
                     </AccordionContent>
                   </AccordionItem>
-                  <AccordionItem value="benefit" className="border-b border-[#E5E5E5]">
+                  <AccordionItem value="shipping" className="border-b border-[#E5E5E5]">
                     <AccordionTrigger className="text-[14px] font-semibold text-black uppercase tracking-widest py-6 hover:no-underline">
-                      BENEFIT
+                      SHIPPING
                     </AccordionTrigger>
                     <AccordionContent className="text-[15px] leading-[1.7] text-[#666666] pb-6">
-                      Designed with longevity in mind, this piece offers timeless appeal and exceptional comfort. The high-thread-count cotton ensures a soft hand-feel that only improves with age.
+                      Pre-order items ship in 15-20 days. Free shipping on orders over LKR 5,000. Delivered via Trans Express.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="payment" className="border-b border-[#E5E5E5]">
@@ -166,7 +319,7 @@ export default function ProductDetailPage() {
                       PAYMENT
                     </AccordionTrigger>
                     <AccordionContent className="text-[15px] leading-[1.7] text-[#666666] pb-6">
-                      Secure checkout with support for major credit cards, Apple Pay, and Google Pay. Easy 30-day returns on all standard orders.
+                      Secure checkout with PayHere or Cash on Delivery (COD). COD requires SMS verification.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -185,17 +338,9 @@ export default function ProductDetailPage() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-[40px]">
-              {products.slice(0, 3).map((p) => (
-                <ProductCard
-                  key={p.id}
-                  id={p.id}
-                  name={p.name}
-                  category={p.category}
-                  price={p.price}
-                  image={p.image}
-                />
-              ))}
+            {/* This would load related products from Vendure */}
+            <div className="text-center text-gray-500 py-12">
+              Related products will be loaded here
             </div>
           </section>
         </div>

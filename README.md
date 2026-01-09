@@ -1,6 +1,6 @@
 # Signature Kits - Jersey Pre-Order E-commerce
 
-A production-ready jersey pre-order e-commerce platform for Sri Lanka, built with Next.js, Vendure, Supabase, PayHere, and WhatsApp OTP verification.
+Production-ready jersey pre-order e-commerce platform for Sri Lanka.
 
 ## Tech Stack
 
@@ -9,7 +9,7 @@ A production-ready jersey pre-order e-commerce platform for Sri Lanka, built wit
 - **Database**: Supabase Postgres
 - **Search**: Typesense (instant search + faceted filters)
 - **Payments**: PayHere (full payment) + COD
-- **OTP Verification**: WhatsApp Cloud API
+- **OTP Verification**: Text.lk SMS Gateway
 - **Email**: SMTP (Spacemail or similar)
 
 ## Getting Started
@@ -19,7 +19,7 @@ A production-ready jersey pre-order e-commerce platform for Sri Lanka, built wit
 - Node.js 18+ 
 - Supabase account and database
 - PayHere merchant account
-- WhatsApp Cloud API access
+- Text.lk SMS Gateway account (API token provided)
 
 ### Installation
 
@@ -42,7 +42,7 @@ cp env.example .env
 Edit `.env` and fill in your credentials:
 - Supabase database connection details
 - PayHere merchant credentials
-- WhatsApp Cloud API credentials
+- Text.lk SMS Gateway credentials (API token)
 - SMTP email configuration
 - Typesense configuration
 
@@ -71,17 +71,29 @@ npm run vendure:worker
 - **Admin API**: http://localhost:3000/admin-api
 - **Email Test Mailbox** (dev): http://localhost:3003
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+├── src/                    # Next.js frontend
+│   ├── app/               # App Router pages
+│   ├── components/        # React components
+│   ├── contexts/          # React contexts (Cart)
+│   └── lib/               # Utilities (Vendure, Typesense, Text.lk)
+├── vendure/               # Vendure backend
+│   └── src/
+│       ├── plugins/       # Custom plugins
+│       ├── lib/           # Utilities
+│       └── vendure-config.ts
+└── supabase/              # Supabase migrations (applied via MCP)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- ✅ Product catalog with customization (patch, name, number)
+- ✅ Shopping cart and checkout
+- ✅ SMS OTP verification (Text.lk)
+- ✅ Payment: PayHere + COD
+- ✅ Batch import system
+- ✅ Order tracking
+- ✅ Admin dashboard (Vendure)
+- ✅ Search (Typesense)

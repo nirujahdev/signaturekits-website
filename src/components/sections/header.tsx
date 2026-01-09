@@ -3,10 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useCart } from '@/contexts/CartContext';
+import { SearchBar } from '@/components/search/SearchBar';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const { itemCount } = useCart();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -19,9 +22,9 @@ export default function Header() {
 
   const isHomePage = pathname === '/';
   const navItems = [
-    { name: 'Product', href: '/product' },
-    { name: 'News', href: '#' },
-    { name: 'About +', href: '#' },
+    { name: 'Collections', href: '/collections/clubs' },
+    { name: 'Size Guide', href: '/size-guide' },
+    { name: 'Policies', href: '/policies' },
   ];
 
   // Force black text on subpages, transition on homepage
@@ -47,8 +50,11 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center">
-          <Link href="#" className={`flex items-center gap-1.5 cursor-pointer group transition-all duration-300 ${headerTextColor}`}>
+        <div className="flex items-center gap-4">
+          <div className="hidden md:block">
+            <SearchBar />
+          </div>
+          <Link href="/cart" className={`flex items-center gap-1.5 cursor-pointer group transition-all duration-300 ${headerTextColor}`}>
             <div className="relative">
               <svg 
                 width="22" 
@@ -65,9 +71,11 @@ export default function Header() {
                 <rect x="3" y="8" width="18" height="13" rx="2" />
               </svg>
             </div>
-            <span className="text-[14px] font-bold tracking-tight mb-1">
-              4
-            </span>
+            {itemCount > 0 && (
+              <span className="text-[14px] font-bold tracking-tight mb-1">
+                {itemCount}
+              </span>
+            )}
           </Link>
         </div>
     </header>

@@ -3,6 +3,11 @@ import { VendureConfig } from '@vendure/core';
 import { AdminPlugin } from '@vendure/admin-ui-plugin';
 import { AssetServerPlugin } from '@vendure/asset-server-plugin';
 import { EmailPlugin } from '@vendure/email-plugin';
+import { TypesensePlugin } from './plugins/typesense-plugin';
+import { payherePaymentHandler } from './plugins/payhere-payment-plugin';
+import { codPaymentHandler } from './plugins/cod-payment-plugin';
+import { transExpressShippingCalculator } from './plugins/trans-express-shipping-plugin';
+import { BatchImportPlugin } from './plugins/batch-import-plugin';
 
 /**
  * Custom fields for OrderLine to store jersey customization
@@ -40,48 +45,34 @@ export const customFields = {
   ],
   Order: [
     {
-      name: 'whatsappNumber',
+      name: 'phoneNumber',
       type: 'string',
       nullable: true,
-      label: [{ languageCode: 'en', value: 'WhatsApp Number' }],
-      description: [{ languageCode: 'en', value: 'Customer WhatsApp number in E.164 format' }],
+      label: [{ languageCode: 'en', value: 'Phone Number' }],
+      description: [{ languageCode: 'en', value: 'Customer phone number (Sri Lanka format)' }],
     },
     {
-      name: 'whatsappOptIn',
+      name: 'phoneVerified',
       type: 'boolean',
       defaultValue: false,
-      label: [{ languageCode: 'en', value: 'WhatsApp Opt-In' }],
-      description: [{ languageCode: 'en', value: 'Customer has opted in to WhatsApp communications' }],
-    },
-    {
-      name: 'whatsappVerified',
-      type: 'boolean',
-      defaultValue: false,
-      label: [{ languageCode: 'en', value: 'WhatsApp Verified' }],
-      description: [{ languageCode: 'en', value: 'WhatsApp number has been verified via OTP' }],
+      label: [{ languageCode: 'en', value: 'Phone Verified' }],
+      description: [{ languageCode: 'en', value: 'Phone number has been verified via SMS OTP' }],
     },
   ],
   Customer: [
     {
-      name: 'whatsappNumber',
+      name: 'phoneNumber',
       type: 'string',
       nullable: true,
-      label: [{ languageCode: 'en', value: 'WhatsApp Number' }],
-      description: [{ languageCode: 'en', value: 'Customer WhatsApp number in E.164 format' }],
+      label: [{ languageCode: 'en', value: 'Phone Number' }],
+      description: [{ languageCode: 'en', value: 'Customer phone number (Sri Lanka format)' }],
     },
     {
-      name: 'whatsappOptIn',
+      name: 'phoneVerified',
       type: 'boolean',
       defaultValue: false,
-      label: [{ languageCode: 'en', value: 'WhatsApp Opt-In' }],
-      description: [{ languageCode: 'en', value: 'Customer has opted in to WhatsApp communications' }],
-    },
-    {
-      name: 'whatsappVerified',
-      type: 'boolean',
-      defaultValue: false,
-      label: [{ languageCode: 'en', value: 'WhatsApp Verified' }],
-      description: [{ languageCode: 'en', value: 'WhatsApp number has been verified via OTP' }],
+      label: [{ languageCode: 'en', value: 'Phone Verified' }],
+      description: [{ languageCode: 'en', value: 'Phone number has been verified via SMS OTP' }],
     },
   ],
 };
@@ -114,13 +105,13 @@ export const config: VendureConfig = {
   },
   paymentOptions: {
     paymentMethodHandlers: [
-      // PayHere payment handler will be added here
-      // COD payment handler will be added here
+      payherePaymentHandler,
+      codPaymentHandler,
     ],
   },
   shippingOptions: {
     shippingCalculators: [
-      // Trans Express shipping calculator will be added here
+      transExpressShippingCalculator,
     ],
   },
   customFields,
@@ -156,6 +147,8 @@ export const config: VendureConfig = {
         fromName: 'Signature Kits',
       },
     }),
+    BatchImportPlugin,
+    TypesensePlugin,
   ],
 };
 

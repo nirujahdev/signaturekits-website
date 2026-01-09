@@ -3,6 +3,8 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
+import { CartProvider } from "@/contexts/CartContext";
+import { Toaster } from "sonner";
 import Script from "next/script";
 
 export const metadata: Metadata = {
@@ -35,9 +37,12 @@ export default function RootLayout({
           data-debug="true"
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <CartProvider>
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
+        </CartProvider>
+        <Toaster position="top-center" />
         <VisualEditsMessenger />
       </body>
     </html>
