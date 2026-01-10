@@ -4,28 +4,29 @@ import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
+    const { username, password } = await req.json();
 
-    if (!email || !password) {
+    if (!username || !password) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
+        { error: 'Username and password are required' },
         { status: 400 }
       );
     }
 
     const supabase = getAdminSupabaseClient();
 
-    // Get admin user from database
+    // Get admin user from database - check if username matches email field
+    // (since we're using email column to store username)
     const { data: adminUser, error: userError } = await supabase
       .from('admin_users')
       .select('*')
-      .eq('email', email.toLowerCase())
+      .eq('email', username.toLowerCase())
       .eq('is_active', true)
       .single();
 
     if (userError || !adminUser) {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: 'Invalid username or password' },
         { status: 401 }
       );
     }
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
     const isValid = await verifyPassword(password, adminUser.password_hash);
     if (!isValid) {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: 'Invalid username or password' },
         { status: 401 }
       );
     }

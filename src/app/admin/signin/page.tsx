@@ -19,14 +19,14 @@ export default function AdminSignIn() {
             onSubmit={async (e) => {
               e.preventDefault();
               const formData = new FormData(e.currentTarget);
-              const email = formData.get('email') as string;
+              const username = formData.get('username') as string;
               const password = formData.get('password') as string;
 
               try {
                 const res = await fetch('/api/admin/auth/login', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ email, password }),
+                  body: JSON.stringify({ username, password }),
                 });
 
                 if (res.ok) {
@@ -43,14 +43,14 @@ export default function AdminSignIn() {
           >
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Email
+                Username
               </label>
               <input
-                type="email"
-                name="email"
+                type="text"
+                name="username"
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                placeholder="admin@signaturekits.xyz"
+                placeholder="Enter your username"
               />
             </div>
             
