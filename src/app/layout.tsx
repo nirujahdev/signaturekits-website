@@ -9,8 +9,12 @@ export const metadata: Metadata = {
   title: HOMEPAGE_CONTENT.title,
   description: HOMEPAGE_CONTENT.description,
   icons: {
-    icon: '/assests/ChatGPT Image Jan 10, 2026, 06_31_49 PM.png',
-    apple: '/assests/ChatGPT Image Jan 10, 2026, 06_31_49 PM.png',
+    icon: [
+      { url: '/assests/ChatGPT Image Jan 10, 2026, 06_31_49 PM.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/assests/ChatGPT Image Jan 10, 2026, 06_31_49 PM.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 
