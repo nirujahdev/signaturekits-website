@@ -67,7 +67,9 @@ export default function ProductDetailPage() {
     patchType: undefined as string | undefined,
     printName: undefined as string | undefined,
     printNumber: undefined as string | undefined,
+    customizationPrice: 0,
   });
+  const [basePrice, setBasePrice] = useState(0);
   const [addingToCart, setAddingToCart] = useState(false);
 
   const infoRef = useRef<HTMLDivElement>(null);
@@ -227,10 +229,25 @@ export default function ProductDetailPage() {
                 </div>
                 
                 {selectedVariant && (
-                  <div className="flex items-center gap-4 mb-12">
-                    <span className="text-[24px] font-medium text-black">
-                      {formatPrice(selectedVariant.priceWithTax, selectedVariant.currencyCode)}
-                    </span>
+                  <div className="flex flex-col gap-2 mb-12">
+                    <div className="flex items-center gap-4">
+                      <span className="text-[24px] font-medium text-black">
+                        {formatPrice(selectedVariant.priceWithTax, selectedVariant.currencyCode)}
+                      </span>
+                      {customization.customizationPrice > 0 && (
+                        <span className="text-sm text-gray-600">
+                          + LKR {customization.customizationPrice.toLocaleString()} customization
+                        </span>
+                      )}
+                    </div>
+                    {customization.customizationPrice > 0 && (
+                      <div className="text-lg font-semibold text-black">
+                        Total: {formatPrice(
+                          selectedVariant.priceWithTax + (customization.customizationPrice * 100),
+                          selectedVariant.currencyCode
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
 
