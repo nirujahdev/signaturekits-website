@@ -28,9 +28,25 @@ export default function AdminDashboard() {
       if (res.ok) {
         const data = await res.json();
         setStats(data);
+      } else {
+        // If API fails, set default values
+        console.warn('Dashboard stats API returned:', res.status);
+        setStats({
+          totalCustomers: 0,
+          totalOrders: 0,
+          totalRevenue: 0,
+          pendingOrders: 0,
+        });
       }
     } catch (error) {
       console.error('Failed to fetch dashboard stats:', error);
+      // Set default values on error
+      setStats({
+        totalCustomers: 0,
+        totalOrders: 0,
+        totalRevenue: 0,
+        pendingOrders: 0,
+      });
     } finally {
       setLoading(false);
     }

@@ -90,13 +90,21 @@ const AppHeader: React.FC = () => {
               className="dark:hidden"
               src="/admin/images/logo/logo.svg"
               alt="Logo"
+              onError={(e) => {
+                // Fallback if logo doesn't exist
+                e.currentTarget.style.display = 'none';
+              }}
             />
             <Image
               width={154}
               height={32}
               className="hidden dark:block"
-              src="/admin/images/logo/logo-dark.svg"
+              src="/admin/images/logo/logo.svg"
               alt="Logo"
+              onError={(e) => {
+                // Fallback if logo doesn't exist
+                e.currentTarget.style.display = 'none';
+              }}
             />
           </Link>
 

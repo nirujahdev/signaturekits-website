@@ -28,8 +28,13 @@ export default function RecentOrders() {
       if (res.ok) {
         const data = await res.json();
         setOrders(data.orders || []);
+      } else if (res.status === 404) {
+        // API route not found - show empty state
+        console.warn('Orders API route not found (404)');
+        setOrders([]);
       } else {
-        // If unauthorized, just show empty state
+        // Other error - show empty state
+        console.warn('Orders API returned:', res.status);
         setOrders([]);
       }
     } catch (error) {
