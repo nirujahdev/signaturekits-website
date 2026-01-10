@@ -166,7 +166,7 @@ export default function AdminDashboard() {
             Revenue Trends
           </h2>
           <RevenueChart
-            data={analytics?.revenueTrends || []}
+            data={Array.isArray(analytics?.revenueTrends) ? analytics.revenueTrends : []}
             loading={analyticsLoading}
           />
         </div>
@@ -176,7 +176,7 @@ export default function AdminDashboard() {
             Order Status Distribution
           </h2>
           <OrderStatusChart
-            data={analytics?.statusBreakdown || []}
+            data={Array.isArray(analytics?.statusBreakdown) ? analytics.statusBreakdown : []}
             loading={analyticsLoading}
           />
         </div>
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
             Customer Growth
           </h2>
           <CustomerGrowthChart
-            data={analytics?.customerGrowth || []}
+            data={Array.isArray(analytics?.customerGrowth) ? analytics.customerGrowth : []}
             loading={analyticsLoading}
           />
         </div>
@@ -196,7 +196,7 @@ export default function AdminDashboard() {
             Top Products
           </h2>
           <TopProductsTable
-            data={analytics?.topProducts || []}
+            data={Array.isArray(analytics?.topProducts) ? analytics.topProducts : []}
             loading={analyticsLoading}
           />
         </div>
