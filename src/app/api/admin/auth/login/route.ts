@@ -13,7 +13,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = getAdminSupabaseClient();
+    let supabase;
+    try {
+      supabase = getAdminSupabaseClient();
+    } catch (supabaseError: any) {
+      console.error('Supabase client error:', supabaseError);
+      return NextResponse.json(
+        { error: 'Database connection failed', details: supabaseError?.message },
+        { status: 500 }
+      );
+    }
 
     // Get admin user from database - check if username matches email field
     // (since we're using email column to store username)
@@ -24,15 +33,42 @@ export async function POST(req: NextRequest) {
       .eq('is_active', true)
       .single();
 
-    if (userError || !adminUser) {
+    if (userError) {
+      console.error('User query error:', userError);
       return NextResponse.json(
         { error: 'Invalid username or password' },
         { status: 401 }
       );
     }
 
+    if (!adminUser) {
+      console.error('User not found:', username);
+      return NextResponse.json(
+        { error: 'Invalid username or password' },
+        { status: 401 }
+      );
+    }
+
+    if (!adminUser.password_hash) {
+      console.error('User has no password hash');
+      return NextResponse.json(
+        { error: 'User account error' },
+        { status: 500 }
+      );
+    }
+
     // Verify password
-    const isValid = await verifyPassword(password, adminUser.password_hash);
+    let isValid = false;
+    try {
+      isValid = await verifyPassword(password, adminUser.password_hash);
+    } catch (verifyError: any) {
+      console.error('Password verification error:', verifyError);
+      return NextResponse.json(
+        { error: 'Password verification failed', details: verifyError?.message },
+        { status: 500 }
+      );
+    }
+
     if (!isValid) {
       return NextResponse.json(
         { error: 'Invalid username or password' },
@@ -40,32 +76,54 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Update last login
-    await supabase
-      .from('admin_users')
-      .update({ last_login_at: new Date().toISOString() })
-      .eq('id', adminUser.id);
+    // Update last login (non-blocking)
+    try {
+      await supabase
+        .from('admin_users')
+        .update({ last_login_at: new Date().toISOString() })
+        .eq('id', adminUser.id);
+    } catch (updateError) {
+      console.error('Failed to update last login:', updateError);
+      // Don't fail the login if this update fails
+    }
 
     // Create session token (simple JWT-like approach)
     // In production, use a proper JWT library
-    const sessionToken = Buffer.from(
-      JSON.stringify({
-        id: adminUser.id,
-        email: adminUser.email,
-        role: adminUser.role,
-        exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
-      })
-    ).toString('base64');
+    let sessionToken: string;
+    try {
+      sessionToken = Buffer.from(
+        JSON.stringify({
+          id: adminUser.id,
+          email: adminUser.email,
+          role: adminUser.role,
+          exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+        })
+      ).toString('base64');
+    } catch (tokenError: any) {
+      console.error('Token creation error:', tokenError);
+      return NextResponse.json(
+        { error: 'Session creation failed', details: tokenError?.message },
+        { status: 500 }
+      );
+    }
 
     // Set cookie
-    const cookieStore = await cookies();
-    cookieStore.set('admin_session', sessionToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60, // 7 days
-      path: '/',
-    });
+    try {
+      const cookieStore = await cookies();
+      cookieStore.set('admin_session', sessionToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60, // 7 days
+        path: '/',
+      });
+    } catch (cookieError: any) {
+      console.error('Cookie setting error:', cookieError);
+      return NextResponse.json(
+        { error: 'Session cookie failed', details: cookieError?.message },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
