@@ -15,7 +15,11 @@ export default function RecentOrders() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchRecentOrders();
+    // Add a small delay to ensure auth is ready
+    const timer = setTimeout(() => {
+      fetchRecentOrders();
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   const fetchRecentOrders = async () => {
@@ -24,9 +28,13 @@ export default function RecentOrders() {
       if (res.ok) {
         const data = await res.json();
         setOrders(data.orders || []);
+      } else {
+        // If unauthorized, just show empty state
+        setOrders([]);
       }
     } catch (error) {
       console.error('Failed to fetch recent orders:', error);
+      setOrders([]);
     } finally {
       setLoading(false);
     }
