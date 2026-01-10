@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -33,41 +34,61 @@ interface CollectionsDropdownProps {
   headerTextColor: string;
 }
 
-export function CollectionsDropdown({ isOpen, onClose, headerTextColor }: CollectionsDropdownProps) {
+export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = React.useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
 
-    if (isOpen) {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    // Use a small delay to ensure the DOM is ready
+    const timeoutId = setTimeout(() => {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
-    }
+    }, 0);
 
     return () => {
+      clearTimeout(timeoutId);
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  const content = (
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90] top-[80px]"
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90]"
+        style={{ top: '80px' }}
         onClick={onClose}
+        aria-hidden="true"
       />
       
       {/* Dropdown Menu */}
       <div
         ref={dropdownRef}
-        className="fixed top-[80px] left-0 w-full bg-white z-[95] border-b border-gray-200 shadow-lg"
+        className="fixed left-0 w-full bg-white z-[95] border-b border-gray-200 shadow-lg"
+        style={{ top: '80px' }}
       >
         <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] py-12 md:py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
@@ -98,5 +119,8 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor }: Collec
       </div>
     </>
   );
+
+  // Use portal to render outside the header component
+  return createPortal(content, document.body);
 }
 
