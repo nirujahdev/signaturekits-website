@@ -23,6 +23,7 @@ import { DirectAnswer } from '@/components/seo/DirectAnswer';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { PRODUCT_FAQ_TEMPLATE } from '@/lib/seo-content';
 import { SEO_CONFIG } from '@/lib/seo-config';
+import { SizeHelper } from '@/components/SizeHelper';
 
 interface ProductVariant {
   id: string;
@@ -214,6 +215,17 @@ export default function ProductDetailPage() {
                   {product.name}
                 </h1>
                 
+                {/* AEO Direct Answer Block */}
+                <div className="mb-6">
+                  <DirectAnswer
+                    deliveryDays={SEO_CONFIG.DELIVERY_WINDOW}
+                    hasCustomization={SEO_CONFIG.CUSTOM_NAME_NUMBER}
+                    hasCOD={SEO_CONFIG.COD}
+                    isPreOrder={true}
+                    trackingStage={SEO_CONFIG.TRACKING_STAGE}
+                  />
+                </div>
+                
                 {selectedVariant && (
                   <div className="flex items-center gap-4 mb-12">
                     <span className="text-[24px] font-medium text-black">
@@ -221,6 +233,11 @@ export default function ProductDetailPage() {
                     </span>
                   </div>
                 )}
+
+                {/* Size Helper */}
+                <div className="mb-12">
+                  <SizeHelper mode="auto" />
+                </div>
 
                 {/* Size Selector */}
                 <div className="mb-12">
