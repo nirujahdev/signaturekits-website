@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAdminAuth } from '@/hooks/useAdminAuth';
 import Input from '@/components/admin/form/input/InputField';
 import Label from '@/components/admin/form/Label';
 import Button from '@/components/admin/ui/button/Button';
@@ -14,7 +13,6 @@ export default function AdminSignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAdminAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,13 +20,26 @@ export default function AdminSignInForm() {
     setError('');
     setLoading(true);
 
-    const result = await login(email, password);
-    setLoading(false);
+    try {
+      const res = await fetch('/api/admin/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (result.success) {
-      router.push('/admin');
-    } else {
-      setError(result.error || 'Login failed');
+      if (res.ok) {
+        const data = await res.json();
+        // Redirect to admin dashboard
+        window.location.href = '/admin';
+      } else {
+        const errorData = await res.json();
+        setError(errorData.error || 'Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
