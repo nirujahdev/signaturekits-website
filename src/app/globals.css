@@ -254,4 +254,20 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  /* Hotspot Slider Pulse Animation */
+  @keyframes pulse-dot {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    50% {
+      opacity: 0.9;
+      box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+    }
+  }
+
+  .pulse-dot {
+    animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }

@@ -34,6 +34,7 @@ export default function Home() {
       <main className="min-h-screen bg-white">
         <Header />
         <Hero />
+        <IconicKitsHotspotSlider />
         {/* AEO Direct Answer Block */}
         <div className="container mx-auto px-6 py-8">
           <div className="max-w-4xl mx-auto">
