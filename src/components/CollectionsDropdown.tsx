@@ -57,18 +57,15 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
       }
     };
 
-    // Use a small delay to ensure the DOM is ready
     const timeoutId = setTimeout(() => {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
     }, 0);
 
     return () => {
       clearTimeout(timeoutId);
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
 
@@ -78,20 +75,20 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90]"
+        className="fixed inset-0 bg-black/10 z-[90]"
         style={{ top: '80px' }}
         onClick={onClose}
         aria-hidden="true"
       />
       
-      {/* Dropdown Menu */}
+      {/* Dropdown Menu - Smaller, cleaner design */}
       <div
         ref={dropdownRef}
-        className="fixed left-0 w-full bg-white z-[95] border-b border-gray-200 shadow-lg"
+        className="fixed left-0 w-full bg-white z-[95] border-b border-gray-100 shadow-sm"
         style={{ top: '80px' }}
       >
-        <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] py-12 md:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1200px] py-8 md:py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {categories.map((category) => (
               <Link
                 key={category.title}
@@ -99,17 +96,17 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
                 onClick={onClose}
                 className="group block"
               >
-                <div className="relative aspect-[4/5] overflow-hidden bg-[#F5F5F5] rounded-[30px] md:rounded-[40px] mb-4">
+                <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 rounded-2xl md:rounded-3xl mb-3 transition-all duration-300 group-hover:shadow-md">
                   <Image
                     src={category.image}
                     alt={category.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    quality={85}
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                    quality={90}
                   />
                 </div>
-                <p className="text-[16px] md:text-[18px] font-semibold uppercase tracking-[0.05em] text-black text-center">
+                <p className="text-sm md:text-base font-medium text-gray-800 text-center group-hover:text-black transition-colors">
                   {category.title}
                 </p>
               </Link>
@@ -120,7 +117,6 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
     </>
   );
 
-  // Use portal to render outside the header component
   return createPortal(content, document.body);
 }
 

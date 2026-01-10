@@ -6,10 +6,12 @@ import { usePathname } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import { SearchBar } from '@/components/search/SearchBar';
 import { CollectionsDropdown } from '@/components/CollectionsDropdown';
+import { CartSidebar } from '@/components/CartSidebar';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const pathname = usePathname();
   const { itemCount } = useCart();
   
@@ -72,7 +74,11 @@ export default function Header() {
               ))}
             </nav>
             
-            <Link href="/cart" className={`flex items-center gap-1.5 cursor-pointer group transition-all duration-300 ${headerTextColor} relative`}>
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className={`flex items-center gap-1.5 cursor-pointer group transition-all duration-300 ${headerTextColor} relative`}
+              aria-label="Open cart"
+            >
               <svg 
                 width="22" 
                 height="22" 
@@ -93,7 +99,7 @@ export default function Header() {
                   {itemCount}
                 </span>
               )}
-            </Link>
+            </button>
           </div>
       </header>
       
@@ -102,6 +108,12 @@ export default function Header() {
         isOpen={isCollectionsOpen} 
         onClose={() => setIsCollectionsOpen(false)}
         headerTextColor={headerTextColor}
+      />
+      
+      {/* Cart Sidebar */}
+      <CartSidebar
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
       />
     </>
   );
