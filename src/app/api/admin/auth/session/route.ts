@@ -8,7 +8,8 @@ export async function GET(req: NextRequest) {
     const sessionToken = cookieStore.get('admin_session')?.value;
 
     if (!sessionToken) {
-      return NextResponse.json({ authenticated: false }, { status: 401 });
+      // Return 200 with authenticated: false instead of 401 to avoid console errors
+      return NextResponse.json({ authenticated: false, user: null });
     }
 
     // Decode session token
@@ -20,7 +21,7 @@ export async function GET(req: NextRequest) {
       // Check expiration
       if (sessionData.exp < Date.now()) {
         cookieStore.delete('admin_session');
-        return NextResponse.json({ authenticated: false }, { status: 401 });
+        return NextResponse.json({ authenticated: false, user: null });
       }
 
       // Verify user still exists and is active
@@ -34,7 +35,7 @@ export async function GET(req: NextRequest) {
 
       if (!adminUser) {
         cookieStore.delete('admin_session');
-        return NextResponse.json({ authenticated: false }, { status: 401 });
+        return NextResponse.json({ authenticated: false, user: null });
       }
 
       return NextResponse.json({
@@ -43,10 +44,10 @@ export async function GET(req: NextRequest) {
       });
     } catch (error) {
       cookieStore.delete('admin_session');
-      return NextResponse.json({ authenticated: false }, { status: 401 });
+      return NextResponse.json({ authenticated: false, user: null });
     }
   } catch (error) {
-    return NextResponse.json({ authenticated: false }, { status: 401 });
+    return NextResponse.json({ authenticated: false, user: null });
   }
 }
 

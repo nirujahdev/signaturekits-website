@@ -21,13 +21,9 @@ export function useAdminAuth() {
   const checkSession = async () => {
     try {
       const res = await fetch('/api/admin/auth/session');
-      if (res.ok) {
-        const data = await res.json();
-        if (data.authenticated) {
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
+      const data = await res.json();
+      if (data.authenticated && data.user) {
+        setUser(data.user);
       } else {
         setUser(null);
       }
