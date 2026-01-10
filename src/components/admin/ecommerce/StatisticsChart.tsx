@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 import flatpickr from "flatpickr";
 import ChartTab from "../common/ChartTab";
-import { CalenderIcon } from "../../icons";
+import { CalenderIcon } from "@/icons/admin/index";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 

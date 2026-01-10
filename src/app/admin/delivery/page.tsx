@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Button from '@/components/admin/ui/button/Button';
 import Badge from '@/components/admin/ui/badge/Badge';
 import Input from '@/components/admin/form/input/InputField';
-import { BoxIconLine } from '@/icons/admin/index';
 import {
   Table,
   TableBody,

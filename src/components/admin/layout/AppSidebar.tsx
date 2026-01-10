@@ -5,6 +5,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/context/admin/SidebarContext";
 import {
+  BoxIcon,
+  BoxIconLine,
   BoxCubeIcon,
   CalenderIcon,
   ChevronDownIcon,
