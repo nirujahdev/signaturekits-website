@@ -41,9 +41,29 @@ export async function verifyPassword(
   hash: string
 ): Promise<boolean> {
   try {
-    const bcrypt = await import('bcryptjs');
-    return bcrypt.default.compareSync(password, hash);
-  } catch (error) {
+    if (!password || !hash) {
+      console.error('Missing password or hash');
+      return false;
+    }
+
+    // Try bcryptjs first (pure JS, works in serverless)
+    try {
+      const bcryptjs = await import('bcryptjs');
+      const result = bcryptjs.default.compareSync(password, hash);
+      return result;
+    } catch (bcryptjsError: any) {
+      console.error('bcryptjs error:', bcryptjsError);
+      
+      // Fallback to bcrypt if available
+      try {
+        const bcrypt = await import('bcrypt');
+        return await bcrypt.default.compare(password, hash);
+      } catch (bcryptError: any) {
+        console.error('bcrypt error:', bcryptError);
+        throw new Error(`Password verification failed: ${bcryptjsError?.message || bcryptError?.message}`);
+      }
+    }
+  } catch (error: any) {
     console.error('Password verification error:', error);
     throw error;
   }

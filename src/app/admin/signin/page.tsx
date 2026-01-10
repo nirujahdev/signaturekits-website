@@ -29,14 +29,21 @@ export default function AdminSignIn() {
                   body: JSON.stringify({ username, password }),
                 });
 
+                const data = await res.json();
+
                 if (res.ok) {
                   window.location.href = '/admin';
                 } else {
-                  const error = await res.json();
-                  alert(error.error || 'Login failed');
+                  // Show detailed error message
+                  const errorMsg = data.details 
+                    ? `${data.error}\n\nDetails: ${data.details}`
+                    : data.error || 'Login failed';
+                  alert(errorMsg);
+                  console.error('Login error response:', data);
                 }
-              } catch (err) {
-                alert('An error occurred. Please try again.');
+              } catch (err: any) {
+                console.error('Login request error:', err);
+                alert(`Network error: ${err?.message || 'Please check your connection and try again.'}`);
               }
             }}
             className="space-y-6"
