@@ -301,18 +301,20 @@ export default function ProductDetailPage() {
                   <div className="flex items-center border border-[#E5E5E5] px-4 py-4 min-w-[140px] justify-between bg-[#FBFBFB]">
                     <button 
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="text-[#999999] hover:text-black transition-colors"
+                      className="text-[#999999] hover:text-black transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      aria-label="Decrease quantity"
                     >
-                      <Minus className="w-4 h-4" />
+                      <Minus className="w-5 h-5" />
                     </button>
                     <span className="text-[16px] font-semibold text-black">
                       {quantity}
                     </span>
                     <button 
                       onClick={() => setQuantity(quantity + 1)}
-                      className="text-[#999999] hover:text-black transition-colors"
+                      className="text-[#999999] hover:text-black transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      aria-label="Increase quantity"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-5 h-5" />
                     </button>
                   </div>
                   
