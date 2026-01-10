@@ -19,6 +19,10 @@ import { useCart } from '@/contexts/CartContext';
 import { CustomizationForm } from '@/components/product/CustomizationForm';
 import { toast } from 'sonner';
 import gsap from 'gsap';
+import { DirectAnswer } from '@/components/seo/DirectAnswer';
+import { FAQSection } from '@/components/seo/FAQSection';
+import { PRODUCT_FAQ_TEMPLATE } from '@/lib/seo-content';
+import { SEO_CONFIG } from '@/lib/seo-config';
 
 interface ProductVariant {
   id: string;
@@ -326,6 +330,11 @@ export default function ProductDetailPage() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Section */}
+          <section className="mt-[160px]">
+            <FAQSection faqs={PRODUCT_FAQ_TEMPLATE} title="Frequently Asked Questions" />
+          </section>
 
           {/* You May Also Like Section */}
           <section className="mt-[160px]">

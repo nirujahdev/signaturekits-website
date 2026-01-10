@@ -1,51 +1,28 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductList from '@/components/products/ProductList';
 import { productOperations } from '@/lib/vendure-operations';
-import { getCollectionContent, COLLECTION_SLUG_MAP } from '@/lib/seo-content';
+import { getCollectionContent } from '@/lib/seo-content';
 import { DirectAnswer } from '@/components/seo/DirectAnswer';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { BreadcrumbStructuredData } from '@/components/seo/StructuredData';
 import { SEO_CONFIG } from '@/lib/seo-config';
 
-export default function CollectionPage() {
-  const { slug } = useParams();
-  const collectionSlug = slug as string;
+export default function CustomNameNumberPage() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<any[]>([]);
-
-  // Get SEO content
-  const collectionContent = getCollectionContent(collectionSlug);
-  const displaySlug = COLLECTION_SLUG_MAP[collectionSlug] || collectionSlug;
+  const collectionContent = getCollectionContent('custom-name-number');
 
   useEffect(() => {
     loadCollection();
-  }, [collectionSlug]);
+  }, []);
 
   const loadCollection = async () => {
     setLoading(true);
     try {
-      // Map collection slug to facet value
-      const facetMap: Record<string, string> = {
-        'retro': 'retro',
-        'retro-jerseys': 'retro',
-        'clubs': 'club',
-        'club-jerseys': 'club',
-        'countries': 'country',
-        'national-team-jerseys': 'country',
-        'kids': 'kids',
-        'player-version': 'player-version',
-        'special-editions': 'special-editions',
-        'custom-name-number': 'custom-name-number',
-        'sri-lanka-jerseys': 'sri-lanka-jerseys',
-      };
-
-      const facetValue = facetMap[collectionSlug] || collectionSlug;
-
       const result = await productOperations.getProducts({
         take: 50,
         filter: {
@@ -53,7 +30,7 @@ export default function CollectionPage() {
             {
               and: [
                 {
-                  code: { eq: facetValue },
+                  code: { eq: 'custom-name-number' },
                 },
               ],
             },
@@ -71,10 +48,9 @@ export default function CollectionPage() {
     }
   };
 
-  // Breadcrumb items
   const breadcrumbItems = [
     { name: 'Home', url: SEO_CONFIG.BASE_URL },
-    { name: collectionContent?.h1 || collectionSlug, url: `${SEO_CONFIG.BASE_URL}/collections/${displaySlug}` },
+    { name: collectionContent?.h1 || 'Custom Name & Number', url: `${SEO_CONFIG.BASE_URL}/collections/custom-name-number` },
   ];
 
   return (
@@ -83,13 +59,11 @@ export default function CollectionPage() {
       <div className="min-h-screen bg-white">
         <Header />
         <main className="container mx-auto px-6 py-12">
-          {/* H1 and Direct Answer */}
           <div className="mb-12">
             <h1 className="text-5xl font-semibold mb-4">
-              {collectionContent?.h1 || collectionSlug.charAt(0).toUpperCase() + collectionSlug.slice(1)}
+              {collectionContent?.h1 || 'Custom Name & Number'}
             </h1>
             
-            {/* Direct Answer Block */}
             {collectionContent?.directAnswer && (
               <div className="mb-6">
                 <DirectAnswer
@@ -101,7 +75,6 @@ export default function CollectionPage() {
               </div>
             )}
 
-            {/* Intro Text (150-300 words) */}
             {collectionContent?.introText && (
               <div className="prose max-w-3xl mb-8">
                 <p className="text-lg text-gray-600 leading-relaxed">
@@ -111,7 +84,6 @@ export default function CollectionPage() {
             )}
           </div>
 
-          {/* Products Grid */}
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
@@ -123,10 +95,9 @@ export default function CollectionPage() {
               ))}
             </div>
           ) : (
-            <ProductList initialProducts={products} collection={collectionSlug} />
+            <ProductList initialProducts={products} collection="custom-name-number" />
           )}
 
-          {/* FAQ Section */}
           {collectionContent?.faqs && collectionContent.faqs.length > 0 && (
             <FAQSection faqs={collectionContent.faqs} title="Frequently Asked Questions" />
           )}

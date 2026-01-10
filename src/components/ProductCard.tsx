@@ -42,7 +42,7 @@ export default function ProductCard({ id, name, category, price, image }: Produc
         <div className="aspect-[4/5] overflow-hidden bg-[#F5F5F5] relative">
           <Image
             src={image}
-            alt={name}
+            alt={`${name} jersey`}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
