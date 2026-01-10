@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+
+// Force dynamic rendering to prevent RSC prefetching
+export const dynamic = 'force-dynamic';
 import {
   Table,
   TableBody,

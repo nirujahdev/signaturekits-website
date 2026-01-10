@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+
+// Force dynamic rendering to prevent RSC prefetching
+export const dynamic = 'force-dynamic';
 import Button from '@/components/admin/ui/button/Button';
 import Badge from '@/components/admin/ui/badge/Badge';
 import { ListIcon, PlusIcon } from '@/icons/admin/index';
