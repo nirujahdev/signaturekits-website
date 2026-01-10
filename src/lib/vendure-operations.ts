@@ -1,23 +1,8 @@
 /**
- * Vendure Operations
- * High-level functions for common operations
+ * Vendure Operations - STUBBED OUT
+ * Vendure has been removed. These stubs return empty data to prevent errors
+ * while the frontend is being migrated to Supabase.
  */
-import { vendureQuery } from './vendure-client';
-import {
-  GET_PRODUCTS,
-  GET_PRODUCT_BY_SLUG,
-  GET_PRODUCT_BY_ID,
-  GET_ACTIVE_ORDER,
-  ADD_ITEM_TO_ORDER,
-  ADJUST_ORDER_LINE,
-  REMOVE_ORDER_LINE,
-  SET_SHIPPING_ADDRESS,
-  SET_SHIPPING_METHOD,
-  SET_CUSTOM_FIELDS,
-  TRANSITION_TO_ARRANGING_PAYMENT,
-  ADD_PAYMENT_TO_ORDER,
-  GET_ORDER_BY_CODE,
-} from './vendure-queries';
 
 export interface ProductCustomFields {
   patchEnabled?: boolean;
@@ -27,7 +12,7 @@ export interface ProductCustomFields {
 }
 
 /**
- * Product Operations
+ * Product Operations - STUBBED
  */
 export const productOperations = {
   async getProducts(options?: {
@@ -36,24 +21,28 @@ export const productOperations = {
     filter?: any;
     sort?: any;
   }) {
-    return vendureQuery(GET_PRODUCTS, { options: options || { take: 20 } });
+    console.warn('productOperations.getProducts called but Vendure is removed');
+    return { products: { items: [], totalItems: 0 } };
   },
 
   async getProductBySlug(slug: string) {
-    return vendureQuery(GET_PRODUCT_BY_SLUG, { slug });
+    console.warn('productOperations.getProductBySlug called but Vendure is removed');
+    return { product: null };
   },
 
   async getProductById(id: string) {
-    return vendureQuery(GET_PRODUCT_BY_ID, { id });
+    console.warn('productOperations.getProductById called but Vendure is removed');
+    return { product: null };
   },
 };
 
 /**
- * Cart Operations
+ * Cart Operations - STUBBED
  */
 export const cartOperations = {
   async getActiveOrder() {
-    return vendureQuery(GET_ACTIVE_ORDER);
+    // Return null to indicate no active cart
+    return { activeOrder: null };
   },
 
   async addItemToOrder(
@@ -61,24 +50,23 @@ export const cartOperations = {
     quantity: number,
     customFields?: ProductCustomFields
   ) {
-    return vendureQuery(ADD_ITEM_TO_ORDER, {
-      productVariantId,
-      quantity,
-      customFields: customFields || {},
-    });
+    console.warn('cartOperations.addItemToOrder called but Vendure is removed');
+    return { addItemToOrder: { errorCode: 'NOT_IMPLEMENTED', message: 'Cart functionality not yet migrated to Supabase' } };
   },
 
   async adjustOrderLine(orderLineId: string, quantity: number) {
-    return vendureQuery(ADJUST_ORDER_LINE, { orderLineId, quantity });
+    console.warn('cartOperations.adjustOrderLine called but Vendure is removed');
+    return { adjustOrderLine: { errorCode: 'NOT_IMPLEMENTED', message: 'Cart functionality not yet migrated to Supabase' } };
   },
 
   async removeOrderLine(orderLineId: string) {
-    return vendureQuery(REMOVE_ORDER_LINE, { orderLineId });
+    console.warn('cartOperations.removeOrderLine called but Vendure is removed');
+    return { removeOrderLine: { errorCode: 'NOT_IMPLEMENTED', message: 'Cart functionality not yet migrated to Supabase' } };
   },
 };
 
 /**
- * Checkout Operations
+ * Checkout Operations - STUBBED
  */
 export const checkoutOperations = {
   async setShippingAddress(address: {
@@ -91,38 +79,44 @@ export const checkoutOperations = {
     countryCode: string;
     phoneNumber?: string;
   }) {
-    return vendureQuery(SET_SHIPPING_ADDRESS, { input: address });
+    console.warn('checkoutOperations.setShippingAddress called but Vendure is removed');
+    return { setOrderShippingAddress: { errorCode: 'NOT_IMPLEMENTED' } };
   },
 
   async setShippingMethod(shippingMethodId: string[]) {
-    return vendureQuery(SET_SHIPPING_METHOD, { shippingMethodId });
+    console.warn('checkoutOperations.setShippingMethod called but Vendure is removed');
+    return { setOrderShippingMethod: { errorCode: 'NOT_IMPLEMENTED' } };
   },
 
   async setOrderCustomFields(customFields: {
     phoneNumber?: string;
     phoneVerified?: boolean;
   }) {
-    return vendureQuery(SET_CUSTOM_FIELDS, { customFields });
+    console.warn('checkoutOperations.setOrderCustomFields called but Vendure is removed');
+    return { setOrderCustomFields: { errorCode: 'NOT_IMPLEMENTED' } };
   },
 
   async transitionToArrangingPayment() {
-    return vendureQuery(TRANSITION_TO_ARRANGING_PAYMENT);
+    console.warn('checkoutOperations.transitionToArrangingPayment called but Vendure is removed');
+    return { transitionOrderToState: { errorCode: 'NOT_IMPLEMENTED' } };
   },
 
   async addPaymentToOrder(input: {
     method: string;
     metadata?: Record<string, any>;
   }) {
-    return vendureQuery(ADD_PAYMENT_TO_ORDER, { input });
+    console.warn('checkoutOperations.addPaymentToOrder called but Vendure is removed');
+    return { addPaymentToOrder: { errorCode: 'NOT_IMPLEMENTED' } };
   },
 };
 
 /**
- * Order Operations
+ * Order Operations - STUBBED
  */
 export const orderOperations = {
   async getOrderByCode(code: string) {
-    return vendureQuery(GET_ORDER_BY_CODE, { code });
+    console.warn('orderOperations.getOrderByCode called but Vendure is removed');
+    return { orderByCode: null };
   },
 };
 

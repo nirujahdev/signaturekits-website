@@ -62,20 +62,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const refreshCart = useCallback(async () => {
     try {
       const result = await cartOperations.getActiveOrder();
-      if (result?.activeOrder) {
-        setCart({
-          id: result.activeOrder.id,
-          code: result.activeOrder.code,
-          state: result.activeOrder.state,
-          totalWithTax: result.activeOrder.totalWithTax || 0,
-          currencyCode: result.activeOrder.currencyCode || 'LKR',
-          lines: result.activeOrder.lines || [],
-          shippingAddress: result.activeOrder.shippingAddress,
-          customFields: result.activeOrder.customFields,
-        });
-      } else {
-        setCart(null);
-      }
+      // Vendure is removed, so always return null cart for now
+      setCart(null);
     } catch (error) {
       console.error('Error refreshing cart:', error);
       setCart(null);
