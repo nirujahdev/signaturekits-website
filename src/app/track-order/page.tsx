@@ -8,7 +8,7 @@ import { TRACK_ORDER_CONTENT } from '@/lib/seo-content';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { CheckCircle2, Circle, Package, Truck, Home, Clock } from 'lucide-react';
+import { CheckCircle2, Circle, Package, Truck, Home, Clock, X } from 'lucide-react';
 
 type DeliveryStage = 'ORDER_CONFIRMED' | 'SOURCING' | 'ARRIVED' | 'DISPATCHED' | 'DELIVERED';
 
@@ -80,6 +80,11 @@ export default function TrackOrderPage() {
   const [loading, setLoading] = useState(false);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState<string | null>(null);
+  const [cancelSuccess, setCancelSuccess] = useState(false);
+  const [showCancelForm, setShowCancelForm] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,6 +139,68 @@ export default function TrackOrderPage() {
       currency: currency || 'LKR',
       minimumFractionDigits: 0,
     }).format(amount);
+  };
+
+  const canCancelOrder = () => {
+    if (!orderData) return false;
+    
+    const orderDate = new Date(orderData.order.date);
+    const now = new Date();
+    const hoursSinceOrder = (now.getTime() - orderDate.getTime()) / (1000 * 60 * 60);
+    
+    // Can cancel if:
+    // 1. Within 24 hours
+    // 2. Not already dispatched or delivered
+    const isWithin24Hours = hoursSinceOrder <= 24;
+    const isNotDispatched = orderData.deliveryStatus.stage !== 'DISPATCHED' && orderData.deliveryStatus.stage !== 'DELIVERED';
+    
+    return isWithin24Hours && isNotDispatched;
+  };
+
+  const handleCancelOrder = async () => {
+    if (!orderData) return;
+    
+    setCancelling(true);
+    setCancelError(null);
+
+    try {
+      const response = await fetch(`/api/orders/${orderData.order.code}/cancel`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phoneNumber: phoneNumber.trim(),
+          reason: cancelReason.trim() || undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setCancelError(data.error || 'Failed to cancel order');
+        return;
+      }
+
+      setCancelSuccess(true);
+      setShowCancelForm(false);
+      // Refresh order data to show cancelled status
+      setTimeout(() => {
+        handleSubmit(new Event('submit') as any);
+      }, 1000);
+    } catch (err) {
+      setCancelError('Failed to cancel order. Please try again.');
+      console.error('Error:', err);
+    } finally {
+      setCancelling(false);
+    }
+  };
+
+  const hoursSinceOrder = () => {
+    if (!orderData) return 0;
+    const orderDate = new Date(orderData.order.date);
+    const now = new Date();
+    return (now.getTime() - orderDate.getTime()) / (1000 * 60 * 60);
   };
 
   return (
@@ -221,7 +288,19 @@ export default function TrackOrderPage() {
           <div className="space-y-8">
             {/* Order Summary */}
             <div className="bg-gray-50 rounded-lg p-6">
-              <h2 className="text-xl font-semibold mb-4">Order Details</h2>
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-xl font-semibold">Order Details</h2>
+                {canCancelOrder() && !cancelSuccess && (
+                  <Button
+                    onClick={() => setShowCancelForm(true)}
+                    variant="outline"
+                    className="text-red-600 border-red-300 hover:bg-red-50"
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Cancel Order
+                  </Button>
+                )}
+              </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                   <p className="text-sm text-gray-600">Order Code</p>
@@ -244,7 +323,85 @@ export default function TrackOrderPage() {
                   </p>
                 </div>
               </div>
+              
+              {/* Cancellation Notice */}
+              {canCancelOrder() && (
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    <strong>Note:</strong> You can cancel this order within 24 hours of placement. 
+                    {hoursSinceOrder() < 24 && (
+                      <span> You have {Math.floor(24 - hoursSinceOrder())} hours remaining to cancel.</span>
+                    )}
+                  </p>
+                </div>
+              )}
             </div>
+
+            {/* Cancel Order Form */}
+            {showCancelForm && canCancelOrder() && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-red-900 mb-4">Cancel Order</h3>
+                <p className="text-sm text-red-800 mb-4">
+                  Are you sure you want to cancel this order? This action cannot be undone.
+                </p>
+                
+                <div className="mb-4">
+                  <Label htmlFor="cancel-reason" className="text-sm font-medium text-gray-700 mb-2 block">
+                    Reason for cancellation (optional)
+                  </Label>
+                  <Input
+                    id="cancel-reason"
+                    type="text"
+                    placeholder="e.g., Changed my mind, Wrong size, etc."
+                    value={cancelReason}
+                    onChange={(e) => setCancelReason(e.target.value)}
+                    className="h-10"
+                  />
+                </div>
+
+                {cancelError && (
+                  <div className="mb-4 p-3 bg-red-100 border border-red-300 rounded text-sm text-red-800">
+                    {cancelError}
+                  </div>
+                )}
+
+                <div className="flex gap-3">
+                  <Button
+                    onClick={handleCancelOrder}
+                    disabled={cancelling}
+                    className="bg-red-600 hover:bg-red-700 text-white"
+                  >
+                    {cancelling ? 'Cancelling...' : 'Confirm Cancellation'}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setShowCancelForm(false);
+                      setCancelError(null);
+                      setCancelReason('');
+                    }}
+                    variant="outline"
+                    disabled={cancelling}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Cancellation Success */}
+            {cancelSuccess && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-green-600" />
+                  <div>
+                    <h3 className="text-lg font-semibold text-green-900">Order Cancelled</h3>
+                    <p className="text-sm text-green-800 mt-1">
+                      Your order has been successfully cancelled. You will receive a confirmation shortly.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Delivery Status Timeline */}
             <div className="bg-white border border-gray-200 rounded-lg p-8">
