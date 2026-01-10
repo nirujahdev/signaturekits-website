@@ -18,7 +18,7 @@ const Footer = () => {
       links: [
         { name: 'Track Your Order', href: '/orders' },
         { name: 'Contact Us', href: '/contact' },
-        { name: 'Shop', href: '/collections/clubs' },
+        { name: 'Collections', href: '/collections/clubs' },
       ],
     },
   ];

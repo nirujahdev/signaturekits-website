@@ -62,56 +62,55 @@ function SearchContent() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="container mx-auto px-6 py-12">
-        <h1 className="text-4xl font-semibold mb-8">Search Products</h1>
-
-        <form onSubmit={handleSubmit} className="mb-8">
-          <div className="flex gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+      <main className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] pt-[120px] pb-20">
+        {/* Search Header */}
+        <div className="mb-12">
+          <h1 className="text-[40px] md:text-[56px] lg:text-[72px] font-medium leading-[1.1] tracking-[-0.02em] text-black mb-4">
+            Search
+          </h1>
+          <form onSubmit={handleSubmit} className="max-w-2xl">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
               <Input
                 type="text"
                 placeholder="Search jerseys, teams, players..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="pl-10"
+                className="pl-12 pr-4 h-14 text-lg border-2 border-gray-200 rounded-lg focus:border-black focus:ring-0"
+                autoFocus
               />
             </div>
-            <Button type="submit" disabled={loading}>
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Searching...
-                </>
-              ) : (
-                'Search'
-              )}
-            </Button>
-          </div>
-        </form>
+          </form>
+        </div>
 
+        {/* Loading State */}
         {loading && (
-          <div className="text-center py-12">
+          <div className="text-center py-20">
             <Loader2 className="w-8 h-8 animate-spin mx-auto text-gray-400" />
+            <p className="mt-4 text-gray-500">Searching...</p>
           </div>
         )}
 
-        {!loading && query && (
-          <div className="mb-4">
-            <p className="text-gray-600">
-              Found {totalFound} result{totalFound !== 1 ? 's' : ''} for "{query}"
+        {/* Results Count */}
+        {!loading && query && totalFound > 0 && (
+          <div className="mb-8">
+            <p className="text-[16px] text-gray-600">
+              Found {totalFound} result{totalFound !== 1 ? 's' : ''} for <span className="font-semibold text-black">"{query}"</span>
             </p>
           </div>
         )}
 
+        {/* No Results */}
         {!loading && results.length === 0 && query && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No products found. Try a different search term.</p>
+          <div className="text-center py-20">
+            <p className="text-[18px] text-gray-500 mb-2">No products found</p>
+            <p className="text-[14px] text-gray-400">Try a different search term</p>
           </div>
         )}
 
+        {/* Results Grid */}
         {!loading && results.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {results.map((product) => (
               <ProductCard
                 key={product.id}
@@ -125,9 +124,10 @@ function SearchContent() {
           </div>
         )}
 
-        {!query && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">Enter a search term to find jerseys</p>
+        {/* Empty State */}
+        {!query && !loading && (
+          <div className="text-center py-20">
+            <p className="text-[18px] text-gray-500">Enter a search term to find jerseys</p>
           </div>
         )}
       </main>
