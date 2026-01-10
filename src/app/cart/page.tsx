@@ -1,6 +1,5 @@
 'use client';
 
-import { Metadata } from 'next';
 import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
@@ -8,14 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { generatePageMetadata } from '@/lib/generate-metadata';
-
-export const metadata: Metadata = generatePageMetadata({
-  title: 'Shopping Cart | Signature Kits',
-  description: 'Review your cart items',
-  path: '/cart',
-  noIndex: true,
-});
 
 export default function CartPage() {
   const { cart, loading, updateQuantity, removeItem } = useCart();

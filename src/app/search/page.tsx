@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Metadata } from 'next';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductCard from '@/components/ProductCard';
@@ -10,14 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { searchProducts } from '@/lib/typesense-client';
 import { Loader2, Search } from 'lucide-react';
-import { generatePageMetadata } from '@/lib/generate-metadata';
-
-export const metadata: Metadata = generatePageMetadata({
-  title: 'Search | Signature Kits',
-  description: 'Search for football jerseys in Sri Lanka',
-  path: '/search',
-  noIndex: true,
-});
 
 function SearchContent() {
   const searchParams = useSearchParams();
