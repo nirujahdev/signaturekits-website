@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcrypt';
 import { sendSMSViaTextLK, normalizePhoneForTextLK } from '@/lib/textlk-sms';
+import { logSMS, updateSMSLogStatus } from '@/lib/sms-logger';
 import crypto from 'crypto';
 
 /**
@@ -125,9 +126,23 @@ export async function POST(req: NextRequest) {
 
     // Send SMS via Text.lk
     const smsMessage = `Your Signature Kits verification code is: ${otp}. Valid for ${Math.floor(otpTTL / 60)} minutes.`;
+    
+    // Log SMS attempt
+    await logSMS({
+      phone_number: normalizedPhone,
+      message: smsMessage,
+      message_type: 'otp',
+      status: 'pending',
+      related_customer_id: otpRecord.vendure_customer_id || undefined,
+    });
+
     const smsResult = await sendSMSViaTextLK(normalizedPhone, smsMessage);
 
     if (!smsResult.success) {
+      // Update log with failure
+      if (smsResult.uid) {
+        await updateSMSLogStatus(smsResult.uid, 'failed', smsResult.error);
+      }
       // Delete the OTP record if SMS failed
       await supabase.from('otp_sessions').delete().eq('id', otpRecord.id);
       
@@ -138,6 +153,11 @@ export async function POST(req: NextRequest) {
         },
         { status: 500 }
       );
+    }
+
+    // Update log with success
+    if (smsResult.uid) {
+      await updateSMSLogStatus(smsResult.uid, 'sent');
     }
 
     // Mask phone number for response

@@ -340,7 +340,7 @@ export default function ProductDetailPage() {
                       PAYMENT
                     </AccordionTrigger>
                     <AccordionContent className="text-[15px] leading-[1.7] text-[#666666] pb-6">
-                      Secure checkout with PayHere or Cash on Delivery (COD). COD requires SMS verification.
+                      Cash on Delivery (COD) available. SMS verification required.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>

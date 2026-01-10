@@ -61,6 +61,31 @@ const navItems: NavItem[] = [
   },
   {
     icon: <PieChartIcon />,
+    name: "Analytics",
+    path: "/admin/analytics",
+  },
+  {
+    icon: <PlugInIcon />,
+    name: "Discount Codes",
+    path: "/admin/discount-codes",
+  },
+  {
+    icon: <TableIcon />,
+    name: "SMS Logs",
+    path: "/admin/sms-logs",
+  },
+  {
+    icon: <PageIcon />,
+    name: "Typesense",
+    path: "/admin/typesense",
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "Wishlists",
+    path: "/admin/wishlists",
+  },
+  {
+    icon: <PieChartIcon />,
     name: "Reports",
     path: "/admin/reports",
   },

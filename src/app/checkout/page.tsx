@@ -34,8 +34,8 @@ export default function CheckoutPage() {
     phoneNumber: '',
   });
 
-  // Payment method
-  const [paymentMethod, setPaymentMethod] = useState<'payhere' | 'cod'>('payhere');
+  // Payment method (COD only)
+  const [paymentMethod, setPaymentMethod] = useState<'cod'>('cod');
   const [phoneVerified, setPhoneVerifiedState] = useState(false);
   const [verifiedPhone, setVerifiedPhone] = useState('');
   const [sessionId, setSessionId] = useState('');

@@ -3,6 +3,8 @@
  * Official API v3 for sending SMS OTP
  */
 
+import { logSMS, updateSMSLogStatus } from './sms-logger';
+
 interface TextLKSendSMSRequest {
   recipient: string; // Format: 947xxxxxxxx (Sri Lanka)
   sender_id: string;
@@ -67,6 +69,14 @@ export async function sendSMSViaTextLK(
     };
   }
 
+  // Log SMS attempt
+  await logSMS({
+    phone_number: normalizedPhone,
+    message,
+    message_type: 'custom',
+    status: 'pending',
+  });
+
   try {
     const response = await fetch(`${baseUrl}/api/v3/sms/send`, {
       method: 'POST',
@@ -85,10 +95,19 @@ export async function sendSMSViaTextLK(
     const data = await response.json();
 
     if (!response.ok) {
+      // Update log with failure
+      if (data.uid) {
+        await updateSMSLogStatus(data.uid, 'failed', data.error || data.message);
+      }
       return {
         success: false,
         error: data.error || data.message || 'Failed to send SMS',
       };
+    }
+
+    // Update log with success
+    if (data.uid) {
+      await updateSMSLogStatus(data.uid, 'sent');
     }
 
     return {
