@@ -18,8 +18,16 @@ export async function POST(req: NextRequest) {
       supabase = getAdminSupabaseClient();
     } catch (supabaseError: any) {
       console.error('Supabase client error:', supabaseError);
+      const errorMessage = supabaseError?.message || 'Unknown error';
+      const isEnvMissing = errorMessage.includes('Missing Supabase');
+      
       return NextResponse.json(
-        { error: 'Database connection failed', details: supabaseError?.message },
+        { 
+          error: isEnvMissing 
+            ? 'Server configuration error: Missing Supabase credentials. Please check Vercel environment variables (SUPABASE_SERVICE_ROLE_KEY).'
+            : 'Database connection failed',
+          details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+        },
         { status: 500 }
       );
     }
