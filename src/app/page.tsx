@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Header from "@/components/sections/header";
 import Hero from "@/components/sections/hero";
+import IconicKitsHotspotSlider from "@/components/IconicKitsHotspotSlider";
 import EverydayEssentials from "@/components/sections/everyday-essentials";
 import ProvenFavorites from "@/components/sections/proven-favorites";
 import StyleItYourWay from "@/components/sections/style-it-your-way";
