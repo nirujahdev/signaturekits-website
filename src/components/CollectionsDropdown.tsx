@@ -73,22 +73,26 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
 
   const content = (
     <>
-      {/* Backdrop */}
+      {/* Backdrop with smooth fade */}
       <div 
-        className="fixed inset-0 bg-black/10 z-[90]"
+        className={`fixed inset-0 bg-black/5 z-[90] transition-opacity duration-300 ${
+          isOpen ? 'opacity-100' : 'opacity-0'
+        }`}
         style={{ top: '80px' }}
         onClick={onClose}
         aria-hidden="true"
       />
       
-      {/* Dropdown Menu - Smaller, cleaner design */}
+      {/* Dropdown Menu - Smooth, clean design */}
       <div
         ref={dropdownRef}
-        className="fixed left-0 w-full bg-white z-[95] border-b border-gray-100 shadow-sm"
+        className={`fixed left-0 w-full bg-white z-[95] border-b border-gray-100 transition-all duration-300 ease-out ${
+          isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+        }`}
         style={{ top: '80px' }}
       >
         <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1200px] py-8 md:py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {categories.map((category) => (
               <Link
                 key={category.title}
@@ -96,17 +100,17 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
                 onClick={onClose}
                 className="group block"
               >
-                <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 rounded-2xl md:rounded-3xl mb-3 transition-all duration-300 group-hover:shadow-md">
+                <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 rounded-lg mb-3 transition-all duration-300 ease-out group-hover:shadow-lg group-hover:scale-[1.02]">
                   <Image
                     src={category.image}
                     alt={category.title}
                     fill
                     sizes="(max-width: 768px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                     quality={90}
                   />
                 </div>
-                <p className="text-sm md:text-base font-medium text-gray-800 text-center group-hover:text-black transition-colors">
+                <p className="text-sm md:text-base font-medium text-gray-700 text-center group-hover:text-black transition-colors duration-200">
                   {category.title}
                 </p>
               </Link>

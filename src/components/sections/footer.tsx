@@ -1,24 +1,25 @@
 import React from 'react';
 import Link from 'next/link';
+import { Instagram } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = [
     {
-      title: 'Policies',
+      title: 'For You',
       links: [
-        { name: 'Shipping Policy', href: '/policies#shipping' },
-        { name: 'Privacy Policy', href: '/policies#privacy' },
-        { name: 'Terms and Conditions', href: '/policies#terms' },
+        { name: 'Track Your Order', href: '/track-order' },
+        { name: 'Size chart', href: '/size-guide' },
+        { name: 'Policies', href: '/policies' },
       ],
     },
     {
-      title: 'For You',
+      title: 'store',
       links: [
-        { name: 'Track Your Order', href: '/orders' },
-        { name: 'Contact Us', href: '/contact' },
-        { name: 'Collections', href: '/collections/clubs' },
+        { name: 'collections', href: '/collections/club-jerseys' },
+        { name: 'about', href: '/about' },
+        { name: 'contact', href: '/contact-us' },
       ],
     },
   ];
@@ -56,6 +57,19 @@ const Footer = () => {
                 </ul>
               </div>
             ))}
+          </div>
+
+          {/* Instagram Icon */}
+          <div className="flex items-center justify-end mt-8 lg:mt-0">
+            <a
+              href="https://instagram.com/signaturekits.lk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#999999] hover:text-black transition-colors"
+              aria-label="Instagram"
+            >
+              <Instagram className="w-6 h-6" />
+            </a>
           </div>
         </div>
 

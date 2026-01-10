@@ -7,6 +7,7 @@ import { useCart } from '@/contexts/CartContext';
 import { SearchBar } from '@/components/search/SearchBar';
 import { CollectionsDropdown } from '@/components/CollectionsDropdown';
 import { CartSidebar } from '@/components/CartSidebar';
+import { Instagram } from 'lucide-react';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,7 +28,7 @@ export default function Header() {
   const isHomePage = pathname === '/';
   const navItems = [
     { name: 'About', href: '/about' },
-    { name: 'Policies', href: '/policies' },
+    { name: 'Contact', href: '/contact-us' },
   ];
 
   // Force black text on subpages, transition on homepage
@@ -72,6 +73,17 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Instagram Icon */}
+              <a
+                href="https://instagram.com/signaturekits.lk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${headerTextColor} transition-colors duration-500 hover:opacity-70`}
+                aria-label="Instagram"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
             </nav>
             
             <button

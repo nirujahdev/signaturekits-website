@@ -31,7 +31,7 @@ export function SearchBar() {
         placeholder="Search jerseys..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="pl-10 pr-4 border-0 border-b-2 border-transparent bg-transparent focus:border-current focus:outline-none focus:ring-0 rounded-none w-full"
+        className="pl-10 pr-4 border-0 bg-transparent focus:outline-none focus:ring-0 rounded-none w-full"
       />
     </form>
   );
