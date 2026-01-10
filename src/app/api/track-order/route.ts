@@ -16,13 +16,20 @@ export async function POST(req: NextRequest) {
     const supabase = getAdminSupabaseClient();
 
     // Normalize phone number (remove spaces, ensure 947 format)
-    const normalizedPhone = phoneNumber.replace(/\s+/g, '').replace(/^0/, '94');
+    const normalizedPhone = phoneNumber.replace(/\s+/g, '').replace(/^\+94/, '94').replace(/^0/, '94');
 
-    // First, verify the order exists and phone number matches
+    // First, verify the order exists and get customer info
     const { data: orderSummary, error: orderError } = await supabase
       .from('customer_orders_summary')
-      .select('order_code, customer_id, order_date, total_with_tax, currency_code')
-      .eq('order_code', orderCode.toUpperCase())
+      .select(`
+        order_code,
+        customer_id,
+        order_date,
+        total_with_tax,
+        currency_code,
+        customers!inner(phone_number)
+      `)
+      .eq('order_code', orderCode.toUpperCase().trim())
       .single();
 
     if (orderError || !orderSummary) {
@@ -32,23 +39,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Get customer to verify phone number
-    const { data: customer, error: customerError } = await supabase
-      .from('customers')
-      .select('id, phone_number')
-      .eq('id', orderSummary.customer_id)
-      .single();
-
-    if (customerError || !customer) {
+    // Get customer phone number from the joined data
+    const customer = (orderSummary as any).customers;
+    if (!customer) {
       return NextResponse.json(
-        { error: 'Customer not found' },
+        { error: 'Customer not found for this order' },
         { status: 404 }
       );
     }
 
     // Verify phone number matches (normalize both for comparison)
-    const customerPhoneNormalized = customer.phone_number?.replace(/\s+/g, '').replace(/^0/, '94') || '';
-    if (customerPhoneNormalized !== normalizedPhone) {
+    const customerPhoneNormalized = customer.phone_number?.replace(/\s+/g, '').replace(/^\+94/, '94').replace(/^0/, '94') || '';
+    const inputPhoneNormalized = normalizedPhone.replace(/^\+94/, '94').replace(/^0/, '94');
+    
+    if (customerPhoneNormalized !== inputPhoneNormalized) {
       return NextResponse.json(
         { error: 'Phone number does not match this order' },
         { status: 403 }
@@ -69,11 +73,24 @@ export async function POST(req: NextRequest) {
       .eq('order_code', orderCode.toUpperCase())
       .order('updated_at', { ascending: true });
 
-    // Get order items
-    const { data: orderItems, error: itemsError } = await supabase
-      .from('customer_order_items')
-      .select('product_name, variant_name, quantity, unit_price_with_tax')
-      .eq('order_summary_id', orderSummary.id);
+    // Get order items - need to get order_summary_id first
+    const { data: orderSummaryFull, error: summaryError } = await supabase
+      .from('customer_orders_summary')
+      .select('id')
+      .eq('order_code', orderCode.toUpperCase().trim())
+      .single();
+
+    let orderItems: any[] = [];
+    if (!summaryError && orderSummaryFull) {
+      const { data: items, error: itemsError } = await supabase
+        .from('customer_order_items')
+        .select('product_name, variant_name, quantity, unit_price_with_tax')
+        .eq('order_summary_id', orderSummaryFull.id);
+      
+      if (!itemsError && items) {
+        orderItems = items;
+      }
+    }
 
     return NextResponse.json({
       order: {
