@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { CheckCircle2, Circle, Package, Truck, Home, Clock, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 type DeliveryStage = 'ORDER_CONFIRMED' | 'SOURCING' | 'ARRIVED' | 'DISPATCHED' | 'DELIVERED';
 
@@ -366,24 +367,24 @@ export default function TrackOrderPage() {
                 )}
 
                 <div className="flex gap-3">
-                  <Button
+                  <button
                     onClick={handleCancelOrder}
                     disabled={cancelling}
-                    className="bg-red-600 hover:bg-red-700 text-white"
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {cancelling ? 'Cancelling...' : 'Confirm Cancellation'}
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     onClick={() => {
                       setShowCancelForm(false);
                       setCancelError(null);
                       setCancelReason('');
                     }}
-                    variant="outline"
                     disabled={cancelling}
+                    className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Cancel
-                  </Button>
+                  </button>
                 </div>
               </div>
             )}
