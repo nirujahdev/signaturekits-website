@@ -3,10 +3,15 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { CartProvider } from "@/contexts/CartContext";
 import { Toaster } from "sonner";
+import { HOMEPAGE_CONTENT } from '@/lib/seo-content';
 
 export const metadata: Metadata = {
-  title: "Signature Kits - Premium Jersey Pre-Order",
-  description: "Shop premium jerseys with customization options",
+  title: HOMEPAGE_CONTENT.title,
+  description: HOMEPAGE_CONTENT.description,
+  icons: {
+    icon: '/assests/ChatGPT Image Jan 10, 2026, 06_31_49 PM.png',
+    apple: '/assests/ChatGPT Image Jan 10, 2026, 06_31_49 PM.png',
+  },
 };
 
 export default function RootLayout({
