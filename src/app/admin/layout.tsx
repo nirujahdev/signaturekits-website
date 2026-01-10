@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { SidebarProvider } from "@/context/admin/SidebarContext";
 import { ThemeProvider } from "@/context/admin/ThemeContext";
 import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
@@ -15,6 +16,14 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isSignInPage = pathname === '/admin/signin';
+
+  // Don't wrap signin page with admin layout components
+  if (isSignInPage) {
+    return <>{children}</>;
+  }
+
   return (
     <ThemeProvider>
       <SidebarProvider>
