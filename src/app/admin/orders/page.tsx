@@ -12,7 +12,7 @@ import {
 import Badge from '@/components/admin/ui/badge/Badge';
 import Input from '@/components/admin/form/input/InputField';
 import Button from '@/components/admin/ui/button/Button';
-import { BoxIcon, EyeIcon } from '@/icons/admin/index';
+import { BoxIcon, EyeIcon, DownloadIcon } from '@/icons/admin/index';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -26,7 +26,7 @@ export default function OrdersPage() {
     fetchOrders();
   }, [page, search, statusFilter]);
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (retryCount = 0) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
@@ -35,14 +35,34 @@ export default function OrdersPage() {
         ...(search && { search }),
         ...(statusFilter && { status: statusFilter }),
       });
-      const res = await fetch(`/api/admin/orders?${params}`);
+      const res = await fetch(`/api/admin/orders?${params}`, {
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
       if (res.ok) {
         const data = await res.json();
         setOrders(data.orders || []);
         setTotalPages(data.pagination?.totalPages || 1);
+      } else if (res.status === 404 && retryCount < 2) {
+        // Retry on 404 with a small delay
+        setTimeout(() => fetchOrders(retryCount + 1), 1000);
+        return;
+      } else {
+        console.error('Failed to fetch orders:', res.status, res.statusText);
+        setOrders([]);
+        setTotalPages(1);
       }
     } catch (error) {
       console.error('Failed to fetch orders:', error);
+      if (retryCount < 2) {
+        setTimeout(() => fetchOrders(retryCount + 1), 1000);
+        return;
+      }
+      setOrders([]);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }
@@ -67,10 +87,10 @@ export default function OrdersPage() {
         </p>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1">
           <Input
-            placeholder="Search orders..."
+            placeholder="Search orders by code..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -84,7 +104,7 @@ export default function OrdersPage() {
             setStatusFilter(e.target.value);
             setPage(1);
           }}
-          className="h-11 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+          className="h-11 w-full md:w-48 rounded-lg border border-gray-300 px-4 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
         >
           <option value="">All Status</option>
           <option value="PaymentAuthorized">Authorized</option>
@@ -92,11 +112,49 @@ export default function OrdersPage() {
           <option value="Fulfilled">Fulfilled</option>
           <option value="Cancelled">Cancelled</option>
         </select>
+        <Button
+          onClick={async () => {
+            try {
+              const params = new URLSearchParams({
+                ...(search && { search }),
+                ...(statusFilter && { status: statusFilter }),
+              });
+              const res = await fetch(`/api/admin/reports/sales?${params}&format=csv`);
+              const blob = await res.blob();
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `orders-export-${Date.now()}.csv`;
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+            } catch (error) {
+              console.error('Export failed:', error);
+            }
+          }}
+          variant="outline"
+          startIcon={<DownloadIcon className="w-4 h-4" />}
+        >
+          Export CSV
+        </Button>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
         {loading ? (
-          <div className="p-8 text-center text-gray-500">Loading...</div>
+          <div className="p-8">
+            <div className="animate-pulse space-y-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex gap-4">
+                  <div className="h-12 bg-gray-200 rounded dark:bg-gray-800 flex-1" />
+                  <div className="h-12 bg-gray-200 rounded dark:bg-gray-800 flex-1" />
+                  <div className="h-12 bg-gray-200 rounded dark:bg-gray-800 flex-1" />
+                  <div className="h-12 bg-gray-200 rounded dark:bg-gray-800 flex-1" />
+                  <div className="h-12 bg-gray-200 rounded dark:bg-gray-800 flex-1" />
+                </div>
+              ))}
+            </div>
+          </div>
         ) : orders.length === 0 ? (
           <div className="p-8 text-center text-gray-500">No orders found</div>
         ) : (

@@ -23,16 +23,33 @@ export default function BatchesPage() {
     fetchBatches();
   }, []);
 
-  const fetchBatches = async () => {
+  const fetchBatches = async (retryCount = 0) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/batches');
+      const res = await fetch('/api/admin/batches', {
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
       if (res.ok) {
         const data = await res.json();
         setBatches(data.batches || []);
+      } else if (res.status === 404 && retryCount < 2) {
+        setTimeout(() => fetchBatches(retryCount + 1), 1000);
+        return;
+      } else {
+        console.error('Failed to fetch batches:', res.status);
+        setBatches([]);
       }
     } catch (error) {
       console.error('Failed to fetch batches:', error);
+      if (retryCount < 2) {
+        setTimeout(() => fetchBatches(retryCount + 1), 1000);
+        return;
+      }
+      setBatches([]);
     } finally {
       setLoading(false);
     }

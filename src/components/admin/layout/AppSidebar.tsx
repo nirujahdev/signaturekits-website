@@ -54,6 +54,11 @@ const navItems: NavItem[] = [
     name: "Delivery Tracking",
     path: "/admin/delivery",
   },
+  {
+    icon: <PieChartIcon />,
+    name: "Reports",
+    path: "/admin/reports",
+  },
 ];
 
 const othersItems: NavItem[] = [];

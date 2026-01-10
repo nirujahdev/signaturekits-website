@@ -35,18 +35,35 @@ export default function DeliveryPage() {
     fetchDeliveries();
   }, [stageFilter]);
 
-  const fetchDeliveries = async () => {
+  const fetchDeliveries = async (retryCount = 0) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
       if (stageFilter) params.set('stage', stageFilter);
-      const res = await fetch(`/api/admin/delivery?${params}`);
+      const res = await fetch(`/api/admin/delivery?${params}`, {
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
       if (res.ok) {
         const data = await res.json();
         setDeliveries(data.deliveries || []);
+      } else if (res.status === 404 && retryCount < 2) {
+        setTimeout(() => fetchDeliveries(retryCount + 1), 1000);
+        return;
+      } else {
+        console.error('Failed to fetch deliveries:', res.status);
+        setDeliveries([]);
       }
     } catch (error) {
       console.error('Failed to fetch deliveries:', error);
+      if (retryCount < 2) {
+        setTimeout(() => fetchDeliveries(retryCount + 1), 1000);
+        return;
+      }
+      setDeliveries([]);
     } finally {
       setLoading(false);
     }
