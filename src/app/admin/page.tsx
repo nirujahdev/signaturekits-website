@@ -29,7 +29,12 @@ export default function AdminDashboard() {
     todayRevenue: 0,
     statusBreakdown: {} as Record<string, number>,
   });
-  const [analytics, setAnalytics] = useState<any>(null);
+  const [analytics, setAnalytics] = useState<{
+    revenueTrends?: Array<any>;
+    statusBreakdown?: Array<any>;
+    customerGrowth?: Array<any>;
+    topProducts?: Array<any>;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
 
@@ -82,10 +87,29 @@ export default function AdminDashboard() {
       const res = await fetch(`/api/admin/dashboard/analytics?period=${period}`);
       if (res.ok) {
         const data = await res.json();
-        setAnalytics(data);
+        // Ensure all data is in the correct format
+        setAnalytics({
+          revenueTrends: Array.isArray(data.revenueTrends) ? data.revenueTrends : [],
+          statusBreakdown: Array.isArray(data.statusBreakdown) ? data.statusBreakdown : [],
+          customerGrowth: Array.isArray(data.customerGrowth) ? data.customerGrowth : [],
+          topProducts: Array.isArray(data.topProducts) ? data.topProducts : [],
+        });
+      } else {
+        setAnalytics({
+          revenueTrends: [],
+          statusBreakdown: [],
+          customerGrowth: [],
+          topProducts: [],
+        });
       }
     } catch (error) {
       console.error('Failed to fetch analytics:', error);
+      setAnalytics({
+        revenueTrends: [],
+        statusBreakdown: [],
+        customerGrowth: [],
+        topProducts: [],
+      });
     } finally {
       setAnalyticsLoading(false);
     }
@@ -166,7 +190,7 @@ export default function AdminDashboard() {
             Revenue Trends
           </h2>
           <RevenueChart
-            data={Array.isArray(analytics?.revenueTrends) ? analytics.revenueTrends : []}
+            data={analytics?.revenueTrends || []}
             loading={analyticsLoading}
           />
         </div>
@@ -176,7 +200,7 @@ export default function AdminDashboard() {
             Order Status Distribution
           </h2>
           <OrderStatusChart
-            data={Array.isArray(analytics?.statusBreakdown) ? analytics.statusBreakdown : []}
+            data={analytics?.statusBreakdown || []}
             loading={analyticsLoading}
           />
         </div>
@@ -186,7 +210,7 @@ export default function AdminDashboard() {
             Customer Growth
           </h2>
           <CustomerGrowthChart
-            data={Array.isArray(analytics?.customerGrowth) ? analytics.customerGrowth : []}
+            data={analytics?.customerGrowth || []}
             loading={analyticsLoading}
           />
         </div>
@@ -196,7 +220,7 @@ export default function AdminDashboard() {
             Top Products
           </h2>
           <TopProductsTable
-            data={Array.isArray(analytics?.topProducts) ? analytics.topProducts : []}
+            data={analytics?.topProducts || []}
             loading={analyticsLoading}
           />
         </div>
