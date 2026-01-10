@@ -36,40 +36,42 @@ const Footer = () => {
             </h2>
           </div>
 
-          {/* Structured Link Columns */}
-          <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px]">
-            {footerLinks.map((section) => (
-              <div key={section.title} className="flex flex-col space-y-[24px]">
-                <h3 className="text-[20px] font-semibold text-black tracking-tight">
-                  {section.title}
-                </h3>
-                <ul className="flex flex-col space-y-[12px]">
-                  {section.links.map((link) => (
-                    <li key={link.name}>
-                      <Link
-                        href={link.href}
-                        className="text-[18px] font-medium text-[#999999] hover:text-black transition-colors"
-                      >
-                        {link.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          {/* Structured Link Columns and Instagram */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-12">
+            <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px]">
+              {footerLinks.map((section) => (
+                <div key={section.title} className="flex flex-col space-y-[24px]">
+                  <h3 className="text-[20px] font-semibold text-black tracking-tight">
+                    {section.title}
+                  </h3>
+                  <ul className="flex flex-col space-y-[12px]">
+                    {section.links.map((link) => (
+                      <li key={link.name}>
+                        <Link
+                          href={link.href}
+                          className="text-[18px] font-medium text-[#999999] hover:text-black transition-colors"
+                        >
+                          {link.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
 
-          {/* Instagram Icon */}
-          <div className="flex items-center justify-end mt-8 lg:mt-0">
-            <a
-              href="https://instagram.com/signaturekits.lk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#999999] hover:text-black transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-6 h-6" />
-            </a>
+            {/* Instagram Icon */}
+            <div className="flex items-center mt-8 lg:mt-0">
+              <a
+                href="https://instagram.com/signaturekits.lk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#999999] hover:text-black transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-6 h-6" />
+              </a>
+            </div>
           </div>
         </div>
 
