@@ -2,16 +2,12 @@ import { Metadata } from 'next';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import { generatePageMetadata } from '@/lib/generate-metadata';
-import { DELIVERY_POLICY_CONTENT } from '@/lib/seo-content';
-import { DirectAnswer } from '@/components/seo/DirectAnswer';
-import { FAQSection } from '@/components/seo/FAQSection';
-import { FAQStructuredData } from '@/components/seo/StructuredData';
 import { BreadcrumbStructuredData } from '@/components/seo/StructuredData';
 import { SEO_CONFIG } from '@/lib/seo-config';
 
 export const metadata: Metadata = generatePageMetadata({
-  title: DELIVERY_POLICY_CONTENT.title,
-  description: DELIVERY_POLICY_CONTENT.description,
+  title: 'Delivery Policy | Shipping, ETA & Tracking – Signature Kits',
+  description: 'Delivery policy for Signature Kits: shipping timelines, pre-orders, tracking, failed delivery handling, and support.',
   path: '/policies/delivery',
 });
 

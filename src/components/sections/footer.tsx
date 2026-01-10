@@ -11,7 +11,7 @@ const Footer = () => {
       links: [
         { name: 'Track Your Order', href: '/track-order' },
         { name: 'Size chart', href: '/size-guide' },
-        { name: 'Policies', href: '/policies' },
+        { name: 'Policies', href: '/policies/shipping' },
       ],
     },
     {
