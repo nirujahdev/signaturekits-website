@@ -84,7 +84,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[100vh] min-h-[600px] flex items-end bg-white"
+      className="relative w-full h-[100vh] min-h-[500px] md:min-h-[600px] flex items-end bg-white"
     >
       {/* Background Image Wrapper */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
@@ -107,14 +107,14 @@ export default function Hero() {
       </div>
 
       {/* Hero Content Container */}
-      <div className="container relative z-10 w-full flex flex-col md:flex-row items-end justify-between pb-12 md:pb-20 text-white">
+      <div className="container relative z-10 w-full flex flex-col md:flex-row items-end justify-between pb-8 md:pb-12 lg:pb-20 text-white px-4 md:px-6">
         {/* Large Left Branding */}
-        <div className="w-full md:w-auto mb-10 md:mb-0 md:mr-auto">
+        <div className="w-full md:w-auto mb-6 md:mb-0 md:mr-auto">
           <h1
             ref={headlineRef}
-            className="font-display font-semibold select-none leading-[0.8] mix-blend-difference"
+            className="font-display font-semibold select-none leading-[0.85] md:leading-[0.8] mix-blend-difference"
             style={{
-              fontSize: "clamp(64px, 12vw, 140px)",
+              fontSize: "clamp(48px, 10vw, 140px)",
               letterSpacing: "-0.04em",
               color: "#FFFFFF",
             }}
@@ -127,9 +127,9 @@ export default function Hero() {
         <div className="w-full md:w-auto md:max-w-xs text-left md:text-right md:ml-auto">
           <p
             ref={subheadlineRef}
-            className="font-sans font-normal leading-[1.2]"
+            className="font-sans font-normal leading-[1.3] md:leading-[1.2]"
             style={{
-              fontSize: "clamp(24px, 3vw, 32px)",
+              fontSize: "clamp(18px, 4vw, 32px)",
               letterSpacing: "-0.02em",
               color: "#FFFFFF",
             }}

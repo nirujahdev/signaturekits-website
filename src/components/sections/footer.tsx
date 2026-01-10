@@ -25,13 +25,13 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="w-full bg-white pt-[160px] pb-[40px]">
+    <footer className="w-full bg-white pt-[80px] md:pt-[120px] lg:pt-[160px] pb-[40px]">
       <div className="container mx-auto px-6 md:px-[60px]">
         {/* Top Section with Logo and Links */}
-        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-[120px]">
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-[60px] md:mb-[80px] lg:mb-[120px]">
           {/* Large Typographic Brand Signature - Smaller Size */}
-          <div className="mb-[64px] lg:mb-0">
-            <h2 className="text-[60px] lg:text-[120px] font-semibold tracking-[-0.05em] leading-[0.8] text-black whitespace-nowrap">
+          <div className="mb-[48px] md:mb-[64px] lg:mb-0">
+            <h2 className="text-[48px] md:text-[60px] lg:text-[120px] font-semibold tracking-[-0.05em] leading-[0.8] text-black whitespace-nowrap">
               Signature Kits
             </h2>
           </div>
@@ -49,7 +49,7 @@ const Footer = () => {
                       <li key={link.name}>
                         <Link
                           href={link.href}
-                          className="text-[18px] font-medium text-[#999999] hover:text-black transition-colors"
+                          className="text-[16px] md:text-[18px] font-medium text-[#999999] hover:text-black transition-colors min-h-[44px] flex items-center"
                         >
                           {link.name}
                         </Link>

@@ -247,9 +247,9 @@ function HotspotDot({
     <button
       type="button"
       data-hotspot-dot
-      className={`absolute w-3.5 h-3.5 rounded-full bg-white border-2 border-white shadow-lg transition-all duration-300 z-10 ${
+      className={`absolute w-4 h-4 md:w-3.5 md:h-3.5 rounded-full bg-white border-2 border-white shadow-lg transition-all duration-300 z-10 ${
         isActive ? 'scale-125' : 'scale-100 hover:scale-110'
-      } pulse-dot`}
+      } pulse-dot min-w-[44px] min-h-[44px] flex items-center justify-center`}
       style={{
         left: `${hotspot.xPct}%`,
         top: `${hotspot.yPct}%`,
@@ -523,7 +523,7 @@ export default function IconicKitsHotspotSlider() {
   const currentSlide = SLIDES[selectedIndex];
 
   return (
-    <section className="relative w-full h-[70vh] md:h-[70vh] overflow-hidden bg-gray-900">
+    <section className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden bg-gray-900">
 
       {/* Carousel */}
       <div className="embla relative w-full h-full" ref={emblaRef}>
@@ -552,18 +552,18 @@ export default function IconicKitsHotspotSlider() {
                 </div>
 
                 {/* Left Overlay Text */}
-                <div className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 z-20 max-w-md">
+                <div className="absolute left-4 md:left-8 lg:left-16 top-1/2 -translate-y-1/2 z-20 max-w-md px-4 md:px-0">
                   {slide.headline && (
-                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-2">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-2">
                       {slide.headline}
                     </h2>
                   )}
                   {slide.subtext && (
-                    <p className="text-xl md:text-2xl text-gray-200 mb-6">{slide.subtext}</p>
+                    <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-4 md:mb-6">{slide.subtext}</p>
                   )}
                   <Button
                     asChild
-                    className="bg-white text-black hover:bg-gray-100"
+                    className="bg-white text-black hover:bg-gray-100 min-h-[44px] text-sm md:text-base"
                     size="lg"
                   >
                     <Link href="/collections/clubs">Shop Now</Link>
@@ -622,7 +622,7 @@ export default function IconicKitsHotspotSlider() {
         {/* Navigation Arrows */}
         <button
           type="button"
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center transition-all"
+          className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-10 md:h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center transition-all min-w-[44px] min-h-[44px]"
           onClick={scrollPrev}
           aria-label="Previous slide"
         >
@@ -630,7 +630,7 @@ export default function IconicKitsHotspotSlider() {
         </button>
         <button
           type="button"
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center transition-all"
+          className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-10 md:h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center transition-all min-w-[44px] min-h-[44px]"
           onClick={scrollNext}
           aria-label="Next slide"
         >

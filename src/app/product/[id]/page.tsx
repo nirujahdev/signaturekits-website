@@ -210,9 +210,9 @@ export default function ProductDetailPage() {
               ))}
             </div>
 
-            {/* Right side: Product Info */}
-            <div ref={infoRef} className="lg:w-[480px]">
-              <div className="sticky top-[140px]">
+                {/* Right side: Product Info */}
+                <div ref={infoRef} className="lg:w-[480px]">
+                  <div className="sticky top-[100px] md:top-[140px]">
                 <h1 className="text-[44px] font-semibold tracking-[-0.03em] leading-[1.05] text-black mb-6">
                   {product.name}
                 </h1>
@@ -256,37 +256,37 @@ export default function ProductDetailPage() {
                   <SizeHelper mode="auto" />
                 </div>
 
-                {/* Size Selector */}
-                <div className="mb-12">
-                  <div className="flex items-center gap-1 mb-4">
-                    <span className="text-[14px] text-[#999999] font-medium uppercase tracking-tight">Size</span>
-                    {selectedVariant && (
-                      <span className="text-[14px] text-black font-semibold ml-1">{selectedVariant.name}</span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-6 flex-wrap">
-                    {sizeOptions.map((size) => (
-                      <button
-                        key={size.id}
-                        onClick={() => {
-                          const variant = product.variants.find(v => v.id === size.id);
-                          if (variant) setSelectedVariant(variant);
-                        }}
-                        disabled={size.stockLevel === 'OUT_OF_STOCK'}
-                        className={`text-[15px] font-medium transition-all ${
-                          selectedVariant?.id === size.id
-                            ? 'text-black font-bold border-b-2 border-black'
-                            : size.stockLevel === 'OUT_OF_STOCK'
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-[#999999] hover:text-black'
-                        }`}
-                      >
-                        {size.name}
-                        {size.stockLevel === 'OUT_OF_STOCK' && ' (Out of Stock)'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                    {/* Size Selector */}
+                    <div className="mb-8 md:mb-12">
+                      <div className="flex items-center gap-1 mb-4">
+                        <span className="text-[14px] text-[#999999] font-medium uppercase tracking-tight">Size</span>
+                        {selectedVariant && (
+                          <span className="text-[14px] text-black font-semibold ml-1">{selectedVariant.name}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-4 md:gap-6 flex-wrap">
+                        {sizeOptions.map((size) => (
+                          <button
+                            key={size.id}
+                            onClick={() => {
+                              const variant = product.variants.find(v => v.id === size.id);
+                              if (variant) setSelectedVariant(variant);
+                            }}
+                            disabled={size.stockLevel === 'OUT_OF_STOCK'}
+                            className={`text-[15px] font-medium transition-all py-2 px-1 min-h-[44px] min-w-[44px] flex items-center justify-center ${
+                              selectedVariant?.id === size.id
+                                ? 'text-black font-bold border-b-2 border-black'
+                                : size.stockLevel === 'OUT_OF_STOCK'
+                                ? 'text-gray-300 cursor-not-allowed'
+                                : 'text-[#999999] hover:text-black'
+                            }`}
+                          >
+                            {size.name}
+                            {size.stockLevel === 'OUT_OF_STOCK' && ' (Out of Stock)'}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
 
                 {/* Customization Form */}
                 <div className="mb-12">

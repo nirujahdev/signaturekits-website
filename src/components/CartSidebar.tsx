@@ -146,26 +146,28 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                           <button
                             onClick={() => updateQuantity(line.id, (line.quantity || 1) - 1)}
                             disabled={line.quantity <= 1}
-                            className="p-1.5 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="p-2 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                            aria-label="Decrease quantity"
                           >
-                            <Minus className="w-3.5 h-3.5 text-gray-600" />
+                            <Minus className="w-4 h-4 text-gray-600" />
                           </button>
-                          <span className="w-8 text-center text-sm font-medium text-gray-900">
+                          <span className="w-10 text-center text-sm font-medium text-gray-900">
                             {line.quantity || 1}
                           </span>
                           <button
                             onClick={() => updateQuantity(line.id, (line.quantity || 1) + 1)}
-                            className="p-1.5 hover:bg-gray-100 transition-colors"
+                            className="p-2 hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                            aria-label="Increase quantity"
                           >
-                            <Plus className="w-3.5 h-3.5 text-gray-600" />
+                            <Plus className="w-4 h-4 text-gray-600" />
                           </button>
                         </div>
                         <button
                           onClick={() => removeItem(line.id)}
-                          className="ml-auto p-1.5 hover:bg-gray-100 rounded transition-colors"
+                          className="ml-auto p-2 hover:bg-gray-100 rounded transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                           aria-label="Remove item"
                         >
-                          <X className="w-4 h-4 text-gray-500" />
+                          <X className="w-5 h-5 text-gray-500" />
                         </button>
                       </div>
                     </div>
@@ -187,7 +189,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               <Link
                 href="/checkout"
                 onClick={onClose}
-                className="block w-full bg-gray-900 text-white text-center py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors"
+                className="block w-full bg-gray-900 text-white text-center py-4 rounded-xl font-medium hover:bg-gray-800 transition-colors min-h-[52px] flex items-center justify-center"
               >
                 Checkout
               </Link>
