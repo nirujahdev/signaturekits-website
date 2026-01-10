@@ -29,18 +29,23 @@ export function createClient() {
   return createSupabaseClient(supabaseUrl, anonKey);
 }
 
-// Helper function to hash passwords (using bcrypt in API routes)
+// Helper function to hash passwords (using bcryptjs for serverless compatibility)
 export async function hashPassword(password: string): Promise<string> {
-  const bcrypt = await import('bcrypt');
-  return bcrypt.default.hash(password, 10);
+  const bcrypt = await import('bcryptjs');
+  return bcrypt.default.hashSync(password, 10);
 }
 
-// Helper function to verify passwords
+// Helper function to verify passwords (using bcryptjs for serverless compatibility)
 export async function verifyPassword(
   password: string,
   hash: string
 ): Promise<boolean> {
-  const bcrypt = await import('bcrypt');
-  return bcrypt.default.compare(password, hash);
+  try {
+    const bcrypt = await import('bcryptjs');
+    return bcrypt.default.compareSync(password, hash);
+  } catch (error) {
+    console.error('Password verification error:', error);
+    throw error;
+  }
 }
 
