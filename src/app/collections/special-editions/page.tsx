@@ -11,13 +11,24 @@ import { productOperations } from '@/lib/vendure-operations';
 import { getCollectionContent } from '@/lib/seo-content';
 import { DirectAnswer } from '@/components/seo/DirectAnswer';
 import { FAQSection } from '@/components/seo/FAQSection';
-import { BreadcrumbStructuredData } from '@/components/seo/StructuredData';
+import dynamicImport from 'next/dynamic';
 import { SEO_CONFIG } from '@/lib/seo-config';
+
+// Dynamically import BreadcrumbStructuredData to avoid static generation issues
+const BreadcrumbStructuredData = dynamicImport(
+  () => import('@/components/seo/StructuredData').then((mod) => ({ default: mod.BreadcrumbStructuredData })),
+  { ssr: false }
+);
 
 export default function SpecialEditionsPage() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<any[]>([]);
+  const [mounted, setMounted] = useState(false);
   const collectionContent = getCollectionContent('special-editions');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     loadCollection();
@@ -62,7 +73,7 @@ export default function SpecialEditionsPage() {
 
   return (
     <>
-      <BreadcrumbStructuredData items={breadcrumbItems} />
+      {mounted && <BreadcrumbStructuredData items={breadcrumbItems} />}
       <div className="min-h-screen bg-white">
         <Header />
         <main className="container mx-auto px-6 py-12">
