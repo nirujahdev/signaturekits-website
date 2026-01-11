@@ -1,5 +1,13 @@
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
+import { Metadata } from 'next';
+import { generatePageMetadata } from '@/lib/generate-metadata';
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Contact Us',
+  description: 'Get in touch with Signature Kits for any questions or support.',
+  path: '/contact',
+});
 
 export default function ContactPage() {
   return (
@@ -11,10 +19,9 @@ export default function ContactPage() {
             Contact Us
           </h1>
 
-          <div className="prose max-w-none">
-            <p className="text-base md:text-lg text-[#666666] leading-relaxed mb-12">
-              Have a question or need assistance? We're here to help!
-            </p>
+          <p className="text-base md:text-lg text-[#666666] leading-relaxed mb-12">
+            Have a question or need assistance? We're here to help!
+          </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div>
