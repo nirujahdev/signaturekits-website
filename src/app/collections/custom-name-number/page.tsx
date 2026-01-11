@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 
 // Force dynamic rendering to prevent static generation issues
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const dynamicParams = true;
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductList from '@/components/products/ProductList';
@@ -11,13 +13,24 @@ import { productOperations } from '@/lib/vendure-operations';
 import { getCollectionContent } from '@/lib/seo-content';
 import { DirectAnswer } from '@/components/seo/DirectAnswer';
 import { FAQSection } from '@/components/seo/FAQSection';
-import { BreadcrumbStructuredData } from '@/components/seo/StructuredData';
+import dynamic from 'next/dynamic';
 import { SEO_CONFIG } from '@/lib/seo-config';
+
+// Dynamically import BreadcrumbStructuredData to avoid static generation issues
+const BreadcrumbStructuredData = dynamic(
+  () => import('@/components/seo/StructuredData').then((mod) => ({ default: mod.BreadcrumbStructuredData })),
+  { ssr: false }
+);
 
 export default function CustomNameNumberPage() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<any[]>([]);
+  const [mounted, setMounted] = useState(false);
   const collectionContent = getCollectionContent('custom-name-number');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     loadCollection();
@@ -62,7 +75,7 @@ export default function CustomNameNumberPage() {
 
   return (
     <>
-      <BreadcrumbStructuredData items={breadcrumbItems} />
+      {mounted && <BreadcrumbStructuredData items={breadcrumbItems} />}
       <div className="min-h-screen bg-white">
         <Header />
         <main className="container mx-auto px-6 py-12">
