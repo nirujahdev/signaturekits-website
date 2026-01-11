@@ -470,4 +470,148 @@
     @apply dark:hover:bg-white/[0.05];
     @apply focus:ring-gray-500;
   }
+
+  /* Luxury E-commerce Styles */
+  .luxury-heading {
+    font-size: clamp(2.5rem, 5vw, 6.25rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #000000;
+  }
+
+  .luxury-heading-2 {
+    font-size: clamp(1.875rem, 3vw, 3rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: #000000;
+  }
+
+  .luxury-body {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666666;
+    letter-spacing: 0.01em;
+  }
+
+  .luxury-body-sm {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #666666;
+    letter-spacing: 0.01em;
+  }
+
+  .luxury-uppercase {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .luxury-spacing-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  @media (min-width: 768px) {
+    .luxury-spacing-section {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+
+  .luxury-product-card {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  }
+
+  .luxury-product-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .luxury-image-zoom {
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+  }
+
+  .luxury-image-zoom:hover {
+    transform: scale(1.05);
+  }
+
+  /* Smooth image carousel transitions */
+  .product-image-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-image-container img {
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  /* Mobile touch-friendly buttons */
+  @media (max-width: 768px) {
+    .product-nav-button {
+      min-width: 44px;
+      min-height: 44px;
+    }
+  }
+
+  /* Hide scrollbar for thumbnail carousel */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .luxury-button {
+    @apply inline-flex items-center justify-center;
+    @apply px-8 py-4;
+    @apply bg-black text-white;
+    @apply font-semibold text-sm uppercase tracking-wider;
+    @apply transition-all duration-300;
+    @apply hover:bg-[#1A1A1A];
+    @apply focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2;
+  }
+
+  .luxury-button-outline {
+    @apply inline-flex items-center justify-center;
+    @apply px-8 py-4;
+    @apply border border-black bg-transparent text-black;
+    @apply font-semibold text-sm uppercase tracking-wider;
+    @apply transition-all duration-300;
+    @apply hover:bg-black hover:text-white;
+    @apply focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2;
+  }
+
+  .luxury-divider {
+    border-top: 1px solid #E5E5E5;
+  }
+
+  .luxury-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .luxury-grid {
+      gap: 3rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .luxury-grid {
+      gap: 4rem;
+    }
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

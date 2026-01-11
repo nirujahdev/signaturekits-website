@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductCard from '@/components/ProductCard';
@@ -12,7 +13,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Plus, Minus, Loader2 } from 'lucide-react';
+import { Plus, Minus, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { productOperations } from '@/lib/vendure-operations';
 import { useCart } from '@/contexts/CartContext';
@@ -71,9 +72,13 @@ export default function ProductDetailPage() {
   });
   const [basePrice, setBasePrice] = useState(0);
   const [addingToCart, setAddingToCart] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   const infoRef = useRef<HTMLDivElement>(null);
   const imageStackRef = useRef<HTMLDivElement>(null);
+  const mainImageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadProduct();
@@ -92,6 +97,44 @@ export default function ProductDetailPage() {
         .fromTo(infoRef.current, { opacity: 0, x: 50 }, { opacity: 1, x: 0 }, "-=0.8");
     }
   }, [product]);
+
+  // Keyboard navigation for images
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (images.length <= 1) return;
+      if (e.key === 'ArrowLeft') {
+        setSelectedImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setSelectedImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [images.length]);
+
+  // Touch swipe handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && images.length > 1) {
+      setSelectedImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }
+    if (isRightSwipe && images.length > 1) {
+      setSelectedImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    }
+  };
 
   const loadProduct = async () => {
     setLoading(true);
@@ -179,6 +222,9 @@ export default function ProductDetailPage() {
   const images = product.assets?.length > 0 
     ? product.assets.map(a => a.preview)
     : [mainImage, mainImage];
+  
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const currentImage = images[selectedImageIndex] || mainImage;
 
   // Extract size options from variants
   const sizeOptions = product.variants.map(v => ({
@@ -192,56 +238,154 @@ export default function ProductDetailPage() {
     <div className="min-h-screen bg-white">
       <Header />
       
-      <main className="pt-[140px] pb-[80px]">
-        <div className="container mx-auto px-6 md:px-[60px]">
-          <div className="flex flex-col lg:flex-row gap-x-[120px]">
-            {/* Left side: Image Stack */}
-            <div ref={imageStackRef} className="flex-1 space-y-4 mb-10 lg:mb-0">
-              {images.map((img, index) => (
-                <div key={index} className="aspect-[4/5] relative bg-[#F5F5F5] overflow-hidden rounded">
-                  <Image
-                    src={img}
-                    alt={`${product.name} ${index + 1}`}
-                    fill
-                    className="object-cover"
-                    priority={index === 0}
-                  />
+      <main className="pt-[100px] md:pt-[140px] pb-[60px] md:pb-[80px]">
+        <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-[1600px]">
+          <div className="flex flex-col lg:flex-row gap-x-[80px] lg:gap-x-[120px] gap-y-12 lg:gap-y-0">
+            {/* Left side: Large Centered Image with Carousel */}
+            <div ref={imageStackRef} className="flex-1 mb-12 lg:mb-0">
+              {/* Main Large Image with Navigation */}
+              <div 
+                ref={mainImageRef}
+                className="relative aspect-[4/5] bg-[#FAFAFA] overflow-hidden mb-6 group"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                <Image
+                  key={selectedImageIndex}
+                  src={currentImage}
+                  alt={product.name}
+                  fill
+                  className="object-cover luxury-image-zoom transition-opacity duration-500"
+                  priority={selectedImageIndex === 0}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                
+                {/* Navigation Arrows - Luxury Style */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setSelectedImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                      className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm border border-black/10 rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hover:bg-white z-10"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 text-black" strokeWidth={2} />
+                    </button>
+                    <button
+                      onClick={() => setSelectedImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                      className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm border border-black/10 rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hover:bg-white z-10"
+                      aria-label="Next image"
+                    >
+                      <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-black" strokeWidth={2} />
+                    </button>
+                  </>
+                )}
+
+                {/* Image Counter */}
+                {images.length > 1 && (
+                  <div className="absolute bottom-3 right-3 md:bottom-4 md:right-4 bg-white/90 backdrop-blur-sm px-2.5 py-1 md:px-3 md:py-1.5 rounded text-[11px] md:text-xs font-medium text-black">
+                    {selectedImageIndex + 1} / {images.length}
+                  </div>
+                )}
+
+                {/* View in 3D Button (Placeholder) - Hidden on mobile */}
+                <button className="hidden md:flex absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-black/10 items-center gap-2 text-sm font-medium text-black hover:bg-white transition-all z-10">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m-2-1l2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                  </svg>
+                  View in 3D
+                </button>
+              </div>
+              
+              {/* Thumbnail Carousel */}
+              {images.length > 1 && (
+                <div className="relative">
+                  <div className="thumbnail-carousel flex items-center gap-3 overflow-x-auto scrollbar-hide pb-2">
+                    {images.map((img, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedImageIndex(index)}
+                        className={`flex-shrink-0 relative w-20 h-20 md:w-24 md:h-24 bg-[#F5F5F5] overflow-hidden border-2 transition-all ${
+                          selectedImageIndex === index
+                            ? 'border-black'
+                            : 'border-transparent hover:border-black/30'
+                        }`}
+                      >
+                        <Image
+                          src={img}
+                          alt={`${product.name} view ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="96px"
+                        />
+                      </button>
+                    ))}
+                    {images.length > 4 && (
+                      <div className="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 bg-[#F5F5F5] flex items-center justify-center text-xs font-medium text-[#666666] border-2 border-transparent">
+                        +{images.length - 4}
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Thumbnail Navigation Arrows (if many images) */}
+                  {images.length > 4 && (
+                    <>
+                      <button
+                        onClick={() => {
+                          const carousel = document.querySelector('.thumbnail-carousel');
+                          if (carousel) carousel.scrollBy({ left: -100, behavior: 'smooth' });
+                        }}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-white border border-[#E5E5E5] rounded-full flex items-center justify-center hover:border-black transition-colors z-10"
+                        aria-label="Scroll thumbnails left"
+                      >
+                        <ChevronLeft className="w-4 h-4 text-black" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          const carousel = document.querySelector('.thumbnail-carousel');
+                          if (carousel) carousel.scrollBy({ left: 100, behavior: 'smooth' });
+                        }}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-white border border-[#E5E5E5] rounded-full flex items-center justify-center hover:border-black transition-colors z-10"
+                        aria-label="Scroll thumbnails right"
+                      >
+                        <ChevronRight className="w-4 h-4 text-black" />
+                      </button>
+                    </>
+                  )}
                 </div>
-              ))}
+              )}
             </div>
 
-                {/* Right side: Product Info */}
-                <div ref={infoRef} className="lg:w-[480px]">
-                  <div className="sticky top-[100px] md:top-[140px]">
-                <h1 className="text-[44px] font-semibold tracking-[-0.03em] leading-[1.05] text-black mb-6">
+            {/* Right side: Product Info - Luxury Layout */}
+            <div ref={infoRef} className="w-full lg:w-[500px]">
+              <div className="lg:sticky lg:top-[120px] lg:md:top-[160px]">
+                {/* Personalization Header */}
+                <div className="mb-6">
+                  <p className="luxury-uppercase text-[12px] font-semibold text-black tracking-[0.1em] mb-4">
+                    PERSONALIZE WITH INITIALS
+                  </p>
+                </div>
+                
+                {/* Product Name */}
+                <h1 className="luxury-heading-2 mb-4 md:mb-6 text-[32px] md:text-[40px] lg:text-[48px]">
                   {product.name}
                 </h1>
                 
-                {/* AEO Direct Answer Block */}
-                <div className="mb-6">
-                  <DirectAnswer
-                    deliveryDays={SEO_CONFIG.DELIVERY_WINDOW}
-                    hasCustomization={SEO_CONFIG.CUSTOM_NAME_NUMBER}
-                    hasCOD={SEO_CONFIG.COD}
-                    isPreOrder={true}
-                    trackingStage={SEO_CONFIG.TRACKING_STAGE}
-                  />
-                </div>
-                
+                {/* Price */}
                 {selectedVariant && (
-                  <div className="flex flex-col gap-2 mb-12">
-                    <div className="flex items-center gap-4">
-                      <span className="text-[24px] font-medium text-black">
+                  <div className="mb-6 md:mb-8">
+                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-3 mb-2">
+                      <span className="text-[24px] md:text-[28px] font-normal text-black tracking-tight">
                         {formatPrice(selectedVariant.priceWithTax, selectedVariant.currencyCode)}
                       </span>
                       {customization.customizationPrice > 0 && (
-                        <span className="text-sm text-gray-600">
-                          + LKR {customization.customizationPrice.toLocaleString()} customization
+                        <span className="text-xs md:text-sm text-[#666666]">
+                          + {formatPrice(customization.customizationPrice * 100, selectedVariant.currencyCode)} customization
                         </span>
                       )}
                     </div>
                     {customization.customizationPrice > 0 && (
-                      <div className="text-lg font-semibold text-black">
+                      <div className="text-[18px] md:text-[20px] font-medium text-black">
                         Total: {formatPrice(
                           selectedVariant.priceWithTax + (customization.customizationPrice * 100),
                           selectedVariant.currencyCode
@@ -250,80 +394,104 @@ export default function ProductDetailPage() {
                     )}
                   </div>
                 )}
+                
+                {/* Variation Selector (if multiple variants/colors) */}
+                {product.variants.length > 1 && (
+                  <div className="mb-8">
+                    <p className="luxury-uppercase text-[11px] font-semibold text-[#666666] mb-3">
+                      Variation
+                    </p>
+                    <div className="flex gap-3">
+                      {product.variants.slice(0, 3).map((variant) => (
+                        <button
+                          key={variant.id}
+                          onClick={() => setSelectedVariant(variant)}
+                          className={`w-16 h-16 border-2 transition-all ${
+                            selectedVariant?.id === variant.id
+                              ? 'border-black'
+                              : 'border-[#E5E5E5] hover:border-black/50'
+                          }`}
+                        >
+                          {/* Color/material preview would go here */}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Size Helper */}
-                <div className="mb-12">
+                <div className="mb-10">
                   <SizeHelper mode="auto" />
                 </div>
 
-                    {/* Size Selector */}
-                    <div className="mb-8 md:mb-12">
-                      <div className="flex items-center gap-1 mb-4">
-                        <span className="text-[14px] text-[#999999] font-medium uppercase tracking-tight">Size</span>
-                        {selectedVariant && (
-                          <span className="text-[14px] text-black font-semibold ml-1">{selectedVariant.name}</span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-4 md:gap-6 flex-wrap">
-                        {sizeOptions.map((size) => (
-                          <button
-                            key={size.id}
-                            onClick={() => {
-                              const variant = product.variants.find(v => v.id === size.id);
-                              if (variant) setSelectedVariant(variant);
-                            }}
-                            disabled={size.stockLevel === 'OUT_OF_STOCK'}
-                            className={`text-[15px] font-medium transition-all py-2 px-1 min-h-[44px] min-w-[44px] flex items-center justify-center ${
-                              selectedVariant?.id === size.id
-                                ? 'text-black font-bold border-b-2 border-black'
-                                : size.stockLevel === 'OUT_OF_STOCK'
-                                ? 'text-gray-300 cursor-not-allowed'
-                                : 'text-[#999999] hover:text-black'
-                            }`}
-                          >
-                            {size.name}
-                            {size.stockLevel === 'OUT_OF_STOCK' && ' (Out of Stock)'}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                {/* Size Selector - Luxury Style */}
+                <div className="mb-8 md:mb-10">
+                  <div className="flex items-center gap-2 mb-3 md:mb-4">
+                    <span className="luxury-uppercase text-[10px] md:text-[11px] font-semibold text-[#666666]">Size</span>
+                    {selectedVariant && (
+                      <span className="text-[12px] md:text-[13px] text-black font-medium">{selectedVariant.name}</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                    {sizeOptions.map((size) => (
+                      <button
+                        key={size.id}
+                        onClick={() => {
+                          const variant = product.variants.find(v => v.id === size.id);
+                          if (variant) setSelectedVariant(variant);
+                        }}
+                        disabled={size.stockLevel === 'OUT_OF_STOCK'}
+                        className={`text-[13px] md:text-[14px] font-medium transition-all py-2 md:py-2.5 px-3 md:px-4 min-h-[40px] md:min-h-[44px] flex items-center justify-center border ${
+                          selectedVariant?.id === size.id
+                            ? 'text-black border-black bg-black/5'
+                            : size.stockLevel === 'OUT_OF_STOCK'
+                            ? 'text-[#CCCCCC] border-[#E5E5E5] cursor-not-allowed'
+                            : 'text-[#666666] border-[#E5E5E5] hover:border-black hover:text-black'
+                        }`}
+                      >
+                        {size.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Customization Form */}
-                <div className="mb-12">
+                <div className="mb-10">
                   <CustomizationForm
                     onCustomizationChange={setCustomization}
                   />
                 </div>
 
-                {/* Add to Cart Controls */}
-                <div className="flex gap-4 mb-12">
-                  {/* Quantity Selector */}
-                  <div className="flex items-center border border-[#E5E5E5] px-4 py-4 min-w-[140px] justify-between bg-[#FBFBFB]">
+                {/* Quantity Selector - Mobile First */}
+                <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                  <span className="luxury-uppercase text-[10px] md:text-[11px] font-semibold text-[#666666]">Quantity</span>
+                  <div className="flex items-center border border-[#E5E5E5] px-2 md:px-3 py-1.5 md:py-2">
                     <button 
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="text-[#999999] hover:text-black transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      className="text-[#666666] hover:text-black transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center"
                       aria-label="Decrease quantity"
                     >
-                      <Minus className="w-5 h-5" />
+                      <Minus className="w-4 h-4" />
                     </button>
-                    <span className="text-[16px] font-semibold text-black">
+                    <span className="text-[13px] md:text-[14px] font-medium text-black px-3 md:px-4">
                       {quantity}
                     </span>
                     <button 
                       onClick={() => setQuantity(quantity + 1)}
-                      className="text-[#999999] hover:text-black transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      className="text-[#666666] hover:text-black transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center"
                       aria-label="Increase quantity"
                     >
-                      <Plus className="w-5 h-5" />
+                      <Plus className="w-4 h-4" />
                     </button>
                   </div>
-                  
-                  {/* Add to Cart Button */}
-                  <Button
+                </div>
+
+                {/* Add to Bag Button - Luxury Style */}
+                <div className="mb-8 md:mb-10">
+                  <button
                     onClick={handleAddToCart}
                     disabled={!selectedVariant || addingToCart || selectedVariant.stockLevel === 'OUT_OF_STOCK'}
-                    className="flex-1 bg-black text-white text-[16px] font-bold py-4 hover:bg-[#1A1A1A] transition-all"
-                    size="lg"
+                    className="luxury-button w-full disabled:opacity-50 disabled:cursor-not-allowed text-[13px] md:text-sm py-3 md:py-4"
                   >
                     {addingToCart ? (
                       <>
@@ -331,35 +499,83 @@ export default function ProductDetailPage() {
                         Adding...
                       </>
                     ) : (
-                      'Add to Cart'
+                      <>
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        Add to Bag
+                      </>
                     )}
-                  </Button>
+                  </button>
+                </div>
+
+                {/* Delivery Information */}
+                <div className="mb-6 md:mb-8 pb-6 md:pb-8 border-b border-[#E5E5E5]">
+                  <p className="text-[12px] md:text-[13px] text-[#666666] leading-relaxed">
+                    Estimated complimentary Express delivery or Collect in Store: <span className="font-medium text-black">Wed, Jan 14 - Thu, Jan 15</span>
+                  </p>
+                </div>
+
+                {/* Contact & Services */}
+                <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+                  <div className="flex items-center gap-2 md:gap-3 text-[12px] md:text-[13px]">
+                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#666666] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <Link href="/contact-us" className="text-black hover:text-[#666666] transition-colors underline">
+                      Order by Phone
+                    </Link>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 md:gap-3 text-[12px] md:text-[13px]">
+                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#666666] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <Link href="/contact-us" className="text-black hover:text-[#666666] transition-colors underline">
+                      Find in store and book an appointment
+                    </Link>
+                  </div>
+
+                  {/* Services Section */}
+                  <div className="pt-2">
+                    <button className="flex items-center gap-2 text-[12px] md:text-[13px] font-semibold text-black uppercase tracking-wider mb-3">
+                      <Plus className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                      Signature Kits Services
+                    </button>
+                    <div className="pl-6 space-y-1.5 text-[11px] md:text-[12px] text-[#666666]">
+                      <p>Complimentary Shipping</p>
+                      <p>Complimentary Exchanges & Returns</p>
+                      <p>Secure Payments</p>
+                      <p>Signature Packaging</p>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Info Accordion */}
                 <Accordion type="single" collapsible className="w-full border-t border-[#E5E5E5]">
                   <AccordionItem value="information" className="border-b border-[#E5E5E5]">
-                    <AccordionTrigger className="text-[14px] font-semibold text-black uppercase tracking-widest py-6 hover:no-underline">
-                      INFORMATION
+                    <AccordionTrigger className="luxury-uppercase text-[11px] font-semibold text-black py-6 hover:no-underline">
+                      Product Description
                     </AccordionTrigger>
-                    <AccordionContent className="text-[15px] leading-[1.7] text-[#666666] pb-6">
+                    <AccordionContent className="text-[13px] leading-[1.7] text-[#666666] pb-6">
                       {product.description || 'Premium quality jersey with authentic design and materials.'}
                     </AccordionContent>
                   </AccordionItem>
-                  <AccordionItem value="shipping" className="border-b border-[#E5E5E5]">
-                    <AccordionTrigger className="text-[14px] font-semibold text-black uppercase tracking-widest py-6 hover:no-underline">
-                      SHIPPING
+                  <AccordionItem value="materials" className="border-b border-[#E5E5E5]">
+                    <AccordionTrigger className="luxury-uppercase text-[11px] font-semibold text-black py-6 hover:no-underline">
+                      Materials & Care
                     </AccordionTrigger>
-                    <AccordionContent className="text-[15px] leading-[1.7] text-[#666666] pb-6">
-                      Pre-order items ship in 15-20 days. Free shipping on orders over LKR 5,000. Delivered via Trans Express.
+                    <AccordionContent className="text-[13px] leading-[1.7] text-[#666666] pb-6">
+                      Premium polyester fabric with moisture-wicking technology. Machine wash cold, gentle cycle. Do not bleach. Hang dry.
                     </AccordionContent>
                   </AccordionItem>
-                  <AccordionItem value="payment" className="border-b border-[#E5E5E5]">
-                    <AccordionTrigger className="text-[14px] font-semibold text-black uppercase tracking-widest py-6 hover:no-underline">
-                      PAYMENT
+                  <AccordionItem value="shipping" className="border-b border-[#E5E5E5]">
+                    <AccordionTrigger className="luxury-uppercase text-[11px] font-semibold text-black py-6 hover:no-underline">
+                      Shipping
                     </AccordionTrigger>
-                    <AccordionContent className="text-[15px] leading-[1.7] text-[#666666] pb-6">
-                      Cash on Delivery (COD) available. SMS verification required.
+                    <AccordionContent className="text-[13px] leading-[1.7] text-[#666666] pb-6">
+                      Pre-order items ship in 15-20 days. Free shipping on orders over LKR 5,000. Delivered via Trans Express.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>

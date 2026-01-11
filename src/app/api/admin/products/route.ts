@@ -148,6 +148,37 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // If product has temporary images, move them to product folder
+    if (data.images && data.images.length > 0) {
+      try {
+        // Check if any images are in temp folder
+        const hasTempImages = data.images.some((url: string) => url.includes('/temp/'));
+        
+        if (hasTempImages) {
+          // Import the move function directly instead of making HTTP call
+          const { moveTempImages } = await import('@/lib/supabase-storage');
+          const moveResult = await moveTempImages(data.images, data.id);
+          
+          if (moveResult.success && moveResult.images) {
+            // Update product with moved image URLs
+            const { data: updatedProduct } = await supabase
+              .from('products')
+              .update({ images: moveResult.images })
+              .eq('id', data.id)
+              .select()
+              .single();
+            
+            if (updatedProduct) {
+              data.images = updatedProduct.images;
+            }
+          }
+        }
+      } catch (moveError) {
+        console.error('Error moving temporary images:', moveError);
+        // Don't fail product creation if image move fails
+      }
+    }
+
     return NextResponse.json({ product: data }, { status: 201 });
   } catch (error: any) {
     console.error('Create product error:', error);

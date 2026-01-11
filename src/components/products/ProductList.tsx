@@ -60,12 +60,15 @@ export default function ProductList({ initialProducts, limit = 20, collection }:
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="animate-pulse">
-            <div className="bg-gray-200 aspect-[4/5] rounded" />
-            <div className="h-4 bg-gray-200 rounded mt-4 w-3/4" />
-            <div className="h-4 bg-gray-200 rounded mt-2 w-1/2" />
+      <div className="luxury-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {[...Array(8)].map((_, i) => (
+          <div key={i} className="animate-pulse space-y-5">
+            <div className="bg-[#F5F5F5] aspect-[4/5] rounded-sm" />
+            <div className="space-y-2">
+              <div className="h-4 bg-[#F5F5F5] rounded w-3/4" />
+              <div className="h-3 bg-[#F5F5F5] rounded w-1/2" />
+              <div className="h-4 bg-[#F5F5F5] rounded w-1/3" />
+            </div>
           </div>
         ))}
       </div>
@@ -74,14 +77,14 @@ export default function ProductList({ initialProducts, limit = 20, collection }:
 
   if (products.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500">No products found</p>
+      <div className="text-center py-24">
+        <p className="luxury-body text-[#666666]">No products found</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="luxury-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => {
         const variant = product.variants?.[0];
         const price = variant?.priceWithTax || 0;

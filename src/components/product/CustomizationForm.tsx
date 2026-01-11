@@ -130,34 +130,37 @@ export function CustomizationForm({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Customize your Jersey with your Name</h3>
-        <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
-          <AlertDescription className="text-sm text-blue-800 dark:text-blue-200">
-            <strong>Note:</strong> Customization requires up to 3 to 4 extra days for processing.
-          </AlertDescription>
-        </Alert>
+      <div className="mb-6">
+        <div className="bg-[#F5F5F5] px-6 py-4 mb-4">
+          <p className="luxury-uppercase text-[11px] font-semibold text-black tracking-[0.1em] mb-2">
+            Complimentary Personalization
+          </p>
+          <p className="text-[12px] text-[#666666]">
+            Add your name and number, or choose a patch to make your jersey unique.
+          </p>
+        </div>
       </div>
 
       {/* Name and Number Combined Option */}
-      <div className="space-y-3 border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800/50">
-        <div className="flex items-center space-x-2">
+      <div className="space-y-4 border border-[#E5E5E5] p-5 bg-white">
+        <div className="flex items-center space-x-3">
           <Checkbox
             id="name-number-enabled"
             checked={nameAndNumberEnabled}
             onCheckedChange={(checked) => {
               setNameAndNumberEnabled(checked as boolean);
             }}
+            className="border-[#E5E5E5]"
           />
-          <Label htmlFor="name-number-enabled" className="font-medium cursor-pointer">
-            Add Name and Number (+LKR {NAME_AND_NUMBER_PRICE.toLocaleString()})
+          <Label htmlFor="name-number-enabled" className="text-[13px] font-medium text-black cursor-pointer">
+            Add Name and Number <span className="text-[#666666] font-normal">(+LKR {NAME_AND_NUMBER_PRICE.toLocaleString()})</span>
           </Label>
         </div>
 
         {nameAndNumberEnabled && (
-          <div className="space-y-4 mt-4 pl-6">
+          <div className="space-y-4 mt-4 pl-8 border-l border-[#E5E5E5]">
             <div className="space-y-2">
-              <Label htmlFor="print-name">Add your Name *</Label>
+              <Label htmlFor="print-name" className="text-[12px] font-medium text-black">Add your Name *</Label>
               <Input
                 id="print-name"
                 type="text"
@@ -169,17 +172,18 @@ export function CustomizationForm({
                 }}
                 maxLength={20}
                 required
+                className="border-[#E5E5E5] focus:border-black rounded-sm text-[13px]"
               />
               {errors.printName && (
-                <p className="text-sm text-red-500">{errors.printName}</p>
+                <p className="text-[11px] text-red-500">{errors.printName}</p>
               )}
-              <p className="text-xs text-gray-500">
+              <p className="text-[11px] text-[#666666]">
                 Letters, numbers, and spaces only. Max 20 characters.
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="print-number">Enter Your Jersey Number *</Label>
+              <Label htmlFor="print-number" className="text-[12px] font-medium text-black">Enter Your Jersey Number *</Label>
               <Input
                 id="print-number"
                 type="text"
@@ -191,19 +195,20 @@ export function CustomizationForm({
                 }}
                 maxLength={2}
                 required
+                className="border-[#E5E5E5] focus:border-black rounded-sm text-[13px]"
               />
               {errors.printNumber && (
-                <p className="text-sm text-red-500">{errors.printNumber}</p>
+                <p className="text-[11px] text-red-500">{errors.printNumber}</p>
               )}
-              <p className="text-xs text-gray-500">Numbers 1-99 only.</p>
+              <p className="text-[11px] text-[#666666]">Numbers 1-99 only.</p>
             </div>
           </div>
         )}
       </div>
 
       {/* Patch Option */}
-      <div className="space-y-3 border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800/50">
-        <div className="flex items-center space-x-2">
+      <div className="space-y-4 border border-[#E5E5E5] p-5 bg-white">
+        <div className="flex items-center space-x-3">
           <Checkbox
             id="patch-enabled"
             checked={patchEnabled}
@@ -211,22 +216,23 @@ export function CustomizationForm({
               setPatchEnabled(checked as boolean);
               if (!checked) setPatchType('');
             }}
+            className="border-[#E5E5E5]"
           />
-          <Label htmlFor="patch-enabled" className="font-medium cursor-pointer">
-            Add Patch (+LKR {PATCH_PRICE.toLocaleString()})
+          <Label htmlFor="patch-enabled" className="text-[13px] font-medium text-black cursor-pointer">
+            Add Patch <span className="text-[#666666] font-normal">(+LKR {PATCH_PRICE.toLocaleString()})</span>
           </Label>
         </div>
 
         {patchEnabled && (
-          <div className="mt-4 pl-6">
-            <Label htmlFor="patch-type">Patch Type *</Label>
+          <div className="mt-4 pl-8 border-l border-[#E5E5E5]">
+            <Label htmlFor="patch-type" className="text-[12px] font-medium text-black">Patch Type *</Label>
             <Select
               value={patchType}
               onValueChange={(value) => {
                 setPatchType(value);
               }}
             >
-              <SelectTrigger id="patch-type" className="mt-2">
+              <SelectTrigger id="patch-type" className="mt-2 border-[#E5E5E5] focus:border-black rounded-sm text-[13px]">
                 <SelectValue placeholder="Select patch type" />
               </SelectTrigger>
               <SelectContent>
@@ -238,7 +244,7 @@ export function CustomizationForm({
               </SelectContent>
             </Select>
             {errors.patchType && (
-              <p className="text-sm text-red-500 mt-1">{errors.patchType}</p>
+              <p className="text-[11px] text-red-500 mt-1">{errors.patchType}</p>
             )}
           </div>
         )}
@@ -246,33 +252,22 @@ export function CustomizationForm({
 
       {/* Price Summary */}
       {customizationPrice > 0 && (
-        <Alert className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
-          <AlertDescription>
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-green-800 dark:text-green-200">
-                Customization Total:
-              </span>
-              <span className="text-lg font-bold text-green-800 dark:text-green-200">
-                LKR {customizationPrice.toLocaleString()}
-              </span>
-            </div>
-          </AlertDescription>
-        </Alert>
+        <div className="bg-[#F5F5F5] px-5 py-4 border border-[#E5E5E5]">
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] font-medium text-black">
+              Customization Total:
+            </span>
+            <span className="text-[16px] font-semibold text-black">
+              LKR {customizationPrice.toLocaleString()}
+            </span>
+          </div>
+        </div>
       )}
 
-      {/* Preview */}
-      {(printName || printNumber || patchEnabled) && (
-        <Alert>
-          <AlertDescription>
-            <strong>Customization Preview:</strong>
-            <ul className="mt-2 space-y-1 text-sm">
-              {patchEnabled && <li>✓ Patch: {patchType || 'Selected'}</li>}
-              {printName && <li>✓ Name: {printName}</li>}
-              {printNumber && <li>✓ Number: #{printNumber}</li>}
-            </ul>
-          </AlertDescription>
-        </Alert>
-      )}
+      {/* Note */}
+      <p className="text-[11px] text-[#666666] leading-relaxed">
+        <strong className="text-black">Note:</strong> Customization requires up to 3 to 4 extra days for processing.
+      </p>
     </div>
   );
 }

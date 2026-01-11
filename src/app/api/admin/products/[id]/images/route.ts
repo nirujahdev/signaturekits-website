@@ -41,7 +41,7 @@ export async function POST(
       );
     }
 
-    // Upload image
+    // Upload image (supports multiple files)
     const uploadResult = await uploadProductImage(file, id);
 
     if (!uploadResult.success || !uploadResult.url) {

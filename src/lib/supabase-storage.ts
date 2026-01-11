@@ -133,5 +133,78 @@ export function getImageUrl(path: string): string {
   return data.publicUrl;
 }
 
+/**
+ * Move temporary images to product folder
+ */
+export async function moveTempImages(
+  imageUrls: string[],
+  productId: string
+): Promise<{ success: boolean; images?: string[]; error?: string }> {
+  try {
+    const supabase = getAdminSupabaseClient();
+    const movedUrls: string[] = [];
+
+    // Move each temporary image to product folder
+    for (const imageUrl of imageUrls) {
+      // Extract path from URL
+      const urlParts = imageUrl.split('/');
+      const pathIndex = urlParts.indexOf('product-images');
+      
+      if (pathIndex === -1 || pathIndex === urlParts.length - 1) {
+        // Not a temp file, keep as is
+        movedUrls.push(imageUrl);
+        continue;
+      }
+
+      const oldPath = urlParts.slice(pathIndex + 1).join('/');
+      
+      // Only move if it's a temp file
+      if (!oldPath.startsWith('temp/')) {
+        movedUrls.push(imageUrl);
+        continue;
+      }
+
+      // Generate new path in product folder
+      const fileName = oldPath.split('/').pop();
+      const newPath = `${productId}/${fileName}`;
+
+      // Copy file to new location
+      const { error: copyError } = await supabase.storage
+        .from(BUCKET_NAME)
+        .copy(oldPath, newPath);
+
+      if (copyError) {
+        console.error('Error copying file:', copyError);
+        // Keep original URL if copy fails
+        movedUrls.push(imageUrl);
+        continue;
+      }
+
+      // Get new public URL
+      const { data: urlData } = supabase.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(newPath);
+
+      movedUrls.push(urlData.publicUrl);
+
+      // Delete old temp file (don't fail if this fails)
+      await supabase.storage
+        .from(BUCKET_NAME)
+        .remove([oldPath]);
+    }
+
+    return {
+      success: true,
+      images: movedUrls,
+    };
+  } catch (error: any) {
+    console.error('Move images error:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to move images',
+    };
+  }
+}
+
 // validateImageFile has been moved to supabase-storage-client.ts for client-side use
 

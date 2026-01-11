@@ -36,30 +36,39 @@ export default function ProductCard({ id, name, category, price, image }: Produc
     );
   }, []);
 
+  const formatPrice = (amount: number) => {
+    return new Intl.NumberFormat('en-LK', {
+      style: 'currency',
+      currency: 'LKR',
+      minimumFractionDigits: 0,
+    }).format(amount);
+  };
+
   return (
-    <Link href={`/product/${id}`} className="group block">
-      <div ref={cardRef} className="flex flex-col space-y-4">
-        <div className="aspect-[4/5] overflow-hidden bg-[#F5F5F5] relative">
+    <Link href={`/product/${id}`} className="group block luxury-product-card">
+      <div ref={cardRef} className="flex flex-col space-y-5">
+        <div className="aspect-[4/5] overflow-hidden bg-[#FAFAFA] relative">
           <Image
             src={image}
             alt={`${name} jersey`}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover luxury-image-zoom"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             loading="lazy"
           />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/2 transition-colors duration-500" />
         </div>
-        <div className="flex justify-between items-start">
-          <div className="flex flex-col">
-            <h3 className="text-[18px] font-semibold tracking-[-0.01em] text-black uppercase lg:normal-case">
+        <div className="flex flex-col space-y-2">
+          <div className="flex flex-col space-y-1">
+            <h3 className="text-[15px] font-medium tracking-[0.02em] text-black uppercase leading-tight">
               {name}
             </h3>
-            <span className="text-[12px] font-medium text-[#666666] tracking-wider mt-1 uppercase">
+            <span className="text-[11px] font-normal text-[#666666] tracking-[0.08em] uppercase">
               {category}
             </span>
           </div>
-          <span className="text-[16px] font-medium text-black">
-            ${price.toFixed(2)}
+          <span className="text-[15px] font-medium text-black tracking-tight">
+            {formatPrice(price)}
           </span>
         </div>
       </div>

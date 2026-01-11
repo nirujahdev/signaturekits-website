@@ -60,12 +60,19 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
     const newErrors: Record<string, string> = {};
     if (!formData.title || formData.title.trim().length === 0) {
       newErrors.title = 'Title is required';
+    } else if (formData.title.trim().length < 3) {
+      newErrors.title = 'Title must be at least 3 characters';
     }
     if (!formData.price || formData.price <= 0) {
       newErrors.price = 'Price must be greater than 0';
+    } else if (formData.price > 1000000) {
+      newErrors.price = 'Price seems too high. Please verify.';
     }
     if (formData.sizes && formData.sizes.length === 0) {
       newErrors.sizes = 'At least one size must be selected';
+    }
+    if (!formData.images || formData.images.length === 0) {
+      newErrors.images = 'At least one product image is required';
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -232,11 +239,25 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
       />
 
       {/* Images */}
-      <ImageUpload
-        images={formData.images || []}
-        onImagesChange={(images) => setFormData({ ...formData, images })}
-        productId={product?.id}
-      />
+      <div>
+        <ImageUpload
+          images={formData.images || []}
+          onImagesChange={(images) => {
+            setFormData({ ...formData, images });
+            if (errors.images) setErrors({ ...errors, images: '' });
+          }}
+          productId={product?.id}
+          maxImages={10}
+        />
+        {errors.images && (
+          <p className="text-sm text-red-500 mt-1">{errors.images}</p>
+        )}
+        {formData.images && formData.images.length > 0 && (
+          <p className="text-xs text-gray-500 mt-1">
+            First image will be used as the primary product image
+          </p>
+        )}
+      </div>
 
       {/* Status Toggles */}
       <div className="flex gap-6">

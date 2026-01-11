@@ -33,6 +33,9 @@ export default function ProductsPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
+  const [bulkAction, setBulkAction] = useState<string>('');
+  const [bulkLoading, setBulkLoading] = useState(false);
 
   useEffect(() => {
     fetchProducts();
@@ -81,10 +84,95 @@ export default function ProductsPage() {
 
       toast.success('Product deleted successfully');
       fetchProducts();
+      setSelectedProducts(new Set());
     } catch (error: any) {
       console.error('Error deleting product:', error);
       toast.error(error.message || 'Failed to delete product');
     }
+  };
+
+  const handleBulkAction = async () => {
+    if (selectedProducts.size === 0) {
+      toast.error('Please select at least one product');
+      return;
+    }
+
+    if (!bulkAction) {
+      toast.error('Please select an action');
+      return;
+    }
+
+    setBulkLoading(true);
+    try {
+      const productIds = Array.from(selectedProducts);
+
+      if (bulkAction === 'delete') {
+        if (!confirm(`Are you sure you want to delete ${productIds.length} product(s)?`)) {
+          setBulkLoading(false);
+          return;
+        }
+
+        const deletePromises = productIds.map((id) =>
+          fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
+        );
+
+        const results = await Promise.allSettled(deletePromises);
+        const failed = results.filter((r) => r.status === 'rejected').length;
+
+        if (failed === 0) {
+          toast.success(`Successfully deleted ${productIds.length} product(s)`);
+        } else {
+          toast.error(`Failed to delete ${failed} product(s)`);
+        }
+      } else if (bulkAction === 'activate' || bulkAction === 'deactivate') {
+        const isActive = bulkAction === 'activate';
+        const updatePromises = productIds.map((id) =>
+          fetch(`/api/admin/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ is_active: isActive }),
+          })
+        );
+
+        const results = await Promise.allSettled(updatePromises);
+        const failed = results.filter((r) => r.status === 'rejected').length;
+
+        if (failed === 0) {
+          toast.success(
+            `Successfully ${isActive ? 'activated' : 'deactivated'} ${productIds.length} product(s)`
+          );
+        } else {
+          toast.error(`Failed to update ${failed} product(s)`);
+        }
+      }
+
+      setSelectedProducts(new Set());
+      setBulkAction('');
+      fetchProducts();
+    } catch (error: any) {
+      console.error('Bulk action error:', error);
+      toast.error(error.message || 'Failed to perform bulk action');
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedProducts(new Set(products.map((p) => p.id)));
+    } else {
+      setSelectedProducts(new Set());
+    }
+  };
+
+  const handleSelectProduct = (id: string, checked: boolean) => {
+    const newSelected = new Set(selectedProducts);
+    if (checked) {
+      newSelected.add(id);
+    } else {
+      newSelected.delete(id);
+    }
+    setSelectedProducts(newSelected);
   };
 
   return (
@@ -145,12 +233,51 @@ export default function ProductsPage() {
         </div>
       </div>
 
+      {/* Bulk Actions */}
+      {selectedProducts.size > 0 && (
+        <div className="bg-brand-50 dark:bg-brand-900/20 border border-brand-200 dark:border-brand-800 rounded-lg p-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              {selectedProducts.size} product(s) selected
+            </span>
+            <select
+              value={bulkAction}
+              onChange={(e) => setBulkAction(e.target.value)}
+              className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+              disabled={bulkLoading}
+            >
+              <option value="">Select action...</option>
+              <option value="activate">Activate</option>
+              <option value="deactivate">Deactivate</option>
+              <option value="delete">Delete</option>
+            </select>
+            <Button
+              onClick={handleBulkAction}
+              disabled={!bulkAction || bulkLoading}
+              size="sm"
+            >
+              {bulkLoading ? 'Processing...' : 'Apply'}
+            </Button>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setSelectedProducts(new Set())}
+          >
+            Clear Selection
+          </Button>
+        </div>
+      )}
+
       {/* Products Table */}
       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
         <ProductTable
           products={products}
           onDelete={handleDelete}
           loading={loading}
+          selectedProducts={selectedProducts}
+          onSelectAll={handleSelectAll}
+          onSelectProduct={handleSelectProduct}
         />
       </div>
 

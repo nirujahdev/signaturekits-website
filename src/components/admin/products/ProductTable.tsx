@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { formatPrice } from '@/lib/products';
 
 interface Product {
@@ -25,9 +26,25 @@ interface ProductTableProps {
   products: Product[];
   onDelete: (id: string) => void;
   loading?: boolean;
+  selectedProducts?: Set<string>;
+  onSelectAll?: (checked: boolean) => void;
+  onSelectProduct?: (id: string, checked: boolean) => void;
 }
 
-export function ProductTable({ products, onDelete, loading }: ProductTableProps) {
+export function ProductTable({
+  products,
+  onDelete,
+  loading,
+  selectedProducts = new Set(),
+  onSelectAll,
+  onSelectProduct,
+}: ProductTableProps) {
+  const handleSelectAll = (checked: boolean) => {
+    if (onSelectAll) {
+      onSelectAll(checked);
+    }
+  };
+
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
       onDelete(id);
@@ -55,6 +72,14 @@ export function ProductTable({ products, onDelete, loading }: ProductTableProps)
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b border-gray-200 dark:border-gray-700">
+            {onSelectAll && (
+              <th className="w-12 p-3">
+                <Checkbox
+                  checked={products.length > 0 && products.every((p) => selectedProducts.has(p.id))}
+                  onCheckedChange={handleSelectAll}
+                />
+              </th>
+            )}
             <th className="text-left p-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
               Image
             </th>
@@ -85,8 +110,18 @@ export function ProductTable({ products, onDelete, loading }: ProductTableProps)
           {products.map((product) => (
             <tr
               key={product.id}
-              className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+              className={`border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${
+                selectedProducts.has(product.id) ? 'bg-brand-50 dark:bg-brand-900/10' : ''
+              }`}
             >
+              {onSelectProduct && (
+                <td className="p-3">
+                  <Checkbox
+                    checked={selectedProducts.has(product.id)}
+                    onCheckedChange={(checked) => onSelectProduct(product.id, checked as boolean)}
+                  />
+                </td>
+              )}
               <td className="p-3">
                 <div className="w-16 h-16 relative rounded overflow-hidden bg-gray-100 dark:bg-gray-800">
                   {product.images && product.images.length > 0 ? (
