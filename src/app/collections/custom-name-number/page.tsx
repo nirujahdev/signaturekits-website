@@ -6,11 +6,6 @@ import { useEffect, useState } from 'react';
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
-// Prevent static generation by returning empty array
-export function generateStaticParams() {
-  return [];
-}
-
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductList from '@/components/products/ProductList';
@@ -23,7 +18,7 @@ import { SEO_CONFIG } from '@/lib/seo-config';
 
 // Dynamically import BreadcrumbStructuredData to avoid static generation issues
 const BreadcrumbStructuredData = dynamicImport(
-  () => import('@/components/seo/StructuredData').then((mod) => ({ default: mod.BreadcrumbStructuredData })),
+  () => import('@/components/seo/StructuredData').then((mod) => mod.BreadcrumbStructuredData),
   { ssr: false }
 );
 
