@@ -4,6 +4,10 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 import Button from './ui/button/Button';
 import { AlertIcon } from '@/icons/admin/index';
 
+// #region agent log
+fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:imports',message:'ErrorBoundary imports check',data:{Button:typeof Button,AlertIcon:typeof AlertIcon,ButtonIsFunction:typeof Button==='function',AlertIconIsFunction:typeof AlertIcon==='function'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+// #endregion
+
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
@@ -34,10 +38,18 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   render() {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:render',message:'ErrorBoundary render',data:{hasError:this.state.hasError,ButtonType:typeof Button,AlertIconType:typeof AlertIcon,childrenType:typeof this.props.children},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
+
     if (this.state.hasError) {
       if (this.props.fallback) {
         return this.props.fallback;
       }
+
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:error-state',message:'Rendering error state',data:{Button:typeof Button,AlertIcon:typeof AlertIcon,ButtonIsValid:typeof Button==='function'||typeof Button==='object'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
 
       return (
         <div className="flex items-center justify-center min-h-[400px] p-8">

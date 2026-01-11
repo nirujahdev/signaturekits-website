@@ -11,6 +11,10 @@ import AppSidebar from "@/components/admin/layout/AppSidebar";
 import Backdrop from "@/components/admin/layout/Backdrop";
 import React from "react";
 
+// #region agent log
+fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'admin/layout.tsx:imports',message:'Component imports check',data:{SidebarProvider:typeof SidebarProvider,ThemeProvider:typeof ThemeProvider,AdminAuthGuard:typeof AdminAuthGuard,ErrorBoundary:typeof ErrorBoundary,NotificationProvider:typeof NotificationProvider,AppHeader:typeof AppHeader,AppSidebar:typeof AppSidebar,Backdrop:typeof Backdrop},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+// #endregion
+
 export default function AdminLayout({
   children,
 }: {
@@ -19,10 +23,28 @@ export default function AdminLayout({
   const pathname = usePathname();
   const isSignInPage = pathname === '/admin/signin';
 
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'admin/layout.tsx:render',message:'AdminLayout render start',data:{pathname,isSignInPage,childrenType:typeof children},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+  // #endregion
+
   // Don't wrap signin page with admin layout components
   if (isSignInPage) {
     return <>{children}</>;
   }
+
+  // #region agent log
+  const componentChecks = {
+    ThemeProvider: typeof ThemeProvider,
+    SidebarProvider: typeof SidebarProvider,
+    AdminAuthGuard: typeof AdminAuthGuard,
+    ErrorBoundary: typeof ErrorBoundary,
+    NotificationProvider: typeof NotificationProvider,
+    AppSidebar: typeof AppSidebar,
+    Backdrop: typeof Backdrop,
+    AppHeader: typeof AppHeader,
+  };
+  fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'admin/layout.tsx:before-render',message:'Component types before render',data:componentChecks,timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+  // #endregion
 
   return (
     <ThemeProvider>

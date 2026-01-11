@@ -21,6 +21,10 @@ import {
 } from "@/icons/admin/index";
 import SidebarWidget from "./SidebarWidget";
 
+// #region agent log
+fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AppSidebar.tsx:imports',message:'Icon imports check',data:{BoxIcon:typeof BoxIcon,GridIcon:typeof GridIcon,UserCircleIcon:typeof UserCircleIcon,SidebarWidget:typeof SidebarWidget,BoxIconIsObject:typeof BoxIcon==='object',GridIconIsObject:typeof GridIcon==='object'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+// #endregion
+
 type NavItem = {
   name: string;
   icon: React.ReactNode;

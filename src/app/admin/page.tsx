@@ -11,6 +11,10 @@ import { TopProductsTable } from '@/components/admin/analytics/TopProductsTable'
 import { SalesTrends } from '@/components/admin/analytics/SalesTrends';
 import Button from '@/components/admin/ui/button/Button';
 
+// #region agent log
+fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'admin/page.tsx:imports',message:'Dashboard component imports',data:{EcommerceMetrics:typeof EcommerceMetrics,RecentOrders:typeof RecentOrders,RevenueChart:typeof RevenueChart,Button:typeof Button,ButtonIsFunction:typeof Button==='function',ButtonIsObject:typeof Button==='object'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+// #endregion
+
 type Period = 'today' | 'week' | 'month' | 'year' | 'all';
 
 export default function AdminDashboard() {
