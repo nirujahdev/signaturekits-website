@@ -52,12 +52,12 @@ export default function AdminLayout({
         <AdminAuthGuard>
           <ErrorBoundary>
             <NotificationProvider>
-              <div className="min-h-screen xl:flex">
+              <div className="min-h-screen xl:flex bg-gray-50 dark:bg-gray-900">
                 <AppSidebar />
                 <Backdrop />
                 <div className="flex-1 transition-all duration-300 ease-in-out lg:ml-[90px]">
                   <AppHeader />
-                  <div className="p-4 mx-auto max-w-screen-2xl md:p-6">{children}</div>
+                  <div className="p-4 mx-auto max-w-screen-2xl md:p-6 lg:p-8">{children}</div>
                 </div>
               </div>
             </NotificationProvider>

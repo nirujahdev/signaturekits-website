@@ -29,7 +29,7 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-6">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 animate-pulse">
+          <div key={i} className="admin-card animate-pulse">
             <div className="h-12 w-12 bg-gray-200 rounded-xl dark:bg-gray-800 mb-5" />
             <div className="h-4 w-20 bg-gray-200 rounded dark:bg-gray-800 mb-2" />
             <div className="h-8 w-24 bg-gray-200 rounded dark:bg-gray-800" />
@@ -42,70 +42,70 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-6">
       {/* Customers */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <Icon src={groupIconSrc} alt="Customers" width={24} height={24} className="text-gray-800 size-6 dark:text-white/90" />
-        </div>
-        <div className="flex items-end justify-between mt-5">
-          <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Customers
-            </span>
-            <h4 className="mt-2 font-bold text-gray-800 text-2xl dark:text-white/90">
-              {stats?.totalCustomers.toLocaleString() || 0}
-            </h4>
+      <div className="admin-card group hover:shadow-md transition-all duration-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-brand-100 to-brand-200 rounded-xl dark:from-brand-900/30 dark:to-brand-800/30 group-hover:scale-105 transition-transform">
+            <Icon src={groupIconSrc} alt="Customers" width={28} height={28} className="text-brand-600 dark:text-brand-400" />
           </div>
+        </div>
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Customers
+          </p>
+          <h4 className="text-2xl font-bold text-gray-900 dark:text-white/90">
+            {stats?.totalCustomers.toLocaleString() || 0}
+          </h4>
         </div>
       </div>
 
       {/* Orders */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <Icon src={boxIconLineSrc} alt="Orders" width={24} height={24} className="text-gray-800 size-6 dark:text-white/90" />
-        </div>
-        <div className="flex items-end justify-between mt-5">
-          <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Total Orders
-            </span>
-            <h4 className="mt-2 font-bold text-gray-800 text-2xl dark:text-white/90">
-              {stats?.totalOrders.toLocaleString() || 0}
-            </h4>
+      <div className="admin-card group hover:shadow-md transition-all duration-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl dark:from-blue-900/30 dark:to-blue-800/30 group-hover:scale-105 transition-transform">
+            <Icon src={boxIconLineSrc} alt="Orders" width={28} height={28} className="text-blue-600 dark:text-blue-400" />
           </div>
+        </div>
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Total Orders
+          </p>
+          <h4 className="text-2xl font-bold text-gray-900 dark:text-white/90">
+            {stats?.totalOrders.toLocaleString() || 0}
+          </h4>
         </div>
       </div>
 
       {/* Revenue */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <Icon src={dollarLineIconSrc} alt="Revenue" width={24} height={24} className="text-gray-800 size-6 dark:text-white/90" />
-        </div>
-        <div className="flex items-end justify-between mt-5">
-          <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Total Revenue
-            </span>
-            <h4 className="mt-2 font-bold text-gray-800 text-2xl dark:text-white/90">
-              {formatCurrency(stats?.totalRevenue || 0)}
-            </h4>
+      <div className="admin-card group hover:shadow-md transition-all duration-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-green-100 to-green-200 rounded-xl dark:from-green-900/30 dark:to-green-800/30 group-hover:scale-105 transition-transform">
+            <Icon src={dollarLineIconSrc} alt="Revenue" width={28} height={28} className="text-green-600 dark:text-green-400" />
           </div>
+        </div>
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Total Revenue
+          </p>
+          <h4 className="text-2xl font-bold text-gray-900 dark:text-white/90">
+            {formatCurrency(stats?.totalRevenue || 0)}
+          </h4>
         </div>
       </div>
 
       {/* Pending Orders */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <Icon src={boxIconLineSrc} alt="Orders" width={24} height={24} className="text-gray-800 size-6 dark:text-white/90" />
-        </div>
-        <div className="flex items-end justify-between mt-5">
-          <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Pending Orders
-            </span>
-            <h4 className="mt-2 font-bold text-gray-800 text-2xl dark:text-white/90">
-              {stats?.pendingOrders.toLocaleString() || 0}
-            </h4>
+      <div className="admin-card group hover:shadow-md transition-all duration-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-amber-100 to-amber-200 rounded-xl dark:from-amber-900/30 dark:to-amber-800/30 group-hover:scale-105 transition-transform">
+            <Icon src={boxIconLineSrc} alt="Pending Orders" width={28} height={28} className="text-amber-600 dark:text-amber-400" />
           </div>
+        </div>
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Pending Orders
+          </p>
+          <h4 className="text-2xl font-bold text-gray-900 dark:text-white/90">
+            {stats?.pendingOrders.toLocaleString() || 0}
+          </h4>
         </div>
       </div>
     </div>

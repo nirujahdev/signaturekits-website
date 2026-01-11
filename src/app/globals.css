@@ -33,11 +33,32 @@
   --color-input: #e5e5e5;
   --color-ring: #000000;
 
-  --color-chart-1: #000000;
-  --color-chart-2: #666666;
-  --color-chart-3: #e5e5e5;
-  --color-chart-4: #000000;
-  --color-chart-5: #666666;
+  --color-chart-1: #465fff;
+  --color-chart-2: #7592ff;
+  --color-chart-3: #9cb9ff;
+  --color-chart-4: #3641f5;
+  --color-chart-5: #2a31d8;
+
+  /* Admin Dashboard Spacing System (4px base unit) */
+  --spacing-xs: 0.25rem;   /* 4px */
+  --spacing-sm: 0.5rem;    /* 8px */
+  --spacing-md: 1rem;      /* 16px */
+  --spacing-lg: 1.5rem;    /* 24px */
+  --spacing-xl: 2rem;      /* 32px */
+  --spacing-2xl: 3rem;     /* 48px */
+  --spacing-3xl: 4rem;     /* 64px */
+
+  /* Admin Dashboard Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  /* Admin Dashboard Border Radius */
+  --radius-card: 0.75rem;  /* 12px */
+  --radius-button: 0.5rem;  /* 8px */
+  --radius-input: 0.5rem;  /* 8px */
 
   /* Admin Dashboard Brand Colors */
   --color-brand-25: #f2f7ff;
@@ -134,6 +155,54 @@
     font-size: 16px; /* Prevent iOS auto-zoom on input focus */
   }
 
+  /* Admin Dashboard Typography Improvements */
+  .admin-heading-1 {
+    font-size: 1.875rem; /* 30px */
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-foreground);
+  }
+
+  .admin-heading-2 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--color-foreground);
+  }
+
+  .admin-heading-3 {
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-foreground);
+  }
+
+  .admin-body {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.5;
+    color: var(--color-muted-foreground);
+  }
+
+  .admin-body-sm {
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.5;
+    color: var(--color-muted-foreground);
+  }
+
+  /* Dark mode admin typography */
+  .dark .admin-heading-1,
+  .dark .admin-heading-2,
+  .dark .admin-heading-3 {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .dark .admin-body,
+  .dark .admin-body-sm {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
   /* Mobile typography optimizations */
   @media (max-width: 768px) {
     body {
@@ -222,6 +291,36 @@
     border-top: 1px solid var(--color-border);
   }
 
+  /* Admin Dashboard Card Styles */
+  .admin-card {
+    @apply rounded-2xl border border-gray-200 bg-white p-6;
+    @apply dark:border-gray-800 dark:bg-white/[0.03];
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  }
+
+  .admin-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-brand-200);
+  }
+
+  .dark .admin-card:hover {
+    border-color: var(--color-brand-800);
+  }
+
+  .admin-card-header {
+    @apply mb-4;
+  }
+
+  .admin-card-title {
+    @apply text-lg font-semibold text-gray-800 dark:text-white/90;
+    margin-bottom: 0.5rem;
+  }
+
+  .admin-card-description {
+    @apply text-sm text-gray-500 dark:text-gray-400;
+  }
+
   /* Admin Dashboard Utilities */
   .menu-item {
     @apply relative flex items-center w-full gap-3 px-3 py-2 font-medium rounded-lg text-sm;
@@ -282,5 +381,93 @@
 
   .pulse-dot {
     animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Admin Dashboard Spacing Utilities */
+  .admin-spacing-xs { gap: var(--spacing-xs); }
+  .admin-spacing-sm { gap: var(--spacing-sm); }
+  .admin-spacing-md { gap: var(--spacing-md); }
+  .admin-spacing-lg { gap: var(--spacing-lg); }
+  .admin-spacing-xl { gap: var(--spacing-xl); }
+  .admin-spacing-2xl { gap: var(--spacing-2xl); }
+
+  /* Admin Dashboard Grid Improvements */
+  .admin-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+  }
+
+  .admin-grid-1 { grid-template-columns: 1fr; }
+  .admin-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .admin-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .admin-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+  @media (max-width: 1024px) {
+    .admin-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .admin-grid-3 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .admin-grid-4,
+    .admin-grid-3,
+    .admin-grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* Admin Dashboard Loading States */
+  .admin-skeleton {
+    @apply animate-pulse bg-gray-200 dark:bg-gray-800 rounded;
+  }
+
+  /* Admin Dashboard Table Improvements */
+  .admin-table {
+    @apply w-full border-collapse;
+  }
+
+  .admin-table th {
+    @apply text-left font-semibold text-xs uppercase tracking-wider;
+    @apply text-gray-500 dark:text-gray-400;
+    @apply py-3 px-4;
+    @apply border-b border-gray-200 dark:border-gray-800;
+  }
+
+  .admin-table td {
+    @apply py-3 px-4;
+    @apply border-b border-gray-100 dark:border-gray-800/50;
+    @apply text-sm text-gray-800 dark:text-white/90;
+  }
+
+  .admin-table tr:hover td {
+    @apply bg-gray-50 dark:bg-white/[0.02];
+  }
+
+  /* Admin Dashboard Button Improvements */
+  .admin-button {
+    @apply inline-flex items-center justify-center;
+    @apply px-4 py-2 rounded-lg;
+    @apply font-medium text-sm;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .admin-button-primary {
+    @apply bg-brand-500 text-white;
+    @apply hover:bg-brand-600;
+    @apply focus:ring-brand-500;
+  }
+
+  .admin-button-secondary {
+    @apply bg-gray-100 text-gray-700;
+    @apply hover:bg-gray-200;
+    @apply dark:bg-gray-800 dark:text-gray-300;
+    @apply dark:hover:bg-gray-700;
+    @apply focus:ring-gray-500;
+  }
+
+  .admin-button-outline {
+    @apply border border-gray-300 bg-transparent text-gray-700;
+    @apply hover:bg-gray-50;
+    @apply dark:border-gray-700 dark:text-gray-300;
+    @apply dark:hover:bg-white/[0.05];
+    @apply focus:ring-gray-500;
   }
 }

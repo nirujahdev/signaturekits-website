@@ -125,23 +125,25 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 lg:space-y-8">
+      {/* Header Section */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white/90 mb-2">
+          <h1 className="admin-heading-1 mb-2">
             Dashboard
           </h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="admin-body">
             Overview of your e-commerce platform
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {(['today', 'week', 'month', 'year', 'all'] as Period[]).map((p) => (
             <Button
               key={p}
               size="sm"
               variant={period === p ? 'primary' : 'outline'}
               onClick={() => setPeriod(p)}
+              className="text-xs px-3 py-1.5"
             >
               {p.charAt(0).toUpperCase() + p.slice(1)}
             </Button>
@@ -152,7 +154,7 @@ export default function AdminDashboard() {
       <EcommerceMetrics stats={stats} loading={loading} />
 
       {/* Sales Trends */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         <SalesTrends
           current={stats.totalRevenue}
           previous={stats.todayRevenue * 30}
@@ -185,41 +187,49 @@ export default function AdminDashboard() {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-4">
-            Revenue Trends
-          </h2>
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <div className="admin-card">
+          <div className="admin-card-header">
+            <h2 className="admin-card-title">
+              Revenue Trends
+            </h2>
+          </div>
           <RevenueChart
             data={analytics?.revenueTrends || []}
             loading={analyticsLoading}
           />
         </div>
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-4">
-            Order Status Distribution
-          </h2>
+        <div className="admin-card">
+          <div className="admin-card-header">
+            <h2 className="admin-card-title">
+              Order Status Distribution
+            </h2>
+          </div>
           <OrderStatusChart
             data={analytics?.statusBreakdown || []}
             loading={analyticsLoading}
           />
         </div>
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-4">
-            Customer Growth
-          </h2>
+        <div className="admin-card">
+          <div className="admin-card-header">
+            <h2 className="admin-card-title">
+              Customer Growth
+            </h2>
+          </div>
           <CustomerGrowthChart
             data={analytics?.customerGrowth || []}
             loading={analyticsLoading}
           />
         </div>
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-4">
-            Top Products
-          </h2>
+        <div className="admin-card">
+          <div className="admin-card-header">
+            <h2 className="admin-card-title">
+              Top Products
+            </h2>
+          </div>
           <TopProductsTable
             data={analytics?.topProducts || []}
             loading={analyticsLoading}
