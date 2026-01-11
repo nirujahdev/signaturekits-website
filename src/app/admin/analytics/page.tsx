@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { SalesByProductChart } from '@/components/admin/analytics/SalesByProductChart';
 import { SalesByCategoryChart } from '@/components/admin/analytics/SalesByCategoryChart';
 import { CustomerAcquisitionChart } from '@/components/admin/analytics/CustomerAcquisitionChart';
@@ -40,24 +40,7 @@ export default function AnalyticsPage() {
   const [abandonedCarts, setAbandonedCarts] = useState<any[]>([]);
   const [loadingCarts, setLoadingCarts] = useState(true);
 
-  useEffect(() => {
-    fetchAllAnalytics();
-  }, [period]);
-
-  const fetchAllAnalytics = async () => {
-    setLoading(true);
-    await Promise.all([
-      fetchSalesByProduct(),
-      fetchSalesByCategory(),
-      fetchCustomerAcquisition(),
-      fetchRevenueTrends(),
-      fetchConversionFunnel(),
-      fetchAbandonedCarts(),
-    ]);
-    setLoading(false);
-  };
-
-  const fetchSalesByProduct = async () => {
+  const fetchSalesByProduct = useCallback(async () => {
     setLoadingProducts(true);
     try {
       const res = await fetch(`/api/admin/analytics/sales-by-product?period=${period}`);
@@ -70,9 +53,9 @@ export default function AnalyticsPage() {
     } finally {
       setLoadingProducts(false);
     }
-  };
+  }, [period]);
 
-  const fetchSalesByCategory = async () => {
+  const fetchSalesByCategory = useCallback(async () => {
     setLoadingCategories(true);
     try {
       const res = await fetch(`/api/admin/analytics/sales-by-category?period=${period}`);
@@ -85,9 +68,9 @@ export default function AnalyticsPage() {
     } finally {
       setLoadingCategories(false);
     }
-  };
+  }, [period]);
 
-  const fetchCustomerAcquisition = async () => {
+  const fetchCustomerAcquisition = useCallback(async () => {
     setLoadingAcquisition(true);
     try {
       const res = await fetch(`/api/admin/analytics/customer-acquisition?period=${period}`);
@@ -100,9 +83,9 @@ export default function AnalyticsPage() {
     } finally {
       setLoadingAcquisition(false);
     }
-  };
+  }, [period]);
 
-  const fetchRevenueTrends = async () => {
+  const fetchRevenueTrends = useCallback(async () => {
     setLoadingTrends(true);
     try {
       const res = await fetch(`/api/admin/analytics/revenue-trends?period=${period}`);
@@ -115,9 +98,9 @@ export default function AnalyticsPage() {
     } finally {
       setLoadingTrends(false);
     }
-  };
+  }, [period]);
 
-  const fetchConversionFunnel = async () => {
+  const fetchConversionFunnel = useCallback(async () => {
     setLoadingFunnel(true);
     try {
       const res = await fetch(`/api/admin/analytics/conversion-funnel?period=${period}`);
@@ -130,9 +113,9 @@ export default function AnalyticsPage() {
     } finally {
       setLoadingFunnel(false);
     }
-  };
+  }, [period]);
 
-  const fetchAbandonedCarts = async () => {
+  const fetchAbandonedCarts = useCallback(async () => {
     setLoadingCarts(true);
     try {
       const res = await fetch(`/api/admin/analytics/abandoned-carts?period=${period}`);
@@ -145,7 +128,24 @@ export default function AnalyticsPage() {
     } finally {
       setLoadingCarts(false);
     }
-  };
+  }, [period]);
+
+  const fetchAllAnalytics = useCallback(async () => {
+    setLoading(true);
+    await Promise.all([
+      fetchSalesByProduct(),
+      fetchSalesByCategory(),
+      fetchCustomerAcquisition(),
+      fetchRevenueTrends(),
+      fetchConversionFunnel(),
+      fetchAbandonedCarts(),
+    ]);
+    setLoading(false);
+  }, [fetchSalesByProduct, fetchSalesByCategory, fetchCustomerAcquisition, fetchRevenueTrends, fetchConversionFunnel, fetchAbandonedCarts]);
+
+  useEffect(() => {
+    fetchAllAnalytics();
+  }, [fetchAllAnalytics]);
 
   return (
     <div className="space-y-6">

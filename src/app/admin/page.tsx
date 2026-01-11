@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { EcommerceMetrics } from '@/components/admin/ecommerce/EcommerceMetrics';
 import RecentOrders from '@/components/admin/ecommerce/RecentOrders';
@@ -35,14 +35,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
 
-  useEffect(() => {
-    if (!authLoading && user) {
-      fetchDashboardStats();
-      fetchAnalytics();
-    }
-  }, [authLoading, user, period]);
-
-  const fetchDashboardStats = async () => {
+  const fetchDashboardStats = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/dashboard/stats?period=${period}`);
       if (res.ok) {
@@ -76,9 +69,9 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
 
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setAnalyticsLoading(true);
     try {
       const res = await fetch(`/api/admin/dashboard/analytics?period=${period}`);
@@ -110,7 +103,14 @@ export default function AdminDashboard() {
     } finally {
       setAnalyticsLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      fetchDashboardStats();
+      fetchAnalytics();
+    }
+  }, [authLoading, user, fetchDashboardStats, fetchAnalytics]);
 
   if (authLoading) {
     return (
