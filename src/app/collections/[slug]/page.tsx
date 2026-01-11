@@ -114,7 +114,7 @@ export default function CollectionPage() {
       <div className="min-h-screen bg-white">
         <Header />
         <main className="pt-[100px] md:pt-[140px] pb-[60px] md:pb-[80px]">
-          <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-[1600px]">
+          <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
             {/* Luxury Header Section */}
             <div className="mb-12 md:mb-16 lg:mb-20">
               <h1 className="luxury-heading mb-4 md:mb-6 text-[40px] md:text-[56px] lg:text-[80px]">

@@ -58,14 +58,20 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-x-8">
-              {/* Collections with + icon */}
-              <button
-                onClick={() => setIsCollectionsOpen(!isCollectionsOpen)}
-                className={`text-[15px] font-semibold tracking-[-0.01em] ${headerTextColor} transition-colors duration-500 hover:opacity-70 flex items-center gap-1 min-h-[44px]`}
+              {/* Collections with + icon - Hover to show dropdown, click to go to page */}
+              <div
+                className="relative"
+                onMouseEnter={() => setIsCollectionsOpen(true)}
+                onMouseLeave={() => setIsCollectionsOpen(false)}
               >
-                Collections
-                <span className="text-[12px]">+</span>
-              </button>
+                <Link
+                  href="/collections"
+                  className={`text-[15px] font-semibold tracking-[-0.01em] ${headerTextColor} transition-colors duration-500 hover:opacity-70 flex items-center gap-1 min-h-[44px]`}
+                >
+                  Collections
+                  <span className="text-[12px]">+</span>
+                </Link>
+              </div>
               
               {navItems.map((item) => (
                 <Link
@@ -122,7 +128,7 @@ export default function Header() {
           </div>
       </header>
       
-      {/* Collections Dropdown */}
+      {/* Collections Dropdown - Hover only */}
       <CollectionsDropdown 
         isOpen={isCollectionsOpen} 
         onClose={() => setIsCollectionsOpen(false)}

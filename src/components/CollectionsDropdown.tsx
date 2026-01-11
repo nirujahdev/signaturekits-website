@@ -49,26 +49,15 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
   useEffect(() => {
     if (!isOpen) return;
 
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
       }
     };
 
-    const timeoutId = setTimeout(() => {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleEscape);
-    }, 0);
+    document.addEventListener('keydown', handleEscape);
 
     return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
     };
   }, [isOpen, onClose]);
@@ -90,12 +79,14 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
       {/* Luxury Dropdown Menu */}
       <div
         ref={dropdownRef}
+        onMouseEnter={() => {}} // Keep open on hover
+        onMouseLeave={onClose}
         className={`fixed left-0 w-full bg-white z-[95] border-b border-[#E5E5E5] transition-all duration-500 ease-out ${
           isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
         style={{ top: '80px' }}
       >
-        <div className="container mx-auto px-8 md:px-16 lg:px-24 max-w-[1600px] py-16 md:py-24">
+        <div className="container mx-auto px-8 md:px-16 lg:px-24 max-w-7xl py-16 md:py-24">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-16 lg:gap-20">
             {categories.map((category) => (
               <Link

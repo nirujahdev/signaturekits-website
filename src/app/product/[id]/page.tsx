@@ -238,7 +238,7 @@ export default function ProductDetailPage() {
       <Header />
       
       <main className="pt-[100px] md:pt-[140px] pb-[60px] md:pb-[80px]">
-        <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-[1600px]">
+        <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-x-[80px] lg:gap-x-[120px] gap-y-12 lg:gap-y-0">
             {/* Left side: Large Centered Image with Carousel */}
             <div ref={imageStackRef} className="flex-1 mb-12 lg:mb-0">
