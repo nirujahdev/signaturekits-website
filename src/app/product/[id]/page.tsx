@@ -223,7 +223,6 @@ export default function ProductDetailPage() {
     ? product.assets.map(a => a.preview)
     : [mainImage, mainImage];
   
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const currentImage = images[selectedImageIndex] || mainImage;
 
   // Extract size options from variants

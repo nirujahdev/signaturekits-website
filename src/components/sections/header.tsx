@@ -4,19 +4,16 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
-import { SearchBar } from '@/components/search/SearchBar';
 import { CollectionsDropdown } from '@/components/CollectionsDropdown';
 import { CartSidebar } from '@/components/CartSidebar';
 import { MobileMenu } from '@/components/MobileMenu';
-import { MobileSearchModal } from '@/components/MobileSearchModal';
-import { Instagram, Menu, Search } from 'lucide-react';
+import { Instagram, Menu } from 'lucide-react';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const pathname = usePathname();
   const { itemCount } = useCart();
   
@@ -56,24 +53,8 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Center: Search with underline (Desktop only) */}
-          <div className="hidden md:flex items-center justify-center flex-1">
-            <div className="relative">
-              <SearchBar />
-              <div className={`absolute bottom-0 left-0 w-full h-[1px] ${headerTextColor === 'text-white' ? 'bg-white' : 'bg-black'} transition-colors duration-500`} />
-            </div>
-          </div>
-
-          {/* Right: Search (Mobile) + Cart */}
+          {/* Right: Cart */}
           <div className="flex items-center gap-3 md:gap-6">
-            {/* Mobile Search Button */}
-            <button
-              onClick={() => setIsMobileSearchOpen(true)}
-              className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Open search"
-            >
-              <Search className={`w-5 h-5 ${headerTextColor} transition-colors duration-500`} />
-            </button>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-x-8">
@@ -161,11 +142,6 @@ export default function Header() {
         headerTextColor={headerTextColor}
       />
 
-      {/* Mobile Search Modal */}
-      <MobileSearchModal
-        isOpen={isMobileSearchOpen}
-        onClose={() => setIsMobileSearchOpen(false)}
-      />
     </>
   );
 }

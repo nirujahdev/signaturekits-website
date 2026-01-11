@@ -109,7 +109,7 @@ export default function Hero() {
       {/* Hero Content Container */}
       <div className="container relative z-10 w-full flex flex-col md:flex-row items-end justify-between pb-8 md:pb-12 lg:pb-20 text-white px-4 md:px-6">
         {/* Large Left Branding */}
-        <div className="w-full md:w-auto mb-6 md:mb-0 md:mr-auto">
+        <div className="w-full md:w-auto mb-6 md:mb-0">
           <h1
             ref={headlineRef}
             className="font-display font-semibold select-none leading-[0.85] md:leading-[0.8] mix-blend-difference"
@@ -124,7 +124,7 @@ export default function Hero() {
         </div>
 
         {/* Subtext Paragraph - Right Aligned */}
-        <div className="w-full md:w-auto md:max-w-xs text-left md:text-right md:ml-auto">
+        <div className="w-full md:w-auto md:max-w-xs text-left md:text-right">
           <p
             ref={subheadlineRef}
             className="font-sans font-normal leading-[1.3] md:leading-[1.2]"
