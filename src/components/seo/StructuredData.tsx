@@ -1,7 +1,12 @@
 /**
  * Structured Data Components for SEO
- * Renders JSON-LD schema markup server-side
+ * Renders JSON-LD schema markup
+ * 
+ * Note: Marked as client component to work with client-side pages
+ * Structured data works fine when rendered on the client
  */
+
+'use client';
 
 import { FAQItem, ProductSEOData } from '@/lib/seo';
 
