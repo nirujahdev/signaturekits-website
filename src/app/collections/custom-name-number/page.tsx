@@ -18,7 +18,7 @@ import { SEO_CONFIG } from '@/lib/seo-config';
 
 // Dynamically import BreadcrumbStructuredData to avoid static generation issues
 const BreadcrumbStructuredData = dynamicImport(
-  () => import('@/components/seo/StructuredData').then((mod) => mod.BreadcrumbStructuredData),
+  () => import('@/components/seo/StructuredData').then((mod) => ({ default: mod.BreadcrumbStructuredData })),
   { ssr: false }
 );
 
