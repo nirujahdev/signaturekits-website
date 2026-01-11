@@ -8,8 +8,7 @@ import { TRACK_ORDER_CONTENT } from '@/lib/seo-content';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { CheckCircle2, Circle, Package, Truck, Home, Clock, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { CheckCircle2, Package, Truck, Home, X } from 'lucide-react';
 
 type DeliveryStage = 'ORDER_CONFIRMED' | 'SOURCING' | 'ARRIVED' | 'DISPATCHED' | 'DELIVERED';
 
