@@ -103,10 +103,28 @@ export function BreadcrumbStructuredData({
 }: {
   items: Array<{ name: string; url: string }>;
 }) {
+  // Defensive check: ensure items is valid array
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return null;
+  }
+
+  // Filter out invalid items and ensure required fields
+  const validItems = items
+    .filter((item) => item && typeof item.name === 'string' && typeof item.url === 'string')
+    .map((item) => ({
+      name: item.name.trim(),
+      url: item.url.trim(),
+    }))
+    .filter((item) => item.name && item.url);
+
+  if (validItems.length === 0) {
+    return null;
+  }
+
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
+    itemListElement: validItems.map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,

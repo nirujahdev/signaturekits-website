@@ -48,10 +48,14 @@ export default function SriLankaJerseysPage() {
     }
   };
 
+  // Defensive checks for breadcrumb items
+  const baseUrl = SEO_CONFIG?.BASE_URL || 'https://signaturekits-website.vercel.app';
+  const collectionName = collectionContent?.h1 || 'Sri Lanka Jerseys';
+  
   const breadcrumbItems = [
-    { name: 'Home', url: SEO_CONFIG.BASE_URL },
-    { name: collectionContent?.h1 || 'Sri Lanka Jerseys', url: `${SEO_CONFIG.BASE_URL}/collections/sri-lanka-jerseys` },
-  ];
+    { name: 'Home', url: baseUrl },
+    { name: collectionName, url: `${baseUrl}/collections/sri-lanka-jerseys` },
+  ].filter((item) => item.name && item.url); // Ensure all items are valid
 
   return (
     <>
@@ -64,12 +68,12 @@ export default function SriLankaJerseysPage() {
               {collectionContent?.h1 || 'Sri Lanka Jerseys'}
             </h1>
             
-            {collectionContent?.directAnswer && (
+            {collectionContent?.directAnswer && SEO_CONFIG && (
               <div className="mb-6">
                 <DirectAnswer
-                  deliveryDays={SEO_CONFIG.DELIVERY_WINDOW}
-                  hasCustomization={SEO_CONFIG.CUSTOM_NAME_NUMBER}
-                  hasCOD={SEO_CONFIG.COD}
+                  deliveryDays={SEO_CONFIG.DELIVERY_WINDOW || '10–20 working days'}
+                  hasCustomization={SEO_CONFIG.CUSTOM_NAME_NUMBER ?? true}
+                  hasCOD={SEO_CONFIG.COD ?? true}
                   isPreOrder={true}
                 />
               </div>

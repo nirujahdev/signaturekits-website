@@ -48,10 +48,14 @@ export default function CustomNameNumberPage() {
     }
   };
 
+  // Defensive checks for breadcrumb items
+  const baseUrl = SEO_CONFIG?.BASE_URL || 'https://signaturekits-website.vercel.app';
+  const collectionName = collectionContent?.h1 || 'Custom Name & Number';
+  
   const breadcrumbItems = [
-    { name: 'Home', url: SEO_CONFIG.BASE_URL },
-    { name: collectionContent?.h1 || 'Custom Name & Number', url: `${SEO_CONFIG.BASE_URL}/collections/custom-name-number` },
-  ];
+    { name: 'Home', url: baseUrl },
+    { name: collectionName, url: `${baseUrl}/collections/custom-name-number` },
+  ].filter((item) => item.name && item.url); // Ensure all items are valid
 
   return (
     <>
@@ -64,12 +68,12 @@ export default function CustomNameNumberPage() {
               {collectionContent?.h1 || 'Custom Name & Number'}
             </h1>
             
-            {collectionContent?.directAnswer && (
+            {collectionContent?.directAnswer && SEO_CONFIG && (
               <div className="mb-6">
                 <DirectAnswer
-                  deliveryDays={SEO_CONFIG.DELIVERY_WINDOW}
-                  hasCustomization={SEO_CONFIG.CUSTOM_NAME_NUMBER}
-                  hasCOD={SEO_CONFIG.COD}
+                  deliveryDays={SEO_CONFIG.DELIVERY_WINDOW || '10–20 working days'}
+                  hasCustomization={SEO_CONFIG.CUSTOM_NAME_NUMBER ?? true}
+                  hasCOD={SEO_CONFIG.COD ?? true}
                   isPreOrder={true}
                 />
               </div>
