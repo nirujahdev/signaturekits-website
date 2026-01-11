@@ -5,10 +5,7 @@ import Hero from "@/components/sections/hero";
 import IconicKitsHotspotSlider from "@/components/IconicKitsHotspotSlider";
 import EverydayEssentials from "@/components/sections/everyday-essentials";
 import ProvenFavorites from "@/components/sections/proven-favorites";
-import StyleItYourWay from "@/components/sections/style-it-your-way";
 import Benefits from "@/components/sections/benefits";
-import NewsGrid from "@/components/sections/news-grid";
-import CTASection from "@/components/sections/cta-section";
 import Footer from "@/components/sections/footer";
 import { generatePageMetadata } from '@/lib/generate-metadata';
 import { DirectAnswer } from '@/components/seo/DirectAnswer';
@@ -76,10 +73,7 @@ export default function Home() {
         <EverydayEssentials />
         <ProvenFavorites />
         <IconicKitsHotspotSlider />
-        <StyleItYourWay />
         <Benefits />
-        <NewsGrid />
-        <CTASection />
         <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl py-12">
           <FAQSection faqs={HOMEPAGE_CONTENT.faqs} title="Frequently Asked Questions" showStructuredData={false} />
         </div>

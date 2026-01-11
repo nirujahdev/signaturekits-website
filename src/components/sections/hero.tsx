@@ -107,7 +107,7 @@ export default function Hero() {
       </div>
 
       {/* Hero Content Container */}
-      <div className="container relative z-10 w-full flex flex-col md:flex-row items-end justify-between pb-8 md:pb-12 lg:pb-20 text-white px-4 md:px-6">
+      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-end justify-between pb-8 md:pb-12 lg:pb-20 text-white px-4 md:px-6 lg:px-[60px]">
         {/* Large Left Branding - Bottom Left Overlay */}
         <div className="w-full md:w-auto mb-6 md:mb-0 relative z-10">
           <h1
@@ -124,7 +124,7 @@ export default function Hero() {
         </div>
 
         {/* Subtext Paragraph - Bottom Right */}
-        <div className="w-full md:w-auto md:max-w-xs text-left md:text-right relative z-10">
+        <div className="w-full md:w-auto md:max-w-md text-left md:text-right relative z-10 md:ml-auto">
           <p
             ref={subheadlineRef}
             className="font-sans font-normal leading-[1.3] md:leading-[1.2] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
