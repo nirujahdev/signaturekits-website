@@ -1,8 +1,5 @@
 'use client';
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-
 export default function AdminSignIn() {
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">

@@ -6,8 +6,6 @@ import { ProductForm } from '@/components/admin/products/ProductForm';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
-
 interface Product {
   id: string;
   title: string;

@@ -1,9 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
-// Force dynamic rendering to prevent RSC prefetching
-export const dynamic = 'force-dynamic';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/admin/ui/button/Button';

@@ -8,8 +8,6 @@ import { Loader2, Plus, Edit, Trash2, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-export const dynamic = 'force-dynamic';
-
 interface DiscountCode {
   id: string;
   code: string;

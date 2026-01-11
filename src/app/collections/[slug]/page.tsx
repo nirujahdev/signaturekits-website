@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 
-// Force dynamic rendering to prevent static generation issues
-export const dynamic = 'force-dynamic';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductList from '@/components/products/ProductList';
@@ -12,14 +10,8 @@ import { productOperations } from '@/lib/vendure-operations';
 import { getCollectionContent, COLLECTION_SLUG_MAP } from '@/lib/seo-content';
 import { DirectAnswer } from '@/components/seo/DirectAnswer';
 import { FAQSection } from '@/components/seo/FAQSection';
-import dynamicImport from 'next/dynamic';
+import { ClientBreadcrumbStructuredData } from '@/components/seo/ClientBreadcrumbStructuredData';
 import { SEO_CONFIG } from '@/lib/seo-config';
-
-// Dynamically import BreadcrumbStructuredData to avoid static generation issues
-const BreadcrumbStructuredData = dynamicImport(
-  () => import('@/components/seo/StructuredData').then((mod) => ({ default: mod.BreadcrumbStructuredData })),
-  { ssr: false }
-);
 
 export default function CollectionPage() {
   const { slug } = useParams();
@@ -94,9 +86,14 @@ export default function CollectionPage() {
     { name: collectionName, url: `${baseUrl}/collections/${displaySlug}` },
   ].filter((item) => item.name && item.url); // Ensure all items are valid
 
+  // Prevent static generation by not rendering until mounted
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <>
-      {mounted && <BreadcrumbStructuredData items={breadcrumbItems} />}
+      <ClientBreadcrumbStructuredData items={breadcrumbItems} />
       <div className="min-h-screen bg-white">
         <Header />
         <main className="container mx-auto px-6 py-12">

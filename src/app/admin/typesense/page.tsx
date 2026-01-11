@@ -6,8 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, RefreshCw, Play } from 'lucide-react';
 import { toast } from 'sonner';
 
-export const dynamic = 'force-dynamic';
-
 interface SyncStatus {
   last_sync: string | null;
   last_success: string | null;

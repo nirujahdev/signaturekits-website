@@ -7,8 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Search, Filter } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
-
 interface SMSLog {
   id: string;
   phone_number: string;

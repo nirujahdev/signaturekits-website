@@ -4,8 +4,6 @@ import { useRouter } from 'next/navigation';
 import { ProductForm } from '@/components/admin/products/ProductForm';
 import { toast } from 'sonner';
 
-export const dynamic = 'force-dynamic';
-
 export default function NewProductPage() {
   const router = useRouter();
 

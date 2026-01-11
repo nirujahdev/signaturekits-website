@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import Header from "@/components/sections/header";
 import Hero from "@/components/sections/hero";
 import IconicKitsHotspotSlider from "@/components/IconicKitsHotspotSlider";
@@ -10,11 +11,11 @@ import NewsGrid from "@/components/sections/news-grid";
 import CTASection from "@/components/sections/cta-section";
 import Footer from "@/components/sections/footer";
 import { generatePageMetadata } from '@/lib/generate-metadata';
-import { OrganizationStructuredData } from '@/components/seo/StructuredData';
-import { FAQStructuredData } from '@/components/seo/StructuredData';
-import { FAQSection } from '@/components/seo/FAQSection';
 import { DirectAnswer } from '@/components/seo/DirectAnswer';
 import { HOMEPAGE_CONTENT } from '@/lib/seo-content';
+
+// Dynamically import FAQSection to avoid static generation issues
+const FAQSection = dynamic(() => import('@/components/seo/FAQSection').then(mod => ({ default: mod.FAQSection })));
 
 export const metadata: Metadata = generatePageMetadata({
   title: HOMEPAGE_CONTENT.title,
@@ -23,14 +24,41 @@ export const metadata: Metadata = generatePageMetadata({
 });
 
 export default function Home() {
+  // Inline structured data to avoid import issues
+  const organizationData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Signature Kits',
+    url: 'https://signaturekits-website.vercel.app',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://signaturekits-website.vercel.app/logo.png',
+    },
+  };
+
+  const faqData = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: HOMEPAGE_CONTENT.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
     <>
-      <OrganizationStructuredData
-        name="Signature Kits"
-        url="https://signaturekits-website.vercel.app"
-        logo="https://signaturekits-website.vercel.app/logo.png"
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
       />
-      <FAQStructuredData faqs={HOMEPAGE_CONTENT.faqs} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqData) }}
+      />
       <main className="min-h-screen bg-white">
         <Header />
         <Hero />
@@ -53,7 +81,7 @@ export default function Home() {
         <NewsGrid />
         <CTASection />
         <div className="container mx-auto px-6 py-12">
-          <FAQSection faqs={HOMEPAGE_CONTENT.faqs} title="Frequently Asked Questions" />
+          <FAQSection faqs={HOMEPAGE_CONTENT.faqs} title="Frequently Asked Questions" showStructuredData={false} />
         </div>
         <Footer />
       </main>

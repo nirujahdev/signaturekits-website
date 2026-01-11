@@ -7,8 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Trash2, Search } from 'lucide-react';
 import { toast } from 'sonner';
 
-export const dynamic = 'force-dynamic';
-
 interface WishlistItem {
   id: string;
   customer_id: string;

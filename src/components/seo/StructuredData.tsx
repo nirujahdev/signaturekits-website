@@ -2,13 +2,11 @@
  * Structured Data Components for SEO
  * Renders JSON-LD schema markup
  * 
- * Note: Marked as client component to work with client-side pages
- * Structured data works fine when rendered on the client
+ * Note: These are server components that render script tags
+ * For client components, use ClientBreadcrumbStructuredData wrapper
  */
 
-'use client';
-
-import { FAQItem, ProductSEOData } from '@/lib/seo';
+import type { FAQItem, ProductSEOData } from '@/lib/seo';
 
 interface StructuredDataProps {
   data: Record<string, any>;

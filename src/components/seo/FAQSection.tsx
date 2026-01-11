@@ -7,8 +7,8 @@
 
 import { useState } from 'react';
 import { FAQItem } from '@/lib/seo';
-import { ChevronDownIcon } from '@/icons/admin/index';
-import { FAQStructuredData } from './StructuredData';
+import { ChevronDown } from 'lucide-react';
+import { ClientFAQStructuredData } from './ClientFAQStructuredData';
 
 interface FAQSectionProps {
   faqs: FAQItem[];
@@ -25,7 +25,7 @@ export function FAQSection({
 
   return (
     <>
-      {showStructuredData && <FAQStructuredData faqs={faqs} />}
+      {showStructuredData && <ClientFAQStructuredData faqs={faqs} />}
       <div className="my-12">
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white/90 mb-6">
           {title}
@@ -43,7 +43,7 @@ export function FAQSection({
                 <h3 className="font-semibold text-gray-800 dark:text-white/90 pr-4">
                   {faq.question}
                 </h3>
-                <ChevronDownIcon
+                <ChevronDown
                   className={`w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0 transition-transform ${
                     openIndex === index ? 'rotate-180' : ''
                   }`}

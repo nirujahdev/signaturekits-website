@@ -8,8 +8,6 @@ import { Input } from '@/components/ui/input';
 import { ProductTable } from '@/components/admin/products/ProductTable';
 import { toast } from 'sonner';
 
-export const dynamic = 'force-dynamic';
-
 interface Product {
   id: string;
   title: string;

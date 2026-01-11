@@ -2,9 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
-
-// Force dynamic rendering to prevent RSC prefetching
-export const dynamic = 'force-dynamic';
 import { EcommerceMetrics } from '@/components/admin/ecommerce/EcommerceMetrics';
 import RecentOrders from '@/components/admin/ecommerce/RecentOrders';
 import { RevenueChart } from '@/components/admin/analytics/RevenueChart';

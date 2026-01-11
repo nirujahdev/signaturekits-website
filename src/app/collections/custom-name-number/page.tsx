@@ -2,10 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-// Force dynamic rendering to prevent static generation issues
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
-
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductList from '@/components/products/ProductList';
@@ -13,14 +9,8 @@ import { productOperations } from '@/lib/vendure-operations';
 import { getCollectionContent } from '@/lib/seo-content';
 import { DirectAnswer } from '@/components/seo/DirectAnswer';
 import { FAQSection } from '@/components/seo/FAQSection';
-import dynamicImport from 'next/dynamic';
+import { ClientBreadcrumbStructuredData } from '@/components/seo/ClientBreadcrumbStructuredData';
 import { SEO_CONFIG } from '@/lib/seo-config';
-
-// Dynamically import BreadcrumbStructuredData to avoid static generation issues
-const BreadcrumbStructuredData = dynamicImport(
-  () => import('@/components/seo/StructuredData').then((mod) => ({ default: mod.BreadcrumbStructuredData })),
-  { ssr: false }
-);
 
 export default function CustomNameNumberPage() {
   const [loading, setLoading] = useState(true);
@@ -73,9 +63,14 @@ export default function CustomNameNumberPage() {
     { name: collectionName, url: `${baseUrl}/collections/custom-name-number` },
   ].filter((item) => item.name && item.url); // Ensure all items are valid
 
+  // Prevent static generation by not rendering until mounted
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <>
-      {mounted && <BreadcrumbStructuredData items={breadcrumbItems} />}
+      <ClientBreadcrumbStructuredData items={breadcrumbItems} />
       <div className="min-h-screen bg-white">
         <Header />
         <main className="container mx-auto px-6 py-12">

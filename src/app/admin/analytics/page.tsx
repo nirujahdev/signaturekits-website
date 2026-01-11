@@ -10,8 +10,6 @@ import { AbandonedCartsTable } from '@/components/admin/analytics/AbandonedCarts
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
-
 type Period = 'today' | 'week' | 'month' | 'year' | 'all';
 
 export default function AnalyticsPage() {
