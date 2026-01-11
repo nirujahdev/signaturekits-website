@@ -107,9 +107,9 @@ export default function Hero() {
       </div>
 
       {/* Hero Content Container */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-end justify-between pb-8 md:pb-12 lg:pb-20 text-white px-4 md:px-6 lg:px-[60px]">
-        {/* Large Left Branding - Bottom Left Overlay */}
-        <div className="w-full md:w-auto mb-6 md:mb-0 relative z-10">
+      <div className="container relative z-10 w-full flex flex-col md:flex-row items-end justify-between pb-8 md:pb-12 lg:pb-20 text-white px-4 md:px-6">
+        {/* Large Left Branding */}
+        <div className="w-full md:w-auto mb-6 md:mb-0 md:mr-auto">
           <h1
             ref={headlineRef}
             className="font-display font-semibold select-none leading-[0.85] md:leading-[0.8] mix-blend-difference"
@@ -123,15 +123,15 @@ export default function Hero() {
           </h1>
         </div>
 
-        {/* Subtext Paragraph - Bottom Right */}
-        <div className="w-full md:w-auto md:max-w-md text-left md:text-right relative z-10 md:ml-auto">
+        {/* Subtext Paragraph - Right Aligned */}
+        <div className="w-full md:w-auto md:max-w-xs text-left md:text-right md:ml-auto">
           <p
             ref={subheadlineRef}
-            className="font-sans font-normal leading-[1.3] md:leading-[1.2] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+            className="font-sans font-normal leading-[1.3] md:leading-[1.2]"
             style={{
               fontSize: "clamp(18px, 4vw, 32px)",
               letterSpacing: "-0.02em",
-              textShadow: "0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3)",
+              color: "#FFFFFF",
             }}
           >
             Timeless Wardrobe.
