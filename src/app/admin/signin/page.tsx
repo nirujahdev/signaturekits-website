@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, ArrowLeft, Lock, User } from 'lucide-react';
+import { Loader2, Lock, User } from 'lucide-react';
 
 export default function AdminSignIn() {
   const router = useRouter();
