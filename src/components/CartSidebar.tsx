@@ -54,7 +54,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
       {/* Backdrop */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[98]"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[100]"
           onClick={onClose}
           aria-hidden="true"
         />
@@ -63,7 +63,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-[99] shadow-2xl transform transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-[101] shadow-2xl transform transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

@@ -29,6 +29,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { FAQItem } from '@/lib/seo';
+import { JerseyVisualization } from '@/components/JerseyVisualization';
 
 interface SizeHelperProps {
   mode?: 'auto' | 'kids' | 'adult';
@@ -306,6 +307,19 @@ export function SizeHelper({ mode = 'auto', productType }: SizeHelperProps) {
           </TabsContent>
         )}
       </Tabs>
+
+      {/* Interactive Jersey Visualization - Adult Only */}
+      {activeTab === 'adult' && (
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">Interactive Size Guide</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Select a size to see measurements visualized on the jersey. Hover over measurement lines for details.
+          </p>
+          <JerseyVisualization 
+            selectedSize={adultRecommendation?.recommended}
+          />
+        </div>
+      )}
 
       {/* Size Chart Table */}
       <div className="space-y-4">

@@ -110,7 +110,10 @@ export default function Header() {
             
             {/* Cart Button */}
             <button
-              onClick={() => setIsCartOpen(true)}
+              onClick={() => {
+                setIsCartOpen(true);
+                setIsMobileMenuOpen(false); // Close mobile menu when cart opens
+              }}
               className={`flex items-center gap-1.5 cursor-pointer group transition-all duration-300 ${headerTextColor} relative min-w-[44px] min-h-[44px] justify-center`}
               aria-label="Open cart"
             >
