@@ -1,5 +1,14 @@
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
+import { SizeCalculator } from '@/components/SizeCalculator';
+import { Metadata } from 'next';
+import { generatePageMetadata } from '@/lib/generate-metadata';
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Size Chart',
+  description: 'Find the perfect fit with our interactive size calculator and detailed size charts for adult and kids jerseys.',
+  path: '/size-chart',
+});
 
 export default function SizeChartPage() {
   return (
@@ -12,9 +21,15 @@ export default function SizeChartPage() {
           </h1>
 
           <div className="prose max-w-none">
-            <p className="text-base md:text-lg text-[#666666] leading-relaxed mb-8">
-              Find the perfect fit for your jersey. Please refer to the measurements below to ensure you select the correct size.
+            <p className="text-base md:text-lg text-[#666666] leading-relaxed mb-12">
+              Find the perfect fit for your jersey. Use our interactive size calculator below or refer to the measurements table to ensure you select the correct size.
             </p>
+
+            {/* Interactive Size Calculator */}
+            <div className="mb-16">
+              <h2 className="text-3xl md:text-4xl font-semibold text-black mb-6">Size Calculator</h2>
+              <SizeCalculator />
+            </div>
 
             <div className="mb-12">
               <h2 className="text-2xl md:text-3xl font-semibold text-black mb-6">Adult Sizes</h2>
