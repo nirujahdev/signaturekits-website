@@ -1,17 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
-import { Instagram } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = [
     {
-      title: 'For You',
+      title: 'for you',
       links: [
         { name: 'Track Your Order', href: '/track-order' },
         { name: 'Size chart', href: '/size-guide' },
-        { name: 'Policies', href: '/policies/shipping' },
+        { name: 'Policies', href: '/policies' },
       ],
     },
     {
@@ -36,7 +35,7 @@ const Footer = () => {
             </h2>
           </div>
 
-          {/* Structured Link Columns and Instagram */}
+          {/* Structured Link Columns */}
           <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-12">
             <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px]">
               {footerLinks.map((section) => (
@@ -58,19 +57,6 @@ const Footer = () => {
                   </ul>
                 </div>
               ))}
-            </div>
-
-            {/* Instagram Icon */}
-            <div className="flex items-center mt-8 lg:mt-0">
-              <a
-                href="https://instagram.com/signaturekits.lk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#999999] hover:text-black transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-6 h-6" />
-              </a>
             </div>
           </div>
         </div>

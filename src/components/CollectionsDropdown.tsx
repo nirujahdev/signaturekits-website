@@ -83,34 +83,35 @@ export function CollectionsDropdown({ isOpen, onClose }: CollectionsDropdownProp
         aria-hidden="true"
       />
       
-      {/* Dropdown Menu - Smooth, clean design */}
+      {/* Dropdown Menu - Clean, refined design */}
       <div
         ref={dropdownRef}
-        className={`fixed left-0 w-full bg-white z-[95] border-b border-gray-100 transition-all duration-300 ease-out ${
+        className={`fixed left-0 w-full bg-white z-[95] border-b border-gray-100 shadow-sm transition-all duration-300 ease-out ${
           isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
         }`}
         style={{ top: '80px' }}
       >
-        <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1200px] py-8 md:py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1400px] py-12 md:py-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 lg:gap-12">
             {categories.map((category) => (
               <Link
                 key={category.title}
                 href={category.href}
                 onClick={onClose}
-                className="group block"
+                className="group block focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded-lg p-2 -m-2"
               >
-                <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 rounded-lg mb-3 transition-all duration-300 ease-out group-hover:shadow-lg group-hover:scale-[1.02]">
+                <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 rounded-lg mb-4 transition-all duration-300 ease-out group-hover:shadow-xl group-hover:shadow-black/10 group-hover:-translate-y-1">
                   <Image
                     src={category.image}
                     alt={category.title}
                     fill
                     sizes="(max-width: 768px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                     quality={90}
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
                 </div>
-                <p className="text-sm md:text-base font-medium text-gray-700 text-center group-hover:text-black transition-colors duration-200">
+                <p className="text-sm md:text-base font-semibold text-gray-900 text-center tracking-tight group-hover:text-black transition-colors duration-200">
                   {category.title}
                 </p>
               </Link>
