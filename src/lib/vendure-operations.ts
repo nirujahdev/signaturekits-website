@@ -1,7 +1,6 @@
 /**
- * Vendure Operations - STUBBED OUT
- * Vendure has been removed. These stubs return empty data to prevent errors
- * while the frontend is being migrated to Supabase.
+ * Product Operations - Supabase Implementation
+ * Fetches products from Supabase via the public API
  */
 
 export interface ProductCustomFields {
@@ -12,7 +11,31 @@ export interface ProductCustomFields {
 }
 
 /**
- * Product Operations - STUBBED
+ * Map Vendure filter format to collection slug
+ */
+function extractCollectionFromFilter(filter?: any): string | null {
+  if (!filter?.facetValueFilters) return null;
+
+  try {
+    const facetFilters = filter.facetValueFilters;
+    for (const filterGroup of facetFilters) {
+      if (filterGroup.and) {
+        for (const condition of filterGroup.and) {
+          if (condition.code?.eq) {
+            return condition.code.eq;
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error extracting collection from filter:', error);
+  }
+
+  return null;
+}
+
+/**
+ * Product Operations - Supabase Implementation
  */
 export const productOperations = {
   async getProducts(options?: {
@@ -21,18 +44,77 @@ export const productOperations = {
     filter?: any;
     sort?: any;
   }) {
-    console.warn('productOperations.getProducts called but Vendure is removed');
-    return { products: { items: [], totalItems: 0 } };
+    try {
+      const params = new URLSearchParams();
+      
+      if (options?.take) {
+        params.append('limit', options.take.toString());
+      }
+      
+      if (options?.skip) {
+        params.append('skip', options.skip.toString());
+      }
+
+      // Extract collection from filter
+      const collection = extractCollectionFromFilter(options?.filter);
+      if (collection) {
+        params.append('collection', collection);
+      }
+
+      const response = await fetch(`/api/products?${params.toString()}`);
+      
+      if (!response.ok) {
+        console.error('Failed to fetch products:', response.statusText);
+        return { products: { items: [], totalItems: 0 } };
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      return { products: { items: [], totalItems: 0 } };
+    }
   },
 
   async getProductBySlug(slug: string) {
-    console.warn('productOperations.getProductBySlug called but Vendure is removed');
-    return { product: null };
+    try {
+      const response = await fetch(`/api/products/${slug}`);
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          return { product: null };
+        }
+        console.error('Failed to fetch product by slug:', response.statusText);
+        return { product: null };
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching product by slug:', error);
+      return { product: null };
+    }
   },
 
   async getProductById(id: string) {
-    console.warn('productOperations.getProductById called but Vendure is removed');
-    return { product: null };
+    try {
+      // Use the same endpoint - it supports both slug and ID
+      const response = await fetch(`/api/products/${id}`);
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          return { product: null };
+        }
+        console.error('Failed to fetch product by ID:', response.statusText);
+        return { product: null };
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching product by ID:', error);
+      return { product: null };
+    }
   },
 };
 
