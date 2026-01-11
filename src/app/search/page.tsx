@@ -62,7 +62,7 @@ function SearchContent() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] pt-[120px] pb-20">
+      <main className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl pt-[120px] pb-20">
         {/* Search Header */}
         <div className="mb-12">
           <h1 className="text-[40px] md:text-[56px] lg:text-[72px] font-medium leading-[1.1] tracking-[-0.02em] text-black mb-4">

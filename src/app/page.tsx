@@ -63,7 +63,7 @@ export default function Home() {
         <Header />
         <Hero />
         {/* AEO Direct Answer Block */}
-        <div className="container mx-auto px-6 py-8">
+        <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl py-8">
           <div className="max-w-4xl mx-auto">
             <DirectAnswer
               deliveryDays="10–20"
@@ -80,7 +80,7 @@ export default function Home() {
         <Benefits />
         <NewsGrid />
         <CTASection />
-        <div className="container mx-auto px-6 py-12">
+        <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl py-12">
           <FAQSection faqs={HOMEPAGE_CONTENT.faqs} title="Frequently Asked Questions" showStructuredData={false} />
         </div>
         <Footer />

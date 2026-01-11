@@ -65,7 +65,7 @@ const EverydayEssentials = () => {
 
   return (
     <section ref={sectionRef} className="relative z-10 bg-white py-[80px] md:py-[120px] lg:py-[160px]">
-      <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px]">
+      <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-start justify-between mb-12 md:mb-16 lg:mb-24 gap-6 md:gap-12">
           <div className="w-full md:w-1/2">

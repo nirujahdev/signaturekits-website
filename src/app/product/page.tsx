@@ -26,7 +26,7 @@ export default function ProductsPage() {
       <Header />
       
       <main className="pt-[140px] pb-[80px]">
-        <div className="container mx-auto px-10 md:px-[40px]">
+        <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
           {/* Luxury Hero Section */}
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-16 md:mb-20 gap-y-6 overflow-hidden">
             <h1 ref={titleRef} className="luxury-heading">

@@ -32,7 +32,7 @@ const Benefits = () => {
       className="w-full bg-white border-y border-[#E5E5E5]"
       data-framer-name="Section: Benefit"
     >
-      <div className="container max-w-[1440px] mx-auto px-6 md:px-20">
+      <div className="container max-w-7xl mx-auto px-4 md:px-6 lg:px-[60px]">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center">
           {benefits.map((benefit, index) => (
             <div

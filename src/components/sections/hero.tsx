@@ -121,22 +121,31 @@ export default function Hero() {
           >
             Signature Kits
           </h1>
+          <p
+            className="font-sans font-normal leading-[1.3] md:leading-[1.2] text-white mt-4 md:mt-6 mix-blend-difference"
+            style={{
+              fontSize: "clamp(20px, 3vw, 36px)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Timeless Wardrobe.
+            <br />
+            Everyday Power.
+          </p>
         </div>
 
         {/* Subtext Paragraph - Right Aligned */}
         <div className="w-full md:w-auto md:max-w-xs text-left md:text-right relative z-10">
           <p
             ref={subheadlineRef}
-            className="font-sans font-normal leading-[1.3] md:leading-[1.2] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+            className="font-sans font-normal leading-[1.4] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
             style={{
-              fontSize: "clamp(18px, 4vw, 32px)",
-              letterSpacing: "-0.02em",
+              fontSize: "clamp(14px, 2.5vw, 20px)",
+              letterSpacing: "-0.01em",
               textShadow: "0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3)",
             }}
           >
-            Timeless Wardrobe.
-            <br />
-            Everyday Power.
+            Wear the timeless legacy
           </p>
         </div>
       </div>

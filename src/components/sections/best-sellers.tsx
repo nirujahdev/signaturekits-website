@@ -45,7 +45,7 @@ const PRODUCTS = [
 const BestSellers: React.FC = () => {
   return (
     <section className="bg-white py-[120px] px-10 md:px-20 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header Content */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-8">
           <div className="max-w-[500px]">

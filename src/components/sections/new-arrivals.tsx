@@ -30,7 +30,7 @@ const NewArrivals = () => {
       className="bg-white w-full px-10 md:px-[40px] py-[120px] flex flex-col items-center"
       style={{ fontFamily: 'var(--font-display)' }}
     >
-      <div className="max-w-[1400px] w-full">
+      <div className="max-w-7xl w-full mx-auto">
         {/* Header Content */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-20 gap-8 md:gap-0">
           <div className="w-full md:w-1/2">
