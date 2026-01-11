@@ -16,7 +16,7 @@ export default function SizeGuidePage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="container mx-auto px-6 py-12 max-w-4xl">
+      <main className="container mx-auto px-6 py-12 max-w-4xl pt-24 md:pt-28">
         <h1 className="text-4xl font-semibold mb-4">
           Jersey Size Guide
         </h1>

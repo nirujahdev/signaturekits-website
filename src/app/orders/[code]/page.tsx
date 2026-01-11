@@ -182,7 +182,7 @@ export default function OrderTrackingPage() {
     return (
       <div className="min-h-screen bg-white">
         <Header />
-        <main className="container mx-auto px-6 py-20 max-w-2xl">
+        <main className="container mx-auto px-6 py-20 max-w-2xl pt-24 md:pt-28">
           <h1 className="text-4xl font-semibold mb-8">Track Your Order</h1>
           <form onSubmit={handleLookup} className="space-y-4">
             <div>
@@ -226,7 +226,7 @@ export default function OrderTrackingPage() {
     return (
       <div className="min-h-screen bg-white">
         <Header />
-        <main className="container mx-auto px-6 py-20 max-w-2xl">
+        <main className="container mx-auto px-6 py-20 max-w-2xl pt-24 md:pt-28">
           <div className="text-center">
             <h1 className="text-4xl font-semibold mb-4">Order Not Found</h1>
             <p className="text-gray-600 mb-8">{error || 'The order you are looking for does not exist.'}</p>
@@ -251,8 +251,8 @@ export default function OrderTrackingPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
-      <main className="container mx-auto px-6 py-12 max-w-4xl">
+        <Header />
+        <main className="container mx-auto px-6 py-12 max-w-4xl pt-24 md:pt-28">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold mb-2">Order {order.code}</h1>
           <p className="text-gray-600">Placed on {formatDate(order.orderPlacedAt)}</p>

@@ -6,19 +6,19 @@ const Footer = () => {
 
   const footerLinks = [
     {
-      title: 'for you',
+      title: 'For You',
       links: [
         { name: 'Track Your Order', href: '/track-order' },
-        { name: 'Size chart', href: '/size-guide' },
+        { name: 'Size Chart', href: '/size-guide' },
         { name: 'Policies', href: '/policies' },
       ],
     },
     {
-      title: 'store',
+      title: 'Store',
       links: [
-        { name: 'collections', href: '/collections/club-jerseys' },
-        { name: 'about', href: '/about' },
-        { name: 'contact', href: '/contact-us' },
+        { name: 'Collections', href: '/collections/club-jerseys' },
+        { name: 'About', href: '/about' },
+        { name: 'Contact', href: '/contact-us' },
       ],
     },
   ];
@@ -43,12 +43,12 @@ const Footer = () => {
                   <h3 className="text-[20px] font-semibold text-black tracking-tight">
                     {section.title}
                   </h3>
-                  <ul className="flex flex-col space-y-[12px]">
+                  <ul className="flex flex-col space-y-[16px]">
                     {section.links.map((link) => (
                       <li key={link.name}>
                         <Link
                           href={link.href}
-                          className="text-[16px] md:text-[18px] font-medium text-[#999999] hover:text-black transition-colors min-h-[44px] flex items-center"
+                          className="text-[16px] md:text-[18px] font-medium text-[#999999] hover:text-black transition-colors min-h-[44px] flex items-center leading-[1.5]"
                         >
                           {link.name}
                         </Link>

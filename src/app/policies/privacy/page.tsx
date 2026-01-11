@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
       <BreadcrumbStructuredData items={breadcrumbItems} />
       <div className="min-h-screen bg-white">
         <Header />
-        <main className="container mx-auto px-6 py-12 max-w-4xl">
+        <main className="container mx-auto px-6 py-12 max-w-4xl pt-24 md:pt-28">
           <div className="mb-8">
             <h1 className="text-4xl font-semibold mb-2">Privacy Policy</h1>
             <p className="text-gray-600">Effective date: 10 January 2026</p>

@@ -14,3 +14,4 @@ export function ClientBreadcrumbStructuredData({ items }: ClientBreadcrumbStruct
   return <BreadcrumbStructuredData items={items} />;
 }
 
+

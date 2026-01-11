@@ -96,7 +96,7 @@ export default function CollectionPage() {
       <ClientBreadcrumbStructuredData items={breadcrumbItems} />
       <div className="min-h-screen bg-white">
         <Header />
-        <main className="container mx-auto px-6 py-12">
+        <main className="container mx-auto px-6 py-12 pt-24 md:pt-28">
           {/* H1 and Direct Answer */}
           <div className="mb-12">
             <h1 className="text-5xl font-semibold mb-4">

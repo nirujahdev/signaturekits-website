@@ -5,7 +5,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="container mx-auto px-6 py-12 max-w-4xl">
+      <main className="container mx-auto px-6 py-12 max-w-4xl pt-24 md:pt-28">
         <h1 className="text-4xl font-semibold mb-8">Contact Us</h1>
 
         <div className="prose max-w-none">

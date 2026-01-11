@@ -34,7 +34,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen bg-white">
         <Header />
-        <main className="container mx-auto px-6 py-20">
+        <main className="container mx-auto px-6 py-20 pt-24 md:pt-28">
           <div className="text-center py-20">
             <ShoppingBag className="w-24 h-24 mx-auto text-gray-300 mb-6" />
             <h1 className="text-3xl font-semibold mb-4">Your cart is empty</h1>

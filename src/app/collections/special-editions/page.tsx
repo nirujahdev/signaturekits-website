@@ -73,7 +73,7 @@ export default function SpecialEditionsPage() {
       <ClientBreadcrumbStructuredData items={breadcrumbItems} />
       <div className="min-h-screen bg-white">
         <Header />
-        <main className="container mx-auto px-6 py-12">
+        <main className="container mx-auto px-6 py-12 pt-24 md:pt-28">
           <div className="mb-12">
             <h1 className="text-5xl font-semibold mb-4">
               {collectionContent?.h1 || 'Special Editions'}
