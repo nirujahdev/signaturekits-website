@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 // Force dynamic rendering to prevent static generation issues
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 export const dynamicParams = true;
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
