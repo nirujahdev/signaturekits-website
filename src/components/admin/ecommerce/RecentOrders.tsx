@@ -160,16 +160,16 @@ export default function RecentOrders() {
                   </TableCell>
                   <TableCell className="py-4 text-sm text-gray-600 dark:text-gray-400">
                     <span className="inline-flex items-center px-2 py-1 rounded-md bg-gray-100 dark:bg-gray-800 text-xs font-medium">
-                      {order.payment_method || 'N/A'}
+                    {order.payment_method || 'N/A'}
                     </span>
                   </TableCell>
                   <TableCell className="py-4">
                     <span className="font-semibold text-gray-900 dark:text-white/90">
-                      {new Intl.NumberFormat('en-LK', {
-                        style: 'currency',
-                        currency: 'LKR',
-                        minimumFractionDigits: 0,
-                      }).format(Number(order.total_with_tax || 0))}
+                    {new Intl.NumberFormat('en-LK', {
+                      style: 'currency',
+                      currency: 'LKR',
+                      minimumFractionDigits: 0,
+                    }).format(Number(order.total_with_tax || 0))}
                     </span>
                   </TableCell>
                   <TableCell className="py-4">

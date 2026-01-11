@@ -50,11 +50,11 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            Customers
+              Customers
           </p>
           <h4 className="text-2xl font-bold text-gray-900 dark:text-white/90">
-            {stats?.totalCustomers.toLocaleString() || 0}
-          </h4>
+              {stats?.totalCustomers.toLocaleString() || 0}
+            </h4>
         </div>
       </div>
 
@@ -67,11 +67,11 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            Total Orders
+              Total Orders
           </p>
           <h4 className="text-2xl font-bold text-gray-900 dark:text-white/90">
-            {stats?.totalOrders.toLocaleString() || 0}
-          </h4>
+              {stats?.totalOrders.toLocaleString() || 0}
+            </h4>
         </div>
       </div>
 
@@ -84,11 +84,11 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            Total Revenue
+              Total Revenue
           </p>
           <h4 className="text-2xl font-bold text-gray-900 dark:text-white/90">
-            {formatCurrency(stats?.totalRevenue || 0)}
-          </h4>
+              {formatCurrency(stats?.totalRevenue || 0)}
+            </h4>
         </div>
       </div>
 
@@ -101,11 +101,11 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            Pending Orders
+              Pending Orders
           </p>
           <h4 className="text-2xl font-bold text-gray-900 dark:text-white/90">
-            {stats?.pendingOrders.toLocaleString() || 0}
-          </h4>
+              {stats?.pendingOrders.toLocaleString() || 0}
+            </h4>
         </div>
       </div>
     </div>

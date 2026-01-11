@@ -191,8 +191,8 @@ export default function AdminDashboard() {
         <div className="admin-card">
           <div className="admin-card-header">
             <h2 className="admin-card-title">
-              Revenue Trends
-            </h2>
+            Revenue Trends
+          </h2>
           </div>
           <RevenueChart
             data={analytics?.revenueTrends || []}
@@ -203,8 +203,8 @@ export default function AdminDashboard() {
         <div className="admin-card">
           <div className="admin-card-header">
             <h2 className="admin-card-title">
-              Order Status Distribution
-            </h2>
+            Order Status Distribution
+          </h2>
           </div>
           <OrderStatusChart
             data={analytics?.statusBreakdown || []}
@@ -215,8 +215,8 @@ export default function AdminDashboard() {
         <div className="admin-card">
           <div className="admin-card-header">
             <h2 className="admin-card-title">
-              Customer Growth
-            </h2>
+            Customer Growth
+          </h2>
           </div>
           <CustomerGrowthChart
             data={analytics?.customerGrowth || []}
@@ -227,8 +227,8 @@ export default function AdminDashboard() {
         <div className="admin-card">
           <div className="admin-card-header">
             <h2 className="admin-card-title">
-              Top Products
-            </h2>
+            Top Products
+          </h2>
           </div>
           <TopProductsTable
             data={analytics?.topProducts || []}
