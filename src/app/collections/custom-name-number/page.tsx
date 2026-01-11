@@ -5,6 +5,12 @@ import { useEffect, useState } from 'react';
 // Force dynamic rendering to prevent static generation issues
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
+
+// Prevent static generation by returning empty array
+export function generateStaticParams() {
+  return [];
+}
+
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductList from '@/components/products/ProductList';
