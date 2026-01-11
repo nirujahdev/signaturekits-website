@@ -4,26 +4,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/context/admin/SidebarContext";
-import {
-  BoxIcon,
-  BoxIconLine,
-  BoxCubeIcon,
-  CalenderIcon,
-  ChevronDownIcon,
-  GridIcon,
-  HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
-  UserCircleIcon,
-} from "@/icons/admin/index";
+import { Icon } from "../ui/Icon";
+import gridIconSrc from "@/icons/admin/grid.svg";
+import boxCubeIconSrc from "@/icons/admin/box-cube.svg";
+import userCircleIconSrc from "@/icons/admin/user-circle.svg";
+import boxIconSrc from "@/icons/admin/box.svg";
+import listIconSrc from "@/icons/admin/list.svg";
+import boxIconLineSrc from "@/icons/admin/box-line.svg";
+import pieChartIconSrc from "@/icons/admin/pie-chart.svg";
+import plugInIconSrc from "@/icons/admin/plug-in.svg";
+import tableIconSrc from "@/icons/admin/table.svg";
+import pageIconSrc from "@/icons/admin/page.svg";
+import calenderIconSrc from "@/icons/admin/calender-line.svg";
+import horizontalDotsSrc from "@/icons/admin/horizontal-dots.svg";
+import chevronDownIconSrc from "@/icons/admin/chevron-down.svg";
 import SidebarWidget from "./SidebarWidget";
-
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AppSidebar.tsx:imports',message:'Icon imports check',data:{BoxIcon:typeof BoxIcon,GridIcon:typeof GridIcon,UserCircleIcon:typeof UserCircleIcon,SidebarWidget:typeof SidebarWidget,BoxIconIsObject:typeof BoxIcon==='object',GridIconIsObject:typeof GridIcon==='object'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-// #endregion
 
 type NavItem = {
   name: string;
@@ -34,62 +29,62 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <GridIcon />,
+    icon: <Icon src={gridIconSrc} alt="Dashboard" width={20} height={20} />,
     name: "Dashboard",
     path: "/admin",
   },
   {
-    icon: <BoxCubeIcon />,
+    icon: <Icon src={boxCubeIconSrc} alt="Products" width={20} height={20} />,
     name: "Products",
     path: "/admin/products",
   },
   {
-    icon: <UserCircleIcon />,
+    icon: <Icon src={userCircleIconSrc} alt="Customers" width={20} height={20} />,
     name: "Customers",
     path: "/admin/customers",
   },
   {
-    icon: <BoxIcon />,
+    icon: <Icon src={boxIconSrc} alt="Orders" width={20} height={20} />,
     name: "Orders",
     path: "/admin/orders",
   },
   {
-    icon: <ListIcon />,
+    icon: <Icon src={listIconSrc} alt="Batches" width={20} height={20} />,
     name: "Batches",
     path: "/admin/batches",
   },
   {
-    icon: <BoxIconLine />,
+    icon: <Icon src={boxIconLineSrc} alt="Delivery Tracking" width={20} height={20} />,
     name: "Delivery Tracking",
     path: "/admin/delivery",
   },
   {
-    icon: <PieChartIcon />,
+    icon: <Icon src={pieChartIconSrc} alt="Analytics" width={20} height={20} />,
     name: "Analytics",
     path: "/admin/analytics",
   },
   {
-    icon: <PlugInIcon />,
+    icon: <Icon src={plugInIconSrc} alt="Discount Codes" width={20} height={20} />,
     name: "Discount Codes",
     path: "/admin/discount-codes",
   },
   {
-    icon: <TableIcon />,
+    icon: <Icon src={tableIconSrc} alt="SMS Logs" width={20} height={20} />,
     name: "SMS Logs",
     path: "/admin/sms-logs",
   },
   {
-    icon: <PageIcon />,
+    icon: <Icon src={pageIconSrc} alt="Typesense" width={20} height={20} />,
     name: "Typesense",
     path: "/admin/typesense",
   },
   {
-    icon: <CalenderIcon />,
+    icon: <Icon src={calenderIconSrc} alt="Wishlists" width={20} height={20} />,
     name: "Wishlists",
     path: "/admin/wishlists",
   },
   {
-    icon: <PieChartIcon />,
+    icon: <Icon src={pieChartIconSrc} alt="Reports" width={20} height={20} />,
     name: "Reports",
     path: "/admin/reports",
   },
@@ -134,7 +129,11 @@ const AppSidebar: React.FC = () => {
                 <span className={`menu-item-text`}>{nav.name}</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
-                <ChevronDownIcon
+                <Icon
+                  src={chevronDownIconSrc}
+                  alt="Chevron"
+                  width={20}
+                  height={20}
                   className={`ml-auto w-5 h-5 transition-transform duration-200  ${
                     openSubmenu?.type === menuType &&
                     openSubmenu?.index === index
@@ -339,7 +338,7 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Menu"
                 ) : (
-                  <HorizontaLDots />
+                  <Icon src={horizontalDotsSrc} alt="Menu" width={20} height={20} />
                 )}
               </h2>
               {renderMenuItems(navItems, "main")}

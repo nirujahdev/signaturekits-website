@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
 import Badge from "../ui/badge/Badge";
-import { BoxIconLine, GroupIcon, DollarLineIcon } from "@/icons/admin/index";
+import { Icon } from "../ui/Icon";
+import boxIconLineSrc from "@/icons/admin/box-line.svg";
+import groupIconSrc from "@/icons/admin/group.svg";
+import dollarLineIconSrc from "@/icons/admin/dollar-line.svg";
 
 interface EcommerceMetricsProps {
   stats?: {
@@ -41,7 +44,7 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
       {/* Customers */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <GroupIcon className="text-gray-800 size-6 dark:text-white/90" />
+          <Icon src={groupIconSrc} alt="Customers" width={24} height={24} className="text-gray-800 size-6 dark:text-white/90" />
         </div>
         <div className="flex items-end justify-between mt-5">
           <div>
@@ -58,7 +61,7 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
       {/* Orders */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <BoxIconLine className="text-gray-800 size-6 dark:text-white/90" />
+          <Icon src={boxIconLineSrc} alt="Orders" width={24} height={24} className="text-gray-800 size-6 dark:text-white/90" />
         </div>
         <div className="flex items-end justify-between mt-5">
           <div>
@@ -75,7 +78,7 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
       {/* Revenue */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <DollarLineIcon className="text-gray-800 size-6 dark:text-white/90" />
+          <Icon src={dollarLineIconSrc} alt="Revenue" width={24} height={24} className="text-gray-800 size-6 dark:text-white/90" />
         </div>
         <div className="flex items-end justify-between mt-5">
           <div>
@@ -92,7 +95,7 @@ export const EcommerceMetrics: React.FC<EcommerceMetricsProps> = ({ stats, loadi
       {/* Pending Orders */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <BoxIconLine className="text-gray-800 size-6 dark:text-white/90" />
+          <Icon src={boxIconLineSrc} alt="Orders" width={24} height={24} className="text-gray-800 size-6 dark:text-white/90" />
         </div>
         <div className="flex items-end justify-between mt-5">
           <div>

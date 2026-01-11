@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Button from '@/components/admin/ui/button/Button';
 import Input from '@/components/admin/form/input/InputField';
-import { DownloadIcon, FileIcon } from '@/icons/admin/index';
+import { Icon } from '@/components/admin/ui/Icon';
+import downloadIconSrc from '@/icons/admin/download.svg';
+import fileIconSrc from '@/icons/admin/file.svg';
 
 type ReportType = 'sales' | 'customers' | 'products';
 
@@ -107,7 +109,7 @@ export default function ReportsPage() {
               <Button
                 onClick={() => generateReport('json')}
                 disabled={loading}
-                startIcon={<FileIcon className="w-4 h-4" />}
+                startIcon={<Icon src={fileIconSrc} alt="File" width={16} height={16} className="w-4 h-4" />}
                 className="flex-1"
               >
                 {loading ? 'Generating...' : 'View Report'}
@@ -116,7 +118,7 @@ export default function ReportsPage() {
                 onClick={() => generateReport('csv')}
                 disabled={loading}
                 variant="outline"
-                startIcon={<DownloadIcon className="w-4 h-4" />}
+                startIcon={<Icon src={downloadIconSrc} alt="Download" width={16} height={16} className="w-4 h-4" />}
                 className="flex-1"
               >
                 {loading ? 'Exporting...' : 'Export CSV'}
@@ -182,7 +184,7 @@ export default function ReportsPage() {
             </div>
           ) : (
             <div className="text-center py-12 text-gray-500">
-              <FileIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <Icon src={fileIconSrc} alt="File" width={48} height={48} className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>Generate a report to see preview</p>
             </div>
           )}

@@ -5,7 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/admin/ui/button/Button';
 import Badge from '@/components/admin/ui/badge/Badge';
-import { ChevronLeftIcon } from '@/icons/admin/index';
+import { Icon } from '@/components/admin/ui/Icon';
+import chevronLeftIconSrc from '@/icons/admin/chevron-left.svg';
 import {
   Table,
   TableBody,
@@ -54,7 +55,7 @@ export default function OrderDetailPage() {
       <div className="flex items-center gap-4">
         <Link href="/admin/orders">
           <Button variant="outline" size="sm">
-            <ChevronLeftIcon className="w-4 h-4" />
+            <Icon src={chevronLeftIconSrc} alt="Back" width={16} height={16} className="w-4 h-4" />
             Back
           </Button>
         </Link>

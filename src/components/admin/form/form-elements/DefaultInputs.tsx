@@ -4,7 +4,11 @@ import ComponentCard from '../../common/ComponentCard';
 import Label from '../Label';
 import Input from '../input/InputField';
 import Select from '../Select';
-import { ChevronDownIcon, EyeCloseIcon, EyeIcon, TimeIcon } from '@/icons/admin/index';
+import { Icon } from '../../ui/Icon';
+import chevronDownIconSrc from '@/icons/admin/chevron-down.svg';
+import eyeCloseIconSrc from '@/icons/admin/eye-close.svg';
+import eyeIconSrc from '@/icons/admin/eye.svg';
+import timeIconSrc from '@/icons/admin/time.svg';
 import DatePicker from '@/components/admin/form/date-picker';
 
 export default function DefaultInputs() {
@@ -38,7 +42,7 @@ export default function DefaultInputs() {
             className="dark:bg-dark-900"
           />
              <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
-              <ChevronDownIcon/>
+              <Icon src={chevronDownIconSrc} alt="Chevron" width={20} height={20} />
             </span>
           </div>
         </div>
@@ -54,9 +58,9 @@ export default function DefaultInputs() {
               className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
             >
               {showPassword ? (
-                <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
+                <Icon src={eyeIconSrc} alt="Show password" width={20} height={20} className="fill-gray-500 dark:fill-gray-400" />
               ) : (
-                <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
+                <Icon src={eyeCloseIconSrc} alt="Hide password" width={20} height={20} className="fill-gray-500 dark:fill-gray-400" />
               )}
             </button>
           </div>
@@ -84,7 +88,7 @@ export default function DefaultInputs() {
               onChange={(e) => console.log(e.target.value)}
             />
             <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
-              <TimeIcon />
+              <Icon src={timeIconSrc} alt="Time" width={20} height={20} />
             </span>
           </div>
         </div>

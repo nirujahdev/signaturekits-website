@@ -2,10 +2,11 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import Button from './ui/button/Button';
-import { AlertIcon } from '@/icons/admin/index';
+import { Icon } from './ui/Icon';
+import alertIconSrc from '@/icons/admin/alert.svg';
 
 // #region agent log
-fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:imports',message:'ErrorBoundary imports check',data:{Button:typeof Button,AlertIcon:typeof AlertIcon,ButtonIsFunction:typeof Button==='function',AlertIconIsFunction:typeof AlertIcon==='function'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:imports',message:'ErrorBoundary imports check',data:{Button:typeof Button,alertIconSrc:typeof alertIconSrc,ButtonIsFunction:typeof Button==='function'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
 // #endregion
 
 interface Props {
@@ -39,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:render',message:'ErrorBoundary render',data:{hasError:this.state.hasError,ButtonType:typeof Button,AlertIconType:typeof AlertIcon,childrenType:typeof this.props.children},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:render',message:'ErrorBoundary render',data:{hasError:this.state.hasError,ButtonType:typeof Button,alertIconSrcType:typeof alertIconSrc,childrenType:typeof this.props.children},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
 
     if (this.state.hasError) {
@@ -48,14 +49,14 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:error-state',message:'Rendering error state',data:{Button:typeof Button,AlertIcon:typeof AlertIcon,ButtonIsValid:typeof Button==='function'||typeof Button==='object'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      fetch('http://127.0.0.1:7242/ingest/6acb7073-f940-4321-8607-c58da75d05e3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ErrorBoundary.tsx:error-state',message:'Rendering error state',data:{Button:typeof Button,alertIconSrc:typeof alertIconSrc,ButtonIsValid:typeof Button==='function'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
       // #endregion
 
       return (
         <div className="flex items-center justify-center min-h-[400px] p-8">
           <div className="text-center max-w-md">
             <div className="flex justify-center mb-4">
-              <AlertIcon className="w-16 h-16 text-red-500" />
+              <Icon src={alertIconSrc} alt="Alert" width={64} height={64} className="text-red-500" />
             </div>
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white/90 mb-2">
               Something went wrong

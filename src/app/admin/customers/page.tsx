@@ -13,7 +13,11 @@ import {
 import Badge from '@/components/admin/ui/badge/Badge';
 import Input from '@/components/admin/form/input/InputField';
 import Button from '@/components/admin/ui/button/Button';
-import { UserCircleIcon, PencilIcon, EyeIcon } from '@/icons/admin/index';
+import { Icon } from '@/components/admin/ui/Icon';
+import userCircleIconSrc from '@/icons/admin/user-circle.svg';
+import pencilIconSrc from '@/icons/admin/pencil.svg';
+import eyeIconSrc from '@/icons/admin/eye.svg';
+import downloadIconSrc from '@/icons/admin/download.svg';
 
 interface Customer {
   id: string;
@@ -133,7 +137,7 @@ export default function CustomersPage() {
             }
           }}
           variant="outline"
-          startIcon={<DownloadIcon className="w-4 h-4" />}
+          startIcon={<Icon src={downloadIconSrc} alt="Download" width={16} height={16} className="w-4 h-4" />}
         >
           Export CSV
         </Button>
@@ -175,7 +179,7 @@ export default function CustomersPage() {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-800">
-                        <UserCircleIcon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                        <Icon src={userCircleIconSrc} alt="User" width={24} height={24} className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                       </div>
                       <div>
                         <div className="font-medium text-gray-800 dark:text-white/90">
@@ -201,7 +205,7 @@ export default function CustomersPage() {
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Link href={`/admin/customers/${customer.id}`}>
-                        <Button size="sm" variant="outline" startIcon={<EyeIcon className="w-4 h-4" />}>
+                        <Button size="sm" variant="outline" startIcon={<Icon src={eyeIconSrc} alt="View" width={16} height={16} className="w-4 h-4" />}>
                           View
                         </Button>
                       </Link>

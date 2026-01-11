@@ -1,7 +1,10 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { CheckCircleIcon, AlertIcon, InfoIcon } from '@/icons/admin/index';
+import { Icon } from './ui/Icon';
+import checkCircleIconSrc from '@/icons/admin/check-circle.svg';
+import alertIconSrc from '@/icons/admin/alert.svg';
+import infoIconSrc from '@/icons/admin/info.svg';
 
 interface Toast {
   id: string;
@@ -65,9 +68,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
               }
             `}
           >
-            {toast.type === 'success' && <CheckCircleIcon className="w-5 h-5" />}
-            {toast.type === 'error' && <AlertIcon className="w-5 h-5" />}
-            {toast.type === 'info' && <InfoIcon className="w-5 h-5" />}
+            {toast.type === 'success' && <Icon src={checkCircleIconSrc} alt="Success" width={20} height={20} className="w-5 h-5" />}
+            {toast.type === 'error' && <Icon src={alertIconSrc} alt="Error" width={20} height={20} className="w-5 h-5" />}
+            {toast.type === 'info' && <Icon src={infoIconSrc} alt="Info" width={20} height={20} className="w-5 h-5" />}
             <span className="text-sm font-medium">{toast.message}</span>
             <button
               onClick={() => removeToast(toast.id)}

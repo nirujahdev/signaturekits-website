@@ -5,7 +5,9 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/admin/ui/button/Button';
 import Badge from '@/components/admin/ui/badge/Badge';
-import { ChevronLeftIcon, DownloadIcon } from '@/icons/admin/index';
+import { Icon } from '@/components/admin/ui/Icon';
+import chevronLeftIconSrc from '@/icons/admin/chevron-left.svg';
+import downloadIconSrc from '@/icons/admin/download.svg';
 import {
   Table,
   TableBody,
@@ -74,7 +76,7 @@ export default function BatchDetailPage() {
       <div className="flex items-center gap-4">
         <Link href="/admin/batches">
           <Button variant="outline" size="sm">
-            <ChevronLeftIcon className="w-4 h-4" />
+            <Icon src={chevronLeftIconSrc} alt="Back" width={16} height={16} className="w-4 h-4" />
             Back
           </Button>
         </Link>
@@ -83,7 +85,7 @@ export default function BatchDetailPage() {
             Batch {batch.batch_number}
           </h1>
         </div>
-        <Button onClick={handleExport} startIcon={<DownloadIcon className="w-4 h-4" />}>
+        <Button onClick={handleExport} startIcon={<Icon src={downloadIconSrc} alt="Download" width={16} height={16} className="w-4 h-4" />}>
           Export Supplier List
         </Button>
       </div>

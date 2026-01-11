@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import Input from '@/components/admin/form/input/InputField';
 import Label from '@/components/admin/form/Label';
 import Button from '@/components/admin/ui/button/Button';
-import { EyeCloseIcon, EyeIcon } from '@/icons/admin/index';
+import { Icon } from '../ui/Icon';
+import eyeIconSrc from '@/icons/admin/eye.svg';
+import eyeCloseIconSrc from '@/icons/admin/eye-close.svg';
 
 export default function AdminSignInForm() {
   const [email, setEmail] = useState('');
@@ -99,9 +101,9 @@ export default function AdminSignInForm() {
                     className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
                   >
                     {showPassword ? (
-                      <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
+                      <Icon src={eyeIconSrc} alt="Show password" width={20} height={20} className="fill-gray-500 dark:fill-gray-400" />
                     ) : (
-                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
+                      <Icon src={eyeCloseIconSrc} alt="Hide password" width={20} height={20} className="fill-gray-500 dark:fill-gray-400" />
                     )}
                   </span>
                 </div>

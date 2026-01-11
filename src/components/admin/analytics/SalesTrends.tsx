@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
-import { ArrowUpIcon, ArrowDownIcon } from '@/icons/admin/index';
+import { Icon } from '../ui/Icon';
+import arrowUpIconSrc from '@/icons/admin/arrow-up.svg';
+import arrowDownIconSrc from '@/icons/admin/arrow-down.svg';
 
 interface SalesTrendsProps {
   current: number;
@@ -21,9 +23,9 @@ export function SalesTrends({ current, previous, label, formatValue }: SalesTren
         <span className="text-sm text-gray-500 dark:text-gray-400">{label}</span>
         <div className={`flex items-center gap-1 ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
           {isPositive ? (
-            <ArrowUpIcon className="w-4 h-4" />
+            <Icon src={arrowUpIconSrc} alt="Up" width={16} height={16} className="w-4 h-4" />
           ) : (
-            <ArrowDownIcon className="w-4 h-4" />
+            <Icon src={arrowDownIconSrc} alt="Down" width={16} height={16} className="w-4 h-4" />
           )}
           <span className="text-sm font-semibold">{Math.abs(change).toFixed(1)}%</span>
         </div>

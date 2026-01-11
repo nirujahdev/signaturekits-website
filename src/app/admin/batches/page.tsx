@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Button from '@/components/admin/ui/button/Button';
 import Badge from '@/components/admin/ui/badge/Badge';
-import { ListIcon, PlusIcon } from '@/icons/admin/index';
+import { Icon } from '@/components/admin/ui/Icon';
+import listIconSrc from '@/icons/admin/list.svg';
+import plusIconSrc from '@/icons/admin/plus.svg';
 import {
   Table,
   TableBody,
@@ -95,7 +97,7 @@ export default function BatchesPage() {
             Manage pre-order batches for supplier imports
           </p>
         </div>
-        <Button onClick={() => setShowCreateModal(true)} startIcon={<PlusIcon className="w-4 h-4" />}>
+        <Button onClick={() => setShowCreateModal(true)} startIcon={<Icon src={plusIconSrc} alt="Plus" width={16} height={16} className="w-4 h-4" />}>
           Create Batch
         </Button>
       </div>

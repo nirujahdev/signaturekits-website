@@ -12,7 +12,10 @@ import {
 import Badge from '@/components/admin/ui/badge/Badge';
 import Input from '@/components/admin/form/input/InputField';
 import Button from '@/components/admin/ui/button/Button';
-import { BoxIcon, EyeIcon, DownloadIcon } from '@/icons/admin/index';
+import { Icon } from '@/components/admin/ui/Icon';
+import boxIconSrc from '@/icons/admin/box.svg';
+import eyeIconSrc from '@/icons/admin/eye.svg';
+import downloadIconSrc from '@/icons/admin/download.svg';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -134,7 +137,7 @@ export default function OrdersPage() {
             }
           }}
           variant="outline"
-          startIcon={<DownloadIcon className="w-4 h-4" />}
+          startIcon={<Icon src={downloadIconSrc} alt="Download" width={16} height={16} className="w-4 h-4" />}
         >
           Export CSV
         </Button>
@@ -187,7 +190,7 @@ export default function OrdersPage() {
                   </TableCell>
                   <TableCell>
                     <Link href={`/admin/orders/${order.order_code}`}>
-                      <Button size="sm" variant="outline" startIcon={<EyeIcon className="w-4 h-4" />}>
+                      <Button size="sm" variant="outline" startIcon={<Icon src={eyeIconSrc} alt="View" width={16} height={16} className="w-4 h-4" />}>
                         View
                       </Button>
                     </Link>

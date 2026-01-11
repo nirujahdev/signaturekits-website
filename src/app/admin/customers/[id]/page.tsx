@@ -7,7 +7,8 @@ import Button from '@/components/admin/ui/button/Button';
 import Input from '@/components/admin/form/input/InputField';
 import Label from '@/components/admin/form/Label';
 import Badge from '@/components/admin/ui/badge/Badge';
-import { ChevronLeftIcon } from '@/icons/admin/index';
+import { Icon } from '@/components/admin/ui/Icon';
+import chevronLeftIconSrc from '@/icons/admin/chevron-left.svg';
 import {
   Table,
   TableBody,
@@ -76,7 +77,7 @@ export default function CustomerDetailPage() {
       <div className="flex items-center gap-4">
         <Link href="/admin/customers">
           <Button variant="outline" size="sm">
-            <ChevronLeftIcon className="w-4 h-4" />
+            <Icon src={chevronLeftIconSrc} alt="Back" width={16} height={16} className="w-4 h-4" />
             Back
           </Button>
         </Link>

@@ -4,7 +4,8 @@ import { ApexOptions } from "apexcharts";
 
 import dynamic from "next/dynamic";
 import { Dropdown } from "../ui/dropdown/Dropdown";
-import { MoreDotIcon } from "@/icons/admin/index";
+import { Icon } from "../ui/Icon";
+import moreDotIconSrc from "@/icons/admin/more-dot.svg";
 import { useState } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 // Dynamically import the ReactApexChart component
@@ -86,7 +87,7 @@ export default function MonthlyTarget() {
           </div>
           <div className="relative inline-block">
             <button onClick={toggleDropdown} className="dropdown-toggle">
-              <MoreDotIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
+              <Icon src={moreDotIconSrc} alt="More" width={20} height={20} className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
             </button>
             <Dropdown
               isOpen={isOpen}
