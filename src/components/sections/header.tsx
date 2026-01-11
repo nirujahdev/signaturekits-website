@@ -16,6 +16,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { itemCount } = useCart();
+  const collectionsTriggerRef = React.useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +30,7 @@ export default function Header() {
   const isHomePage = pathname === '/';
   const navItems = [
     { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact-us' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   // Force black text on subpages, transition on homepage
@@ -60,28 +61,36 @@ export default function Header() {
             <nav className="hidden md:flex items-center gap-x-8">
               {/* Collections with + icon - Hover to show dropdown, click to go to page */}
               <div
+                ref={collectionsTriggerRef}
                 className="relative"
                 onMouseEnter={() => setIsCollectionsOpen(true)}
                 onMouseLeave={() => setIsCollectionsOpen(false)}
               >
                 <Link
                   href="/collections"
-                  className={`text-[15px] font-semibold tracking-[-0.01em] ${headerTextColor} transition-colors duration-500 hover:opacity-70 flex items-center gap-1 min-h-[44px]`}
+                  className={`group relative text-[15px] font-semibold tracking-[-0.01em] ${headerTextColor} transition-colors duration-500 flex items-center gap-1 min-h-[44px]`}
                 >
                   Collections
                   <span className="text-[12px]">+</span>
+                  {/* Underline animation */}
+                  <span className={`absolute bottom-0 left-0 w-0 h-[2px] ${headerTextColor === 'text-white' ? 'bg-white' : 'bg-black'} group-hover:w-full transition-all duration-300 ease-out`} />
                 </Link>
               </div>
               
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`text-[15px] font-semibold tracking-[-0.01em] ${headerTextColor} transition-colors duration-500 hover:opacity-70 min-h-[44px] flex items-center`}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`group relative text-[15px] font-semibold tracking-[-0.01em] ${headerTextColor} transition-colors duration-500 min-h-[44px] flex items-center`}
+                  >
+                    {item.name}
+                    {/* Underline animation */}
+                    <span className={`absolute bottom-0 left-0 h-[2px] ${headerTextColor === 'text-white' ? 'bg-white' : 'bg-black'} transition-all duration-300 ease-out ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                  </Link>
+                );
+              })}
 
               {/* Instagram Icon */}
               <a
@@ -133,6 +142,7 @@ export default function Header() {
         isOpen={isCollectionsOpen} 
         onClose={() => setIsCollectionsOpen(false)}
         headerTextColor={headerTextColor}
+        triggerRef={collectionsTriggerRef}
       />
       
       {/* Cart Sidebar */}

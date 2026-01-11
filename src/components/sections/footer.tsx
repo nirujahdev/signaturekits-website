@@ -50,9 +50,11 @@ const Footer = () => {
                       <li key={link.name}>
                         <Link
                           href={link.href}
-                          className="text-[15px] md:text-[16px] font-medium text-[#999999] hover:text-black transition-colors min-h-[36px] flex items-center leading-[1.5]"
+                          className="group relative text-[15px] md:text-[16px] font-medium text-[#999999] hover:text-black transition-colors min-h-[36px] flex items-center leading-[1.5]"
                         >
                           {link.name}
+                          {/* Underline animation */}
+                          <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black group-hover:w-full transition-all duration-300 ease-out" />
                         </Link>
                       </li>
                     ))}
@@ -76,9 +78,11 @@ const Footer = () => {
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <Link 
               href="/admin/signin" 
-              className="text-[13px] font-medium text-[#999999] hover:text-black transition-colors"
+              className="group relative text-[13px] font-medium text-[#999999] hover:text-black transition-colors"
             >
               admin
+              {/* Underline animation */}
+              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black group-hover:w-full transition-all duration-300 ease-out" />
             </Link>
           </div>
 
