@@ -115,46 +115,28 @@ export default function CollectionPage() {
         <Header />
         <main className="pt-[100px] md:pt-[140px] pb-[60px] md:pb-[80px]">
           <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
-            {/* Luxury Header Section */}
-            <div className="mb-12 md:mb-16 lg:mb-20">
-              <h1 className="luxury-heading mb-4 md:mb-6 text-[40px] md:text-[56px] lg:text-[80px]">
-                {collectionContent?.h1 || collectionSlug.charAt(0).toUpperCase() + collectionSlug.slice(1)}
-              </h1>
-              
-              {/* Intro Text */}
-              {collectionContent?.introText && (
-                <div className="max-w-2xl mb-8">
-                  <p className="luxury-body text-[16px] md:text-[18px] leading-relaxed">
-                    {collectionContent.introText}
-                  </p>
-                </div>
-              )}
-
-              {/* Direct Answer Block */}
-              {collectionContent?.directAnswer && SEO_CONFIG && (
-                <div className="mb-8">
-                  <DirectAnswer
-                    deliveryDays={SEO_CONFIG.DELIVERY_WINDOW || '10–20 working days'}
-                    hasCustomization={SEO_CONFIG.CUSTOM_NAME_NUMBER ?? true}
-                    hasCOD={SEO_CONFIG.COD ?? true}
-                    isPreOrder={true}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Category Navigation Bar - Luxury Style */}
-            <div className="mb-8 md:mb-12 border-b border-[#E5E5E5] pb-3 md:pb-4">
-              <div className="flex items-center gap-4 md:gap-8 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+            {/* Category Navigation Bar - At Top */}
+            <nav className="mb-12 md:mb-16">
+              <div className="flex items-center justify-center gap-4 md:gap-8 overflow-x-auto scrollbar-hide">
+                <Link
+                  href="/collections"
+                  className={`uppercase whitespace-nowrap transition-colors duration-300 pb-2 border-b-2 text-xs md:text-sm font-medium ${
+                    pathname === '/collections'
+                      ? 'text-black border-black'
+                      : 'text-[#666666] border-transparent hover:text-black hover:border-black/30'
+                  }`}
+                >
+                  All Products
+                </Link>
                 {collectionCategories.map((category) => {
                   const isActive = isActiveCategory(category.slug);
                   return (
                     <Link
                       key={category.slug}
                       href={category.href}
-                      className={`luxury-uppercase whitespace-nowrap transition-colors duration-300 pb-2 border-b-2 text-[11px] md:text-[12px] ${
+                      className={`uppercase whitespace-nowrap transition-colors duration-300 pb-2 border-b-2 text-xs md:text-sm font-medium ${
                         isActive
-                          ? 'text-black border-black font-semibold'
+                          ? 'text-black border-black'
                           : 'text-[#666666] border-transparent hover:text-black hover:border-black/30'
                       }`}
                     >
@@ -163,16 +145,28 @@ export default function CollectionPage() {
                   );
                 })}
               </div>
+            </nav>
+
+            {/* Hero Section */}
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-12 md:mb-16 gap-y-6">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium text-black leading-tight">
+                {collectionContent?.h1 || collectionSlug.charAt(0).toUpperCase() + collectionSlug.slice(1)}
+              </h1>
+              {collectionContent?.introText && (
+                <p className="text-base md:text-lg text-[#666666] lg:max-w-[500px] lg:text-right leading-relaxed">
+                  {collectionContent.introText}
+                </p>
+              )}
             </div>
 
             {/* Filter & Sort Bar */}
             <div className="flex items-center gap-4 md:gap-8 mb-8 md:mb-12 pb-4 md:pb-6 border-b border-[#E5E5E5]">
-              <button className="flex items-center gap-1.5 md:gap-2 luxury-uppercase text-[11px] md:text-[13px] font-semibold text-black hover:text-[#666666] transition-colors">
-                <SlidersHorizontal className="w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
+              <button className="flex items-center gap-2 uppercase text-xs md:text-sm font-semibold text-black hover:text-[#666666] transition-colors">
+                <SlidersHorizontal className="w-4 h-4" strokeWidth={2} />
                 Filter by <span className="text-[#666666] ml-1 font-normal">All</span>
               </button>
-              <button className="flex items-center gap-1.5 md:gap-2 luxury-uppercase text-[11px] md:text-[13px] font-semibold text-black hover:text-[#666666] transition-colors">
-                <ArrowUpDown className="w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
+              <button className="flex items-center gap-2 uppercase text-xs md:text-sm font-semibold text-black hover:text-[#666666] transition-colors">
+                <ArrowUpDown className="w-4 h-4" strokeWidth={2} />
                 Sort by <span className="text-[#666666] ml-1 font-normal">Recommended</span>
               </button>
             </div>

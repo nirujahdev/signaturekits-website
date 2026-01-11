@@ -56,16 +56,16 @@ export default function CollectionsPage() {
       
       <main className="pt-[100px] md:pt-[140px] pb-[60px] md:pb-[80px]">
         <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
-          {/* Category Navigation Bar */}
-          <nav className="mb-8 md:mb-12 border-b border-[#E5E5E5] pb-3 md:pb-4">
-            <div className="flex items-center gap-4 md:gap-8 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+          {/* Category Navigation Bar - At Top */}
+          <nav className="mb-12 md:mb-16">
+            <div className="flex items-center justify-center gap-4 md:gap-8 overflow-x-auto scrollbar-hide">
               {collectionCategories.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={cat.href}
-                  className={`luxury-uppercase whitespace-nowrap transition-colors duration-300 pb-2 border-b-2 text-[11px] md:text-[12px] ${
-                    cat.slug === '/product'
-                      ? 'text-black border-black font-semibold'
+                  className={`uppercase whitespace-nowrap transition-colors duration-300 pb-2 border-b-2 text-xs md:text-sm font-medium ${
+                    cat.slug === '/product' || cat.slug === '/collections'
+                      ? 'text-black border-black'
                       : 'text-[#666666] border-transparent hover:text-black hover:border-black/30'
                   }`}
                 >
@@ -76,23 +76,23 @@ export default function CollectionsPage() {
           </nav>
 
           {/* Hero Section */}
-          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-[80px] gap-y-6 overflow-hidden">
-            <h1 ref={titleRef} className="luxury-heading text-black text-[40px] md:text-[56px] lg:text-[80px]">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-12 md:mb-16 gap-y-6">
+            <h1 ref={titleRef} className="text-5xl md:text-6xl lg:text-7xl font-medium text-black leading-tight">
               Collections
             </h1>
-            <p ref={descRef} className="luxury-body text-[#666666] lg:max-w-[500px] lg:text-right">
+            <p ref={descRef} className="text-base md:text-lg text-[#666666] lg:max-w-[500px] lg:text-right leading-relaxed">
               Explore our exquisite collection of jerseys, meticulously crafted for the discerning enthusiast. Each piece embodies a legacy of passion and precision.
             </p>
           </div>
 
           {/* Filters and Sorting */}
           <div ref={filterRef} className="flex items-center gap-4 md:gap-8 mb-8 md:mb-12 pb-4 md:pb-6 border-b border-[#E5E5E5]">
-            <button className="flex items-center gap-1.5 md:gap-2 luxury-uppercase text-[11px] md:text-[13px] font-semibold text-black hover:text-[#666666] transition-colors">
-              <SlidersHorizontal className="w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
+            <button className="flex items-center gap-2 uppercase text-xs md:text-sm font-semibold text-black hover:text-[#666666] transition-colors">
+              <SlidersHorizontal className="w-4 h-4" strokeWidth={2} />
               Filter by <span className="text-[#666666] ml-1 font-normal">All</span>
             </button>
-            <button className="flex items-center gap-1.5 md:gap-2 luxury-uppercase text-[11px] md:text-[13px] font-semibold text-black hover:text-[#666666] transition-colors">
-              <ArrowUpDown className="w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
+            <button className="flex items-center gap-2 uppercase text-xs md:text-sm font-semibold text-black hover:text-[#666666] transition-colors">
+              <ArrowUpDown className="w-4 h-4" strokeWidth={2} />
               Sort by <span className="text-[#666666] ml-1 font-normal">Recommended</span>
             </button>
           </div>

@@ -78,7 +78,7 @@ export default function ProductList({ initialProducts, limit = 20, collection }:
   if (products.length === 0) {
     return (
       <div className="text-center py-24">
-        <p className="luxury-body text-[#666666]">No products found</p>
+        <p className="text-base md:text-lg text-[#999999]">No products found</p>
       </div>
     );
   }
