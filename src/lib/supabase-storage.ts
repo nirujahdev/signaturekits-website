@@ -1,6 +1,7 @@
 /**
- * Supabase Storage Utilities
+ * Supabase Storage Utilities (Server-side only)
  * Functions for managing product images in Supabase Storage
+ * DO NOT import this in client components - use supabase-storage-client.ts instead
  */
 
 import { getAdminSupabaseClient } from './admin-supabase';
@@ -132,24 +133,5 @@ export function getImageUrl(path: string): string {
   return data.publicUrl;
 }
 
-/**
- * Validate image file before upload
- */
-export function validateImageFile(file: File): { valid: boolean; error?: string } {
-  if (file.size > MAX_FILE_SIZE) {
-    return {
-      valid: false,
-      error: 'File size must be less than 5MB',
-    };
-  }
-
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    return {
-      valid: false,
-      error: 'File must be JPEG, PNG, or WebP',
-    };
-  }
-
-  return { valid: true };
-}
+// validateImageFile has been moved to supabase-storage-client.ts for client-side use
 

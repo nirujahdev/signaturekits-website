@@ -1,3 +1,9 @@
+/**
+ * Admin Supabase Client (Server-side only)
+ * This file should NEVER be imported in client components
+ * Use createClient() for client-side operations
+ */
+
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
 // Admin Supabase client with service role for admin operations (server-side only)
@@ -36,6 +42,7 @@ export async function hashPassword(password: string): Promise<string> {
 }
 
 // Helper function to verify passwords (using bcryptjs for serverless compatibility)
+// This function should ONLY be used in server-side code (API routes)
 export async function verifyPassword(
   password: string,
   hash: string
@@ -46,23 +53,9 @@ export async function verifyPassword(
       return false;
     }
 
-    // Try bcryptjs first (pure JS, works in serverless)
-    try {
-      const bcryptjs = await import('bcryptjs');
-      const result = bcryptjs.default.compareSync(password, hash);
-      return result;
-    } catch (bcryptjsError: any) {
-      console.error('bcryptjs error:', bcryptjsError);
-      
-      // Fallback to bcrypt if available
-      try {
-        const bcrypt = await import('bcrypt');
-        return await bcrypt.default.compare(password, hash);
-      } catch (bcryptError: any) {
-        console.error('bcrypt error:', bcryptError);
-        throw new Error(`Password verification failed: ${bcryptjsError?.message || bcryptError?.message}`);
-      }
-    }
+    // Use bcryptjs (pure JS, works in serverless environments)
+    const bcryptjs = await import('bcryptjs');
+    return bcryptjs.default.compareSync(password, hash);
   } catch (error: any) {
     console.error('Password verification error:', error);
     throw error;

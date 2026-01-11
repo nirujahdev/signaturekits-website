@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { X, Upload, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { validateImageFile } from '@/lib/supabase-storage';
+import { validateImageFile } from '@/lib/supabase-storage-client';
 
 interface ImageUploadProps {
   images: string[];
