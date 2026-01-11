@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
+// Force dynamic rendering to prevent static generation issues
+export const dynamic = 'force-dynamic';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 import ProductList from '@/components/products/ProductList';

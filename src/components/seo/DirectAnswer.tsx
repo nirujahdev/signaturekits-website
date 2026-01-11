@@ -3,6 +3,8 @@
  * Provides quick, scannable answers at the top of product pages
  */
 
+'use client';
+
 import { SEO_CONFIG } from '@/lib/seo-config';
 
 interface DirectAnswerProps {
