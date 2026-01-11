@@ -19,13 +19,14 @@ export default function PoliciesPage() {
       <BreadcrumbStructuredData items={breadcrumbItems} />
       <div className="min-h-screen bg-white">
         <Header />
-        <main className="container mx-auto px-6 py-12 max-w-4xl pt-24 md:pt-28">
-          <div className="mb-12">
-            <h1 className="text-4xl font-semibold mb-4">Policies</h1>
-            <p className="text-lg text-gray-600">
+        <main className="pt-[100px] md:pt-[140px] pb-[80px]">
+          <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium text-black leading-tight mb-6 md:mb-8">
+              Policies
+            </h1>
+            <p className="text-base md:text-lg text-[#666666] leading-relaxed mb-12">
               Please review our policies to understand our terms of service, shipping, returns, payment, and privacy practices.
             </p>
-          </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8">
@@ -419,14 +420,15 @@ export default function PoliciesPage() {
             </TabsContent>
           </Tabs>
 
-          <div className="mt-12 p-6 bg-blue-50 border border-blue-200 rounded-lg">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">Questions?</h2>
-            <p className="text-gray-700">
-              If you have any questions about our policies, please contact us at{' '}
-              <a href="mailto:signaturekits.ask@gmail.com" className="text-blue-600 hover:text-blue-800 underline">
-                signaturekits.ask@gmail.com
-              </a>
-            </p>
+            <div className="mt-12 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">Questions?</h2>
+              <p className="text-gray-700">
+                If you have any questions about our policies, please contact us at{' '}
+                <a href="mailto:signaturekits.ask@gmail.com" className="text-blue-600 hover:text-blue-800 underline">
+                  signaturekits.ask@gmail.com
+                </a>
+              </p>
+            </div>
           </div>
         </main>
         <Footer />

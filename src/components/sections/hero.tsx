@@ -124,12 +124,12 @@ export default function Hero() {
         </div>
 
         {/* Subtext Paragraph - Right Aligned */}
-        <div className="w-full md:w-auto md:max-w-xs text-left md:text-right md:ml-auto">
+        <div className="w-full md:w-auto max-w-[280px] md:max-w-[300px] text-left md:text-right md:ml-auto">
           <p
             ref={subheadlineRef}
-            className="font-sans font-normal leading-[1.3] md:leading-[1.2]"
+            className="font-sans font-normal leading-[1.3] md:leading-[1.2] break-words"
             style={{
-              fontSize: "clamp(18px, 4vw, 32px)",
+              fontSize: "clamp(16px, 3.5vw, 28px)",
               letterSpacing: "-0.02em",
               color: "#FFFFFF",
             }}

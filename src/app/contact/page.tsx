@@ -5,13 +5,16 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="container mx-auto px-6 py-12 max-w-4xl pt-24 md:pt-28">
-        <h1 className="text-4xl font-semibold mb-8">Contact Us</h1>
+      <main className="pt-[100px] md:pt-[140px] pb-[80px]">
+        <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium text-black leading-tight mb-12 md:mb-16">
+            Contact Us
+          </h1>
 
-        <div className="prose max-w-none">
-          <p className="text-lg text-gray-700 mb-8">
-            Have a question or need assistance? We're here to help!
-          </p>
+          <div className="prose max-w-none">
+            <p className="text-base md:text-lg text-[#666666] leading-relaxed mb-12">
+              Have a question or need assistance? We're here to help!
+            </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div>
@@ -82,6 +85,7 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </main>

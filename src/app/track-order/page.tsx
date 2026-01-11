@@ -206,10 +206,11 @@ export default function TrackOrderPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="container mx-auto px-6 py-12 max-w-4xl pt-24 md:pt-28">
-        <h1 className="text-4xl font-semibold mb-8">
-          {TRACK_ORDER_CONTENT.h1}
-        </h1>
+      <main className="pt-[100px] md:pt-[140px] pb-[80px]">
+        <div className="container mx-auto px-4 md:px-6 lg:px-[60px] max-w-7xl">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium text-black leading-tight mb-12 md:mb-16">
+            {TRACK_ORDER_CONTENT.h1}
+          </h1>
 
         {/* Direct Answer Block */}
         <div className="mb-8">
@@ -563,18 +564,19 @@ export default function TrackOrderPage() {
           </div>
         )}
 
-        {/* Help Text */}
-        {!orderData && (
-          <div className="mt-8 p-6 md:p-8 bg-blue-50 border border-blue-200 rounded-2xl">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">
-              Need Help?
-            </h2>
-            <p className="text-gray-700">
-              If you're having trouble tracking your order, contact our support team with your Order ID. 
-              We're here to help!
-            </p>
-          </div>
-        )}
+          {/* Help Text */}
+          {!orderData && (
+            <div className="mt-8 p-6 md:p-8 bg-blue-50 border border-blue-200 rounded-2xl">
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                Need Help?
+              </h2>
+              <p className="text-gray-700">
+                If you're having trouble tracking your order, contact our support team with your Order ID. 
+                We're here to help!
+              </p>
+            </div>
+          )}
+        </div>
       </main>
       <Footer />
     </div>
