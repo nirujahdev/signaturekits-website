@@ -252,7 +252,6 @@ export function SizeCalculator() {
               Calculate My Size
             </Button>
           </div>
-          </div>
 
           {/* Recommendation Result */}
           {adultRecommendation && hasCalculated && (
