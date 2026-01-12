@@ -19,6 +19,7 @@ import calenderIconSrc from "@/icons/admin/calender-line.svg";
 import horizontalDotsSrc from "@/icons/admin/horizontal-dots.svg";
 import chevronDownIconSrc from "@/icons/admin/chevron-down.svg";
 import SidebarWidget from "./SidebarWidget";
+import { Activity } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -87,6 +88,11 @@ const navItems: NavItem[] = [
     icon: <Icon src={pieChartIconSrc} alt="Reports" width={20} height={20} />,
     name: "Reports",
     path: "/admin/reports",
+  },
+  {
+    icon: <Activity size={20} />,
+    name: "Diagnostics",
+    path: "/admin/diagnostics",
   },
 ];
 
