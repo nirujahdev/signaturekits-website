@@ -134,66 +134,85 @@ export function SizeCalculator() {
           <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm">
             <div className="space-y-6">
               <div>
-                <Label htmlFor="age" className="text-base font-semibold mb-3 flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  Age
+                <Label htmlFor="age" className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <div className="p-1.5 bg-gray-100 rounded-md">
+                    <User className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <span>Age</span>
                 </Label>
-                <Input
-                  id="age"
-                  type="number"
-                  placeholder="Enter your age"
-                  value={adultInputs.age || ''}
-                  onChange={(e) => setAdultInputs({ ...adultInputs, age: parseInt(e.target.value) || undefined })}
-                  className="h-12 text-base"
-                  min={16}
-                  max={80}
-                />
+                <div className="relative">
+                  <Input
+                    id="age"
+                    type="number"
+                    placeholder="e.g., 25"
+                    value={adultInputs.age || ''}
+                    onChange={(e) => setAdultInputs({ ...adultInputs, age: parseInt(e.target.value) || undefined })}
+                    className="h-14 text-base border-gray-300 focus:border-black focus:ring-1 focus:ring-black transition-all duration-200 pl-4 pr-4"
+                    min={16}
+                    max={80}
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1.5 ml-1">Enter your age (16-80 years)</p>
               </div>
 
               <div>
-                <Label htmlFor="height" className="text-base font-semibold mb-3 flex items-center gap-2">
-                  <Maximize2 className="w-4 h-4" />
-                  Height (cm)
+                <Label htmlFor="height" className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <div className="p-1.5 bg-gray-100 rounded-md">
+                    <Maximize2 className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <span>Height</span>
                 </Label>
-                <Input
-                  id="height"
-                  type="number"
-                  placeholder="Enter your height in cm"
-                  value={adultInputs.heightCm || ''}
-                  onChange={(e) => setAdultInputs({ ...adultInputs, heightCm: parseFloat(e.target.value) || undefined })}
-                  className="h-12 text-base"
-                  min={140}
-                  max={210}
-                />
+                <div className="relative">
+                  <Input
+                    id="height"
+                    type="number"
+                    placeholder="e.g., 175"
+                    value={adultInputs.heightCm || ''}
+                    onChange={(e) => setAdultInputs({ ...adultInputs, heightCm: parseFloat(e.target.value) || undefined })}
+                    className="h-14 text-base border-gray-300 focus:border-black focus:ring-1 focus:ring-black transition-all duration-200 pl-4 pr-4"
+                    min={140}
+                    max={210}
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 pointer-events-none">cm</span>
+                </div>
+                <p className="text-xs text-gray-500 mt-1.5 ml-1">Enter your height in centimeters (140-210 cm)</p>
               </div>
 
               <div>
-                <Label htmlFor="weight" className="text-base font-semibold mb-3 flex items-center gap-2">
-                  <Weight className="w-4 h-4" />
-                  Weight (kg)
+                <Label htmlFor="weight" className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <div className="p-1.5 bg-gray-100 rounded-md">
+                    <Weight className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <span>Weight</span>
                 </Label>
-                <Input
-                  id="weight"
-                  type="number"
-                  placeholder="Enter your weight in kg"
-                  value={adultInputs.weightKg || ''}
-                  onChange={(e) => setAdultInputs({ ...adultInputs, weightKg: parseFloat(e.target.value) || undefined })}
-                  className="h-12 text-base"
-                  min={35}
-                  max={200}
-                />
+                <div className="relative">
+                  <Input
+                    id="weight"
+                    type="number"
+                    placeholder="e.g., 70"
+                    value={adultInputs.weightKg || ''}
+                    onChange={(e) => setAdultInputs({ ...adultInputs, weightKg: parseFloat(e.target.value) || undefined })}
+                    className="h-14 text-base border-gray-300 focus:border-black focus:ring-1 focus:ring-black transition-all duration-200 pl-4 pr-4"
+                    min={35}
+                    max={200}
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 pointer-events-none">kg</span>
+                </div>
+                <p className="text-xs text-gray-500 mt-1.5 ml-1">Enter your weight in kilograms (35-200 kg)</p>
               </div>
 
               <div>
-                <Label htmlFor="fit" className="text-base font-semibold mb-3 flex items-center gap-2">
-                  <Ruler className="w-4 h-4" />
-                  Fit Preference
+                <Label htmlFor="fit" className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <div className="p-1.5 bg-gray-100 rounded-md">
+                    <Ruler className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <span>Fit Preference</span>
                 </Label>
                 <Select
                   value={adultInputs.fitPreference || 'Regular'}
                   onValueChange={(value) => setAdultInputs({ ...adultInputs, fitPreference: value as FitPreference })}
                 >
-                  <SelectTrigger className="h-12 text-base">
+                  <SelectTrigger className="h-14 text-base border-gray-300 focus:border-black focus:ring-1 focus:ring-black transition-all duration-200">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -204,6 +223,7 @@ export function SizeCalculator() {
                     ))}
                   </SelectContent>
                 </Select>
+                <p className="text-xs text-gray-500 mt-1.5 ml-1">Choose your preferred fit style</p>
               </div>
 
               {validationErrors.length > 0 && (
@@ -279,16 +299,18 @@ export function SizeCalculator() {
           <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm">
             <div className="space-y-6">
               <div>
-                <Label htmlFor="kidsAge" className="text-base font-semibold mb-3 flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  Child's Age
+                <Label htmlFor="kidsAge" className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <div className="p-1.5 bg-gray-100 rounded-md">
+                    <User className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <span>Child's Age</span>
                 </Label>
                 <Select
                   value={kidsAge?.toString() || ''}
                   onValueChange={(value) => setKidsAge(parseInt(value))}
                 >
-                  <SelectTrigger className="h-12 text-base">
-                    <SelectValue placeholder="Select age" />
+                  <SelectTrigger className="h-14 text-base border-gray-300 focus:border-black focus:ring-1 focus:ring-black transition-all duration-200">
+                    <SelectValue placeholder="Select your child's age" />
                   </SelectTrigger>
                   <SelectContent>
                     {KIDS_AGES.map((age) => (
@@ -298,8 +320,8 @@ export function SizeCalculator() {
                     ))}
                   </SelectContent>
                 </Select>
-                <p className="text-sm text-gray-500 mt-2">
-                  Select your child's age to get a size recommendation
+                <p className="text-xs text-gray-500 mt-1.5 ml-1">
+                  Select your child's age to get an accurate size recommendation
                 </p>
               </div>
 
