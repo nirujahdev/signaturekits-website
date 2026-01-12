@@ -50,10 +50,10 @@ export default function AdminSignIn() {
         <div className="w-full max-w-md">
           {/* Logo/Brand */}
           <div className="mb-8">
-            <h1 className="text-5xl md:text-6xl font-bold mb-2 text-gray-900 tracking-tight">
+            <h1 className="text-5xl md:text-6xl font-bold mb-2 text-black tracking-tight">
               Admin
             </h1>
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-2xl md:text-3xl font-semibold text-black mb-4">
               Sign In
             </h2>
             <p className="text-sm text-gray-500">
@@ -66,7 +66,7 @@ export default function AdminSignIn() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Error Message */}
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                   <p className="text-sm text-red-800 whitespace-pre-line">
                     {error}
                   </p>
@@ -75,21 +75,19 @@ export default function AdminSignIn() {
 
               {/* Username Field */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Username
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <div className="w-5 h-5 bg-gray-200 rounded flex items-center justify-center">
-                      <User className="h-4 w-4 text-gray-500" />
-                    </div>
+                    <User className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
                     type="text"
                     name="username"
                     required
                     disabled={loading}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Enter your username"
                   />
                 </div>
@@ -97,21 +95,19 @@ export default function AdminSignIn() {
 
               {/* Password Field */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <div className="w-5 h-5 bg-gray-200 rounded flex items-center justify-center">
-                      <Lock className="h-4 w-4 text-gray-500" />
-                    </div>
+                    <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
                     type="password"
                     name="password"
                     required
                     disabled={loading}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Enter your password"
                   />
                 </div>

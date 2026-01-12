@@ -228,30 +228,30 @@ export function SizeCalculator() {
               </div>
             </div>
 
-              {validationErrors.length > 0 && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-red-900 mb-1">Please correct the following:</p>
-                      <ul className="text-sm text-red-800 space-y-1">
-                        {validationErrors.map((error, idx) => (
-                          <li key={idx}>• {error}</li>
-                        ))}
-                      </ul>
-                    </div>
+            {validationErrors.length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-6">
+                <div className="flex items-start gap-2">
+                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-red-900 mb-1">Please correct the following:</p>
+                    <ul className="text-sm text-red-800 space-y-1">
+                      {validationErrors.map((error, idx) => (
+                        <li key={idx}>• {error}</li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
 
-              <Button
-                onClick={handleCalculate}
-                disabled={!adultInputs.age || !adultInputs.heightCm || !adultInputs.weightKg}
-                className="w-full h-12 text-base font-semibold bg-black hover:bg-gray-800 text-white"
-              >
-                Calculate My Size
-              </Button>
-            </div>
+            <Button
+              onClick={handleCalculate}
+              disabled={!adultInputs.age || !adultInputs.heightCm || !adultInputs.weightKg}
+              className="w-full h-12 text-base font-semibold bg-black hover:bg-gray-800 text-white mt-6"
+            >
+              Calculate My Size
+            </Button>
+          </div>
           </div>
 
           {/* Recommendation Result */}
