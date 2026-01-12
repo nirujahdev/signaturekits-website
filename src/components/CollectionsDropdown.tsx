@@ -9,32 +9,27 @@ const categories = [
   {
     title: 'All',
     href: '/collections',
-    image: '/assests/master version.png', // Using master version as placeholder for "All"
+    image: '/assests/collections dropdown menu/Master Version.png',
   },
   {
     title: 'Master Version',
     href: '/collections/master',
-    image: '/assests/master version.png',
+    image: '/assests/collections dropdown menu/Master Version.png',
   },
   {
     title: 'Player Version',
     href: '/collections/player-version',
-    image: '/assests/player version.png',
+    image: '/assests/collections dropdown menu/Player version.png',
   },
   {
     title: 'Retro',
     href: '/collections/retro',
-    image: '/assests/retro.png',
+    image: '/assests/collections dropdown menu/Retro.png',
   },
   {
     title: 'Signature Embroidery',
     href: '/collections/custom-name-number',
-    image: '/assests/Signature Emboriery.png',
-  },
-  {
-    title: 'Kids',
-    href: '/collections/kids',
-    image: '/assests/master version.png', // Using master version as placeholder for Kids
+    image: '/assests/collections dropdown menu/Signature Embroidery.png',
   },
 ];
 
@@ -104,24 +99,28 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
       ref={dropdownRef}
       onMouseEnter={() => {}} // Keep open on hover
       onMouseLeave={onClose}
-      className="fixed bg-white z-[95] border border-[#E5E5E5] shadow-lg transition-all duration-300 ease-out rounded-lg overflow-hidden"
+      className="fixed bg-white z-[95] border border-[#E5E5E5] shadow-xl transition-all duration-300 ease-out rounded-lg overflow-hidden"
       style={{
         top: `${position.top}px`,
         left: `${position.left}px`,
         minWidth: '200px',
+        animation: isOpen ? 'fadeInSlideDown 0.3s ease-out forwards' : 'none',
       }}
     >
-      <div className="flex">
+      <div className="flex flex-col md:flex-row">
         {/* Menu Items */}
         <div className="py-2">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <Link
               key={category.title}
               href={category.href}
               onClick={onClose}
               onMouseEnter={() => setHoveredItem(category.title)}
               onMouseLeave={() => setHoveredItem(null)}
-              className="group relative flex items-center px-6 py-3 text-[15px] font-medium text-black hover:bg-gray-50 transition-colors duration-200 min-w-[200px]"
+              className="group relative flex items-center px-6 py-3 text-[15px] font-medium text-black hover:bg-gray-50 transition-all duration-200 min-w-[200px] transform hover:translate-x-1"
+              style={{
+                animationDelay: `${index * 0.05}s`,
+              }}
             >
               <span className="relative">
                 {category.title}
@@ -134,17 +133,22 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
 
         {/* Image Preview */}
         {hoveredItem && (
-          <div className="border-l border-[#E5E5E5] p-4 bg-gray-50 animate-in fade-in duration-200">
+          <div 
+            className="border-l border-[#E5E5E5] p-4 bg-gray-50 transition-all duration-300 ease-out"
+            style={{
+              animation: 'fadeInSlideRight 0.3s ease-out forwards',
+            }}
+          >
             {(() => {
               const category = categories.find((cat) => cat.title === hoveredItem);
               if (!category) return null;
               return (
-                <div className="relative w-[200px] h-[250px] overflow-hidden rounded-lg bg-[#FAFAFA]">
+                <div className="relative w-[200px] h-[250px] overflow-hidden rounded-lg bg-[#FAFAFA] shadow-md">
                   <Image
                     src={category.image}
                     alt={category.title}
                     fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    className="object-cover transition-transform duration-500 ease-out hover:scale-110"
                     sizes="200px"
                     quality={90}
                   />

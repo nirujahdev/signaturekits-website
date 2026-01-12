@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Phone } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -28,7 +28,11 @@ const Footer = () => {
         { 
           name: 'Contact', 
           href: '/contact',
-          phone: '+94 77 123 4567', // User will provide actual number
+        },
+        { 
+          name: 'Send a hi', 
+          href: 'mailto:support@signaturekits.xyz',
+          external: true,
         },
         { 
           name: 'Follow us', 
@@ -66,6 +70,7 @@ const Footer = () => {
                       ? { href: link.href, target: '_blank', rel: 'noopener noreferrer' }
                       : { href: link.href };
                     const Icon = link.icon;
+                    const isConnectColumn = column.title === 'Connect';
 
                     return (
                       <li key={link.name}>
@@ -75,20 +80,9 @@ const Footer = () => {
                         >
                           {Icon && <Icon className="w-4 h-4 mr-2" />}
                           {link.name}
-                          {/* Underline animation */}
-                          <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black group-hover:w-full transition-all duration-300 ease-out" />
+                          {/* Underline animation - half-width for Connect column, full-width for others */}
+                          <span className={`absolute bottom-0 left-0 h-[2px] bg-black transition-all duration-300 ease-out ${isConnectColumn ? 'w-0 group-hover:w-1/2' : 'w-0 group-hover:w-full'}`} />
                         </LinkComponent>
-                        {link.phone && (
-                          <div className="mt-1 ml-6 flex items-center gap-2 text-[14px] text-[#999999]">
-                            <Phone className="w-3.5 h-3.5" />
-                            <a 
-                              href={`tel:${link.phone.replace(/\s/g, '')}`}
-                              className="hover:text-black transition-colors"
-                            >
-                              {link.phone}
-                            </a>
-                          </div>
-                        )}
                       </li>
                     );
                   })}

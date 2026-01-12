@@ -46,10 +46,10 @@ export default function AdminSignIn() {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <div className="flex-1 flex items-center justify-center p-4 md:p-8">
+      <div className="flex-1 flex items-center justify-end p-4 md:p-8 lg:p-12">
         <div className="w-full max-w-md">
           {/* Logo/Brand */}
-          <div className="text-center mb-8">
+          <div className="mb-8">
             <h1 className="text-5xl md:text-6xl font-bold mb-2 text-gray-900 tracking-tight">
               Admin
             </h1>
@@ -61,8 +61,8 @@ export default function AdminSignIn() {
             </p>
           </div>
 
-          {/* Sign In Card */}
-          <div className="bg-white rounded-xl border border-gray-200 p-8 md:p-10">
+          {/* Sign In Form */}
+          <div>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Error Message */}
               {error && (
