@@ -17,6 +17,7 @@ export default function Header() {
   const pathname = usePathname();
   const { itemCount } = useCart();
   const collectionsTriggerRef = React.useRef<HTMLDivElement>(null);
+  const collectionsCloseTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -63,8 +64,20 @@ export default function Header() {
               <div
                 ref={collectionsTriggerRef}
                 className="relative"
-                onMouseEnter={() => setIsCollectionsOpen(true)}
-                onMouseLeave={() => setIsCollectionsOpen(false)}
+                onMouseEnter={() => {
+                  // Clear any pending close timeout
+                  if (collectionsCloseTimeoutRef.current) {
+                    clearTimeout(collectionsCloseTimeoutRef.current);
+                    collectionsCloseTimeoutRef.current = null;
+                  }
+                  setIsCollectionsOpen(true);
+                }}
+                onMouseLeave={() => {
+                  // Add a small delay before closing to allow moving to dropdown
+                  collectionsCloseTimeoutRef.current = setTimeout(() => {
+                    setIsCollectionsOpen(false);
+                  }, 150);
+                }}
               >
                 <Link
                   href="/collections"

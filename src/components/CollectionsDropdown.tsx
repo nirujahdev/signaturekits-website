@@ -45,6 +45,7 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
   const [mounted, setMounted] = React.useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -57,7 +58,7 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
       if (triggerRef?.current) {
         const rect = triggerRef.current.getBoundingClientRect();
         setPosition({
-          top: rect.bottom + 8,
+          top: rect.bottom + 4, // Reduced gap to minimize hover gap
           left: rect.left,
         });
       }
@@ -75,6 +76,15 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
       window.removeEventListener('resize', handleResize);
     };
   }, [isOpen, triggerRef]);
+
+  // Clear timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -94,11 +104,26 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
 
   if (!isOpen || !mounted) return null;
 
+  const handleMouseEnter = () => {
+    // Clear any pending close timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  const handleMouseLeave = () => {
+    // Add a small delay before closing to allow moving between trigger and dropdown
+    closeTimeoutRef.current = setTimeout(() => {
+      onClose();
+    }, 150);
+  };
+
   const content = (
     <div
       ref={dropdownRef}
-      onMouseEnter={() => {}} // Keep open on hover
-      onMouseLeave={onClose}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="fixed bg-white z-[95] border border-[#E5E5E5] shadow-xl transition-all duration-300 ease-out rounded-lg overflow-hidden"
       style={{
         top: `${position.top}px`,
