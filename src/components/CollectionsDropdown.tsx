@@ -58,7 +58,7 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
       if (triggerRef?.current) {
         const rect = triggerRef.current.getBoundingClientRect();
         setPosition({
-          top: rect.bottom + 4, // Reduced gap to minimize hover gap
+          top: rect.bottom + 2, // Minimal gap to bridge hover gap
           left: rect.left,
         });
       }
@@ -113,10 +113,10 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
   };
 
   const handleMouseLeave = () => {
-    // Add a small delay before closing to allow moving between trigger and dropdown
+    // Add a delay before closing to allow moving between trigger and dropdown
     closeTimeoutRef.current = setTimeout(() => {
       onClose();
-    }, 150);
+    }, 300);
   };
 
   const content = (
@@ -149,8 +149,8 @@ export function CollectionsDropdown({ isOpen, onClose, headerTextColor, triggerR
             >
               <span className="relative">
                 {category.title}
-                {/* Underline animation */}
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black group-hover:w-full transition-all duration-300 ease-out" />
+                {/* Underline animation - extends beyond text width */}
+                <span className="absolute bottom-0 left-[-4px] w-0 h-[2px] bg-black group-hover:w-[calc(100%+8px)] transition-all duration-300 ease-out" />
               </span>
             </Link>
           ))}

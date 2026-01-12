@@ -48,7 +48,6 @@ export default function AdminSignIn() {
     <div className="flex min-h-screen bg-white">
       <div className="flex-1 flex items-center justify-end p-4 md:p-8 lg:p-12">
         <div className="w-full max-w-md">
-          {/* Logo/Brand */}
           <div className="mb-8">
             <h1 className="text-5xl md:text-6xl font-bold mb-2 text-black tracking-tight">
               Admin
@@ -61,75 +60,68 @@ export default function AdminSignIn() {
             </p>
           </div>
 
-          {/* Sign In Form */}
-          <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Error Message */}
-              {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-red-800 whitespace-pre-line">
-                    {error}
-                  </p>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p className="text-sm text-red-800 whitespace-pre-line">
+                  {error}
+                </p>
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
+                Username
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-gray-400" />
                 </div>
+                <input
+                  type="text"
+                  name="username"
+                  required
+                  disabled={loading}
+                  className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  placeholder="Enter your username"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  required
+                  disabled={loading}
+                  className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  placeholder="Enter your password"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Signing in...</span>
+                </>
+              ) : (
+                <span>Sign In</span>
               )}
-
-              {/* Username Field */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Username
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    name="username"
-                    required
-                    disabled={loading}
-                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    placeholder="Enter your username"
-                  />
-                </div>
-              </div>
-
-              {/* Password Field */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Password
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="password"
-                    name="password"
-                    required
-                    disabled={loading}
-                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    placeholder="Enter your password"
-                  />
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Signing in...</span>
-                  </>
-                ) : (
-                  <span>Sign In</span>
-                )}
-              </button>
-            </form>
-          </div>
+            </button>
+          </form>
         </div>
       </div>
     </div>

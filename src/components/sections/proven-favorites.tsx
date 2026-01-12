@@ -1,63 +1,74 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { productOperations } from '@/lib/vendure-operations';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const products = [
-  {
-    id: 1,
-    title: 'Relaxed Linen Jacket',
-    category: 'JACKET',
-    price: '69.00',
-    slug: 'relaxed-linen-jacket',
-    image1: 'https://framerusercontent.com/images/vY2nUwZAsphGUDKa3rdmuqv6MA.jpg',
-    image2: 'https://framerusercontent.com/images/Neip3ZTwRypwsMNwPKSfzaC46c.jpg',
-  },
-  {
-    id: 2,
-    title: 'Basic Regular Fit Tee',
-    category: 'TEE',
-    price: '19.00',
-    slug: 'black-tee',
-    image1: 'https://framerusercontent.com/images/CvrAfdHz2Yl0nez9qiIYtvqGI.jpg',
-    image2: 'https://framerusercontent.com/images/7paF1t6YnNBWcop0OmGOItAo0E.jpg',
-  },
-  {
-    id: 3,
-    title: 'Baggy Denim Trousers',
-    category: 'PANTS',
-    price: '49.00',
-    slug: 'basic-wax-jeans',
-    image1: 'https://framerusercontent.com/images/1t6cW6ncZSmwsl7y12j21hXs.jpg',
-    image2: 'https://framerusercontent.com/images/bgGp6e4hKOrnCZnSgB3gYKmj9GI.jpg',
-  },
-];
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  featuredAsset?: {
+    preview: string;
+  };
+  assets?: Array<{
+    preview: string;
+  }>;
+  variants: Array<{
+    id: string;
+    priceWithTax: number;
+    currencyCode: string;
+  }>;
+}
 
 const ProvenFavorites = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.product-card', {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse'
-        }
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
+    loadProducts();
   }, []);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      const ctx = gsap.context(() => {
+        gsap.from('.product-card', {
+          y: 60,
+          opacity: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse'
+          }
+        });
+      }, sectionRef);
+
+      return () => ctx.revert();
+    }
+  }, [products]);
+
+  const loadProducts = async () => {
+    setLoading(true);
+    try {
+      const result = await productOperations.getProducts({ take: 3 });
+      if (result?.products?.items) {
+        setProducts(result.products.items);
+      }
+    } catch (error) {
+      console.error('Error loading products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section ref={sectionRef} className="bg-white editorial-spacing">
@@ -77,56 +88,83 @@ const ProvenFavorites = () => {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <a
-              key={product.id}
-              href={`/product/${product.slug}`}
-              className="product-card group flex flex-col no-underline"
-            >
-              {/* Image Container with Hover Transition */}
-              <div className="relative aspect-[4/5] overflow-hidden bg-[#f5f5f5]">
-                {/* Primary Image */}
-                <div className="absolute inset-0 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
-                  <Image
-                    src={product.image1}
-                    alt={product.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    priority={product.id === 1}
-                  />
-                </div>
-                {/* Secondary Image (Back View) */}
-                <div className="absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100">
-                  <Image
-                    src={product.image2}
-                    alt={`${product.title} Alternate View`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-[4/5] bg-[#f5f5f5] rounded-sm" />
+                <div className="mt-6 space-y-2">
+                  <div className="h-4 bg-[#f5f5f5] rounded w-3/4" />
+                  <div className="h-3 bg-[#f5f5f5] rounded w-1/2" />
                 </div>
               </div>
+            ))}
+          </div>
+        ) : products.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {products.map((product, index) => {
+              const variant = product.variants?.[0];
+              const price = variant?.priceWithTax || 0;
+              const mainImage = product.featuredAsset?.preview || product.assets?.[0]?.preview || '/placeholder-jersey.jpg';
+              const secondaryImage = product.assets?.[1]?.preview || mainImage;
 
-              {/* Product Info */}
-              <div className="mt-6 flex justify-between items-start">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-[16px] font-medium leading-[1.2] text-black tracking-tight">
-                    {product.title}
-                  </h3>
-                  <span className="label-uppercase text-[#666666]">
-                    {product.category}
-                  </span>
-                </div>
-                <div className="flex items-baseline">
-                  <span className="label-uppercase mr-0.5">$</span>
-                  <span className="label-uppercase">{product.price}</span>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
+              return (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.slug || product.id}`}
+                  className="product-card group flex flex-col no-underline"
+                >
+                  {/* Image Container with Hover Transition */}
+                  <div className="relative aspect-[4/5] overflow-hidden bg-[#f5f5f5]">
+                    {/* Primary Image */}
+                    <div className="absolute inset-0 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                      <Image
+                        src={mainImage}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        priority={index === 0}
+                      />
+                    </div>
+                    {/* Secondary Image (if available) */}
+                    {secondaryImage !== mainImage && (
+                      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100">
+                        <Image
+                          src={secondaryImage}
+                          alt={`${product.name} Alternate View`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="mt-6 flex justify-between items-start">
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-[16px] font-medium leading-[1.2] text-black tracking-tight">
+                        {product.name}
+                      </h3>
+                      <span className="label-uppercase text-[#666666]">
+                        JERSEY
+                      </span>
+                    </div>
+                    <div className="flex items-baseline">
+                      <span className="label-uppercase mr-0.5">LKR</span>
+                      <span className="label-uppercase">{(price / 100).toFixed(2)}</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-[#666666]">No products available</p>
+          </div>
+        )}
       </div>
     </section>
   );

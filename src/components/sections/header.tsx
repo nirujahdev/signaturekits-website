@@ -73,10 +73,10 @@ export default function Header() {
                   setIsCollectionsOpen(true);
                 }}
                 onMouseLeave={() => {
-                  // Add a small delay before closing to allow moving to dropdown
+                  // Add a delay before closing to allow moving to dropdown
                   collectionsCloseTimeoutRef.current = setTimeout(() => {
                     setIsCollectionsOpen(false);
-                  }, 150);
+                  }, 300);
                 }}
               >
                 <Link
@@ -85,8 +85,8 @@ export default function Header() {
                 >
                   Collections
                   <span className="text-[12px]">+</span>
-                  {/* Underline animation */}
-                  <span className={`absolute bottom-0 left-0 w-0 h-[2px] ${headerTextColor === 'text-white' ? 'bg-white' : 'bg-black'} group-hover:w-full transition-all duration-300 ease-out`} />
+                  {/* Underline animation - extends beyond text width */}
+                  <span className={`absolute bottom-0 left-[-4px] w-0 h-[2px] ${headerTextColor === 'text-white' ? 'bg-white' : 'bg-black'} group-hover:w-[calc(100%+8px)] transition-all duration-300 ease-out`} />
                 </Link>
               </div>
               
@@ -99,8 +99,8 @@ export default function Header() {
                     className={`group relative text-[15px] font-semibold tracking-[-0.01em] ${headerTextColor} transition-colors duration-500 min-h-[44px] flex items-center`}
                   >
                     {item.name}
-                    {/* Underline animation */}
-                    <span className={`absolute bottom-0 left-0 h-[2px] ${headerTextColor === 'text-white' ? 'bg-white' : 'bg-black'} transition-all duration-300 ease-out ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                    {/* Underline animation - extends beyond text width */}
+                    <span className={`absolute bottom-0 left-[-4px] h-[2px] ${headerTextColor === 'text-white' ? 'bg-white' : 'bg-black'} transition-all duration-300 ease-out ${isActive ? 'w-[calc(100%+8px)]' : 'w-0 group-hover:w-[calc(100%+8px)]'}`} />
                   </Link>
                 );
               })}

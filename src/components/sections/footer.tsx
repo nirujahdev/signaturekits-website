@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { Instagram } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -38,7 +37,6 @@ const Footer = () => {
           name: 'Follow us', 
           href: 'https://instagram.com/signaturekits.lk',
           external: true,
-          icon: Instagram,
         },
       ],
     },
@@ -80,8 +78,8 @@ const Footer = () => {
                         >
                           {Icon && <Icon className="w-4 h-4 mr-2" />}
                           {link.name}
-                          {/* Underline animation - half-width for Connect column, full-width for others */}
-                          <span className={`absolute bottom-0 left-0 h-[2px] bg-black transition-all duration-300 ease-out ${isConnectColumn ? 'w-0 group-hover:w-1/2' : 'w-0 group-hover:w-full'}`} />
+                          {/* Underline animation - extends beyond text width */}
+                          <span className={`absolute bottom-0 left-[-4px] h-[2px] bg-black transition-all duration-300 ease-out ${isConnectColumn ? 'w-0 group-hover:w-[calc(50%+4px)]' : 'w-0 group-hover:w-[calc(100%+8px)]'}`} />
                         </LinkComponent>
                       </li>
                     );
@@ -108,8 +106,8 @@ const Footer = () => {
               className="group relative text-[13px] font-medium text-[#999999] hover:text-black transition-colors"
             >
               admin
-              {/* Underline animation */}
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black group-hover:w-full transition-all duration-300 ease-out" />
+              {/* Underline animation - extends beyond text width */}
+              <span className="absolute bottom-0 left-[-4px] w-0 h-[2px] bg-black group-hover:w-[calc(100%+8px)] transition-all duration-300 ease-out" />
             </Link>
           </div>
 
