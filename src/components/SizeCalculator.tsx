@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CheckCircle2, AlertCircle, Ruler, User, Weight, Height } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Ruler, User, Weight, Maximize2 } from 'lucide-react';
 
 export function SizeCalculator() {
   const [activeTab, setActiveTab] = useState<'kids' | 'adult'>('adult');
@@ -152,7 +152,7 @@ export function SizeCalculator() {
 
               <div>
                 <Label htmlFor="height" className="text-base font-semibold mb-3 flex items-center gap-2">
-                  <Height className="w-4 h-4" />
+                  <Maximize2 className="w-4 h-4" />
                   Height (cm)
                 </Label>
                 <Input
